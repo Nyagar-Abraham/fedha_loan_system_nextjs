@@ -1,9 +1,13 @@
 "use server";
 
 import { connectToDatabase } from "../utils";
-import { CreateMemberParams, UpdateMemberParams } from "./shared.types";
+import {
+  CreateMemberParams,
+  DeleteMemberParams,
+  UpdateMemberParams,
+} from "./shared.types";
 
-export default async function createMember(memberParams: CreateMemberParams) {
+export async function createMember(memberParams: CreateMemberParams) {
   try {
     await connectToDatabase();
 
@@ -14,11 +18,22 @@ export default async function createMember(memberParams: CreateMemberParams) {
   }
 }
 
-export default async function updateMember(memberParams: UpdateMemberParams) {
+export async function updateMember(updateMemberParams: UpdateMemberParams) {
   try {
     await connectToDatabase();
 
-    const {} = memberParams;
+    const {} = updateMemberParams;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+export async function deleteMember(deleteMember: DeleteMemberParams) {
+  try {
+    await connectToDatabase();
+
+    const {} = deleteMember;
   } catch (error) {
     console.log(error);
     throw error;

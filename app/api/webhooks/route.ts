@@ -1,6 +1,12 @@
 import { Webhook } from "svix";
 import { headers } from "next/headers";
 import { WebhookEvent } from "@clerk/nextjs/server";
+import { NextResponse } from "next/server";
+import {
+  createMember,
+  deleteMember,
+  updateMember,
+} from "@/lib/actions/member.actions";
 
 export async function POST(req: Request) {
   // You can find this in the Clerk Dashboard -> Webhooks -> choose the endpoint
@@ -50,10 +56,54 @@ export async function POST(req: Request) {
 
   // Do something with the payload
   // For this guide, you simply log the payload to the console
-  const { id } = evt.data;
+  // const { id } = evt.data;
   const eventType = evt.type;
-  console.log(`Webhook with and ID of ${id} and type of ${eventType}`);
-  console.log("Webhook body:", body);
+
+  if (eventType === "user.created") {
+    const { id, email_addresses, image_url, username, first_name, last_name } =
+      evt.data;
+
+    // Create a new user in your database
+    const mongoMember = await createMember({
+      clerkId: id,
+      name: `${first_name}${last_name ? ` ${last_name}` : ""}`,
+      username: username!,
+      email: email_addresses[0].email_address,
+      picture: image_url,
+      path: "/",
+    });
+
+    return NextResponse.json({ message: "OK", user: mongoMember });
+  }
+
+  if (eventType === "user.updated") {
+    const { id, email_addresses, image_url, username, first_name, last_name } =
+      evt.data;
+
+    // Create a new user in your database
+    const mongoMember = await updateMember({
+      clerkId: id,
+      updateData: {
+        name: `${first_name}${last_name ? ` ${last_name}` : ""}`,
+        username: username!,
+        email: email_addresses[0].email_address,
+        picture: image_url,
+      },
+      path: `/profile/${id}`,
+    });
+
+    return NextResponse.json({ message: "OK", user: mongoMember });
+  }
+
+  if (eventType === "user.deleted") {
+    const { id } = evt.data;
+
+    const deletedMember = await deleteMember({
+      clerkId: id!,
+    });
+
+    return NextResponse.json({ message: "OK", user: deletedMember });
+  }
 
   return new Response("", { status: 200 });
 }

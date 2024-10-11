@@ -27,7 +27,9 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body>{children}</body>
+        <body className="flex flex-col flex-1 bg-white text-slate-800 ">
+          {children}
+        </body>
       </html>
     </ClerkProvider>
   );
