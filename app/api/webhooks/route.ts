@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import { Webhook } from "svix";
 import { headers } from "next/headers";
 import { WebhookEvent } from "@clerk/nextjs/server";
@@ -9,8 +10,10 @@ import {
 } from "@/lib/actions/member.actions";
 
 export async function POST(req: Request) {
+  console.log("Webhook received");
   // You can find this in the Clerk Dashboard -> Webhooks -> choose the endpoint
   const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
+  console.log("WEBHOOK_SECRET:", WEBHOOK_SECRET);
 
   if (!WEBHOOK_SECRET) {
     throw new Error(
@@ -54,14 +57,15 @@ export async function POST(req: Request) {
     });
   }
 
-  // Do something with the payload
-  // For this guide, you simply log the payload to the console
   // const { id } = evt.data;
   const eventType = evt.type;
+  console.log(evt.data);
 
   if (eventType === "user.created") {
     const { id, email_addresses, image_url, username, first_name, last_name } =
       evt.data;
+
+    console.log("run 1", evt.data);
 
     // Create a new user in your database
     const mongoMember = await createMember({
@@ -72,6 +76,8 @@ export async function POST(req: Request) {
       picture: image_url,
       path: "/",
     });
+
+    console.log("run 2");
 
     return NextResponse.json({ message: "OK", user: mongoMember });
   }

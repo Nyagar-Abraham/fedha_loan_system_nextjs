@@ -2,22 +2,25 @@ import type { Metadata } from "next";
 // import localFont from "next/font/local";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
-
-// const geistSans = localFont({
-//   src: "./fonts/GeistVF.woff",
-//   variable: "--font-geist-sans",
-//   weight: "100 900",
-// });
-// const geistMono = localFont({
-//   src: "./fonts/GeistMonoVF.woff",
-//   variable: "--font-geist-mono",
-//   weight: "100 900",
-// });
+import React from "react";
+// eslint-disable-next-line camelcase
+import { Josefin_Sans } from "next/font/google";
+import { cn } from "@/lib/utils";
+import Header from "@/components/Header";
+import { ThemeProvider } from "@/components/theme-provider";
 
 export const metadata: Metadata = {
-  title: "Fedha Youth Group",
+  title: {
+    template: "%s / Fedha Youth Group",
+    default: "Welcome / Fedha Youth Group ",
+  },
   description: "A student loan application",
 };
+
+const josefin = Josefin_Sans({
+  subsets: ["latin"],
+  display: "swap",
+});
 
 export default function RootLayout({
   children,
@@ -27,8 +30,26 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className="flex flex-col flex-1 bg-white text-slate-800 ">
-          {children}
+        <body
+          className={cn(
+            "antialiased dark:bg-slate-950 bg-slate-50 flex flex-col flex-1 text-slate-800 dark:text-slate-50 min-h-screen relative",
+            josefin.className
+          )}
+        >
+          {" "}
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <Header />
+            <div className="mt-[76px] flex flex-1 flex-col  ">
+              <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col pt-6">
+                {children}
+              </main>
+            </div>
+          </ThemeProvider>
         </body>
       </html>
     </ClerkProvider>
