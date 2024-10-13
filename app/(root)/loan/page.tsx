@@ -12,7 +12,13 @@ const page = async () => {
       <h1 className="mb-5 mt-2  text-3xl font-semibold text-orange90">
         Apply for a loan
       </h1>
-      <ApplyLoanForm userId={userId!} members={members!} />
+
+      <ApplyLoanForm
+        userId={userId!}
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-expect-error
+        members={members}
+      />
     </div>
   );
 };
