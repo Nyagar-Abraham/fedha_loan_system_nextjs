@@ -8,6 +8,7 @@ import { Josefin_Sans } from "next/font/google";
 import { cn } from "@/lib/utils";
 import Header from "@/components/Header";
 import { ThemeProvider } from "@/components/theme-provider";
+import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
   title: {
@@ -50,6 +51,7 @@ export default function RootLayout({
               </main>
             </div>
           </ThemeProvider>
+          <Toaster />
         </body>
       </html>
     </ClerkProvider>

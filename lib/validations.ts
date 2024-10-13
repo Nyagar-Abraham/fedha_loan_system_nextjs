@@ -6,8 +6,8 @@ import { z } from "zod";
 // });
 
 export const LoanSchema = z.object({
-  amount: z.number(),
-  age: z.number(),
+  amount: z.number().min(100),
+  age: z.number().min(18).max(35),
   type: z.string().min(2),
   guarantors: z.array(z.string().min(2)).min(1).max(3),
 });

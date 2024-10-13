@@ -10,13 +10,13 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        dark100: "#212529",
-        dark90: "#343a40",
-        dark80: "#495057",
-        dark70: "#868e96",
-        dark60: "#adb5bd",
-        dark50: "#ced4da",
-        dark40: "#dee2e6",
+        dark100: "#050506",
+        dark90: "#121214",
+        dark80: "#1f1f21",
+        dark70: "#2c2c2e",
+        dark60: "#39393b",
+        dark50: "#464648",
+        dark40: "#606062",
         dark30: "#e9ecef",
         dark20: "#f1f3f5",
         dark10: "#f8f9fa",

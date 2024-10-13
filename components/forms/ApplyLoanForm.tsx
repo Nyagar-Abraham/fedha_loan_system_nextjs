@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -23,14 +26,35 @@ import { Input } from "@/components/ui/input";
 import { LoanSchema } from "@/lib/validations";
 import { loanTypes } from "@/constants";
 import { loanTypeInterface, MemberInterface } from "@/lib/Interfaces";
+import { Label } from "../ui/label";
+import React, { useRef, useState } from "react";
+import { useToast } from "@/hooks/use-toast";
+import { calculateLoanDetails, cn } from "@/lib/utils";
+import applyLoan from "@/lib/actions/loan.actions";
 
 interface ApplyLoanInterface {
   userId: string;
   members: MemberInterface[];
 }
 
+interface ContribInterface {
+  _id: string;
+  value: number;
+}
+
 export default function ApplyLoanForm({ userId, members }: ApplyLoanInterface) {
-  console.log(userId);
+  const [submitting, setSubmitting] = useState(false);
+  const [guarantorContributions, setGuarantorContributions] = useState<
+    ContribInterface[]
+  >([]);
+  const timeoutId = useRef();
+  const [selectedValue, setSelectedValue] = useState<string | undefined>("");
+  const { toast } = useToast();
+
+  // get user details
+  const currentUser = members.find(
+    (member: MemberInterface) => member.clerkId === userId
+  );
 
   const form = useForm<z.infer<typeof LoanSchema>>({
     resolver: zodResolver(LoanSchema),
@@ -42,17 +66,147 @@ export default function ApplyLoanForm({ userId, members }: ApplyLoanInterface) {
     },
   });
 
-  function onSubmit(values: z.infer<typeof LoanSchema>) {
-    console.log("Form Submitted", values);
+  async function onSubmit(values: z.infer<typeof LoanSchema>) {
+    try {
+      setSubmitting(true);
+      console.log("Form Submitted", values);
+      console.log("Form Submitted2", guarantorContributions);
+
+      if (values?.guarantors?.length !== guarantorContributions.length) {
+        toast({
+          title: "Missing input value!!",
+          variant: "destructive",
+          description:
+            "You did not fill one of the input for guarantors contributions",
+        });
+        return;
+      }
+
+      const totalGuarantorsContribution = guarantorContributions.reduce(
+        (total, guarantor) => total + guarantor.value,
+        0
+      );
+      console.log({ totalGuarantorsContribution });
+      console.log({ currentUser });
+      // Loan amount greater than shares + contributions
+      const contribution = totalGuarantorsContribution + currentUser?.shares!;
+      if (values.amount > contribution) {
+        toast({
+          title: "Insufficient Contributions!!",
+          variant: "destructive",
+          description:
+            "You shares plus your guarantors` contributions are less than the loan amount",
+        });
+
+        return;
+      }
+      console.log(values.type);
+
+      // get loan Details
+      const loanDetails = calculateLoanDetails(
+        loanTypes,
+        values.type,
+        currentUser?.shares!
+      );
+
+      console.log("loan Details", loanDetails);
+
+      const loan = await applyLoan({
+        age: values?.age,
+        loanData: {
+          member: currentUser?._id!,
+          loanType: values.type,
+          amount: values.amount,
+          interestRate: loanDetails?.interestRate!,
+          repaymentPeriod: loanDetails?.repaymentPeriod!,
+          guarantors: values.guarantors,
+          monthlyRepayment: loanDetails?.monthlyRepayment!,
+          balance: loanDetails?.totalLoan!,
+        },
+      });
+
+      if (!loan) {
+        toast({
+          title: "Error Applying Loan",
+        });
+      } else {
+        toast({
+          title: "Loan Successfully applied",
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      throw error;
+    } finally {
+      setSubmitting(false);
+    }
   }
 
-  // Handle value change and log the selected value
-  const handleValueChange = (value: string, field: never) => {
-    console.log("Selected Value:", value);
-    console.log("Field Info:", field);
+  // reset select
+  const resetSelect = () => {
+    setSelectedValue("");
+  };
 
-    // Update the form field's value using field.onChange
-    // field.onChange(value);
+  // handle select value change
+  const handleValueChange = (value: string, field: any) => {
+    if (field.name === "guarantors") {
+      if (value !== "") {
+        if (!field.value.includes(value.trim() as never)) {
+          form.setValue("guarantors", [...field.value, value.trim()]);
+          form.clearErrors("guarantors");
+
+          resetSelect();
+        } else {
+          form.setValue(
+            "guarantors",
+            field.value.filter((v: string) => v !== value.trim())
+          );
+          form.clearErrors("guarantors");
+
+          resetSelect();
+        }
+      } else {
+        form.trigger();
+      }
+    }
+  };
+
+  const handleGuarantorsContribution = (
+    e: React.ChangeEvent,
+    value: number,
+    _id: string
+  ) => {
+    e.preventDefault();
+
+    // @ts-expect-error
+    if (!e.target?.name || !value || !_id) {
+      console.log("");
+    } else {
+      if (timeoutId.current) clearTimeout(timeoutId.current);
+      // @ts-expect-error
+      timeoutId.current = setTimeout(() => {
+        const names = guarantorContributions.map(
+          (c: ContribInterface) => c?._id
+        );
+
+        console.log("names", names);
+        if (names.includes(_id)) {
+          const contributions = guarantorContributions.filter(
+            (c: ContribInterface) => c?._id !== _id
+          );
+          setGuarantorContributions([...contributions, { _id, value }]);
+          // @ts-expect-error
+          e.target.value = "";
+        } else {
+          setGuarantorContributions((contributions) => [
+            ...contributions,
+            { _id, value },
+          ]);
+          // @ts-expect-error
+          e.target.value = "";
+        }
+      }, 1000);
+    }
   };
 
   return (
@@ -151,34 +305,84 @@ export default function ApplyLoanForm({ userId, members }: ApplyLoanInterface) {
                 Select Guarantors<span className="text-orange70">*</span>
               </FormLabel>
               <FormControl>
-                <Select
-                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                  // @ts-expect-error
-                  onValueChange={(value) => handleValueChange(value, field)}
-                >
-                  <SelectTrigger className="min-h-12 border-b-2 border-orange40  bg-dark20 text-xl focus:ring focus:ring-orange-400 dark:border-orange-950 dark:bg-dark80 dark:hover:bg-dark70 ">
-                    <SelectValue placeholder="Select A Guarantor" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-dark20 text-[1rem] dark:bg-dark90 dark:hover:bg-dark80 ">
-                    {members.map((member: MemberInterface) => (
-                      <SelectItem
-                        className="text-base hover:text-orange50"
-                        key={member.clerkId}
-                        value={member.clerkId}
-                      >
-                        {member.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <>
+                  <Select
+                    value={selectedValue}
+                    onValueChange={(value) => handleValueChange(value, field)}
+                  >
+                    <SelectTrigger className="min-h-12 border-b-2 border-orange40  bg-dark20 text-xl focus:ring focus:ring-orange-400 dark:border-orange-950 dark:bg-dark80 dark:hover:bg-dark70 ">
+                      <SelectValue placeholder="Select A Guarantor" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-dark20 text-[1rem] dark:bg-dark90 dark:hover:bg-dark80 ">
+                      {members.map((member: MemberInterface) => (
+                        <SelectItem
+                          className="text-base hover:text-orange50"
+                          key={member.clerkId}
+                          value={member._id}
+                        >
+                          {member.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  {/* GET THE AMOUNT FROM EACH GUARANTOR */}
+                  {field.value.length > 0 && (
+                    <div className="mt-4 flex flex-col gap-4 py-3 sm:grid sm:grid-cols-2">
+                      {field.value.map((value: string) => (
+                        <div key={value} className="flex flex-col gap-3">
+                          <Label className="text-base">
+                            Enter{" "}
+                            {members
+                              .map((member: MemberInterface) => {
+                                const name =
+                                  member._id === value && member.name;
+                                console.log(name);
+                                return name || "";
+                              })
+                              .join() + "`s"}{" "}
+                            contribution
+                          </Label>
+                          <Input
+                            type="number"
+                            name={`${members
+                              .map((member: MemberInterface) => {
+                                const _id = member._id === value && member._id;
+                                console.log(_id);
+                                return _id || "";
+                              })
+                              .join()
+                              .substring(1)}`}
+                            className="min-h-12 border-b-2 border-orange40 bg-dark20 text-xl focus:ring focus:ring-orange-400 dark:border-orange-950 dark:bg-dark80 dark:hover:bg-dark70"
+                            // value={""}
+                            onChange={(e) =>
+                              handleGuarantorsContribution(
+                                e,
+                                Number(e.target.value),
+                                value
+                              )
+                            }
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </>
               </FormControl>
               <FormMessage className="text-red-500" />
             </FormItem>
           )}
         />
         {/* SUBMIT */}
-        <div>
-          <Button type="submit">Submit</Button>
+        <div className="mt-6 flex items-center justify-end">
+          <Button
+            className={cn(
+              "text-xl font-semibold bg-green80 hover:bg-green90 text-green10 px-8 py-3 rounded-md "
+            )}
+            disabled={submitting}
+            type="submit"
+          >
+            Submit
+          </Button>
         </div>
       </form>
     </Form>

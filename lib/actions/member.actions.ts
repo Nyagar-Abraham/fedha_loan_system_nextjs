@@ -61,7 +61,7 @@ export default async function getAllMembers() {
   try {
     await connectToDatabase();
 
-    const members = await Member.find({}).select("name  clerkId").lean();
+    const members = await Member.find({}).select("name shares clerkId").lean();
 
     return members;
   } catch (error) {

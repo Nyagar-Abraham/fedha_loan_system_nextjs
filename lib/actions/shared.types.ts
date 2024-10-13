@@ -21,3 +21,17 @@ export interface UpdateMemberParams {
 export interface DeleteMemberParams {
   clerkId: string;
 }
+
+export interface ApplyLoanParams {
+  age: number;
+  loanData: {
+    member: string;
+    loanType: string;
+    amount: number;
+    interestRate: number;
+    repaymentPeriod: number;
+    guarantors: string[];
+    monthlyRepayment: number;
+    balance: number;
+  };
+}
