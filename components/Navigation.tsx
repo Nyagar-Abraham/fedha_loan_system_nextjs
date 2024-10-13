@@ -17,16 +17,16 @@ import { navRoutesInterface } from "@/lib/Interfaces";
 
 const Navigation = () => {
   const pathname = usePathname();
-  console.log(pathname);
+
   return (
     <nav className="z-20 text-xl max-md:hidden">
-      <ul className="flex items-center gap-8 text-rose-500 hover:text-rose-600">
+      <ul className="flex items-center gap-8 text-orange90 hover:text-orange80">
         {NavRoutes.map((navRoute: navRoutesInterface) => (
           <li key={navRoute.href}>
             <Link
               href={navRoute.href}
-              className={cn("translate-all px-4 py-2 rounded-md", {
-                "text-green-600 border-b-2 border-green-600 ":
+              className={cn("translate-all px-4 py-2 rounded-sm", {
+                "text-green100 border-b-2 border-green100 ":
                   pathname === navRoute.href,
               })}
             >
@@ -37,7 +37,7 @@ const Navigation = () => {
 
         <li
           className={cn(
-            "bg-rose-800 text-rose-200 px-4 py-2 font-semibold rounded-md hover:bg-rose-700"
+            "bg-orange90 text-orange20 px-4 py-2 font-semibold rounded-md hover:bg-orange70"
           )}
         >
           <SignedIn>

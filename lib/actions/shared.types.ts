@@ -2,7 +2,7 @@ export interface CreateMemberParams {
   name: string;
   clerkId: string;
   email: string;
-  username: string;
+  username?: string | undefined;
   picture: string;
   path: string;
 }

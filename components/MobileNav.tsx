@@ -31,7 +31,7 @@ export function MobileNav() {
         <SheetTrigger asChild>
           <HamburgerMenuIcon
             className={cn("size-10 ", {
-              "text-white": pathname === "/",
+              "text-orange80": pathname === "/",
             })}
           />
         </SheetTrigger>
@@ -40,7 +40,7 @@ export function MobileNav() {
           className="flex flex-col gap-8 px-4 py-8 pb-20"
         >
           <SheetHeader>
-            <SheetTitle className="bg-gradient-to-r from-red-200 to-slate-50 bg-clip-text text-2xl font-bold text-transparent">
+            <SheetTitle className="bg-gradient-to-r from-orange80 to-orange60 bg-clip-text text-2xl font-bold text-transparent">
               Fedha Youth Group
             </SheetTitle>
           </SheetHeader>
@@ -50,9 +50,9 @@ export function MobileNav() {
                 <Link
                   href={navRoute.href}
                   className={cn(
-                    "bg:slate-200 text-xl flex-1 rounded-md px-4 py-3 dark:bg-slate-900 hover:dark:bg-slate-800",
+                    "bg:slate-200 text-xl flex-1 rounded-md px-4 py-3 dark:bg-dark90 hover:dark:bg-dark80",
                     {
-                      "border-b-2 border-green-600": pathname === navRoute.href,
+                      "border-b-2 border-green80": pathname === navRoute.href,
                     }
                   )}
                 >
@@ -65,7 +65,7 @@ export function MobileNav() {
             <SignedIn>
               <SheetClose
                 asChild
-                className="bg:slate-200 flex-1 rounded-md px-4 py-3 text-xl font-semibold dark:bg-rose-950 dark:text-red-100 hover:dark:bg-rose-900"
+                className=" flex-1 rounded-md px-4 py-3 text-xl font-semibold dark:bg-orange80 dark:text-orange10 hover:dark:bg-orange60"
               >
                 <SignOutButton />
               </SheetClose>
@@ -74,7 +74,7 @@ export function MobileNav() {
             <SignedOut>
               <SheetClose
                 asChild
-                className="bg:slate-200 flex-1 rounded-md px-4 py-3 text-xl font-semibold dark:bg-rose-950 dark:text-red-100 hover:dark:bg-rose-900"
+                className=" flex-1 rounded-md px-4 py-3 text-xl font-semibold dark:bg-orange80 dark:text-orange10 hover:dark:bg-orange60"
               >
                 <SignInButton />
               </SheetClose>

@@ -3,7 +3,7 @@ import { Schema, models, model, Document } from "mongoose";
 export interface IMember extends Document {
   clerkId: string;
   name: string;
-  username: string;
+  username?: string;
   age?: number;
   email: string;
   picture?: string;
@@ -28,8 +28,8 @@ const MemberSchema: Schema = new Schema({
   },
   username: {
     type: String,
-    required: true,
-    unique: true,
+    required: false,
+    unique: false,
   },
   age: {
     type: Number,

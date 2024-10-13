@@ -21,8 +21,8 @@ const Logo = () => {
       />
 
       <span
-        className={cn("text-3xl font-bold text-rose-800 max-md:hidden", {
-          "text-green-700": pathname === "/",
+        className={cn("text-3xl font-bold text-orange100 max-md:hidden", {
+          "text-green100": pathname === "/",
         })}
       >
         Fedha Youth Group

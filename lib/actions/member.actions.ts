@@ -10,6 +10,7 @@ import {
 } from "./shared.types";
 import { revalidatePath } from "next/cache";
 
+// CREATE MEMBER
 export async function createMember(memberParams: CreateMemberParams) {
   try {
     await connectToDatabase();
@@ -32,6 +33,7 @@ export async function createMember(memberParams: CreateMemberParams) {
   }
 }
 
+// UPDATE MEMBER
 export async function updateMember(updateMemberParams: UpdateMemberParams) {
   try {
     await connectToDatabase();
@@ -43,11 +45,25 @@ export async function updateMember(updateMemberParams: UpdateMemberParams) {
   }
 }
 
+// DELETE MEMBER
 export async function deleteMember(deleteMember: DeleteMemberParams) {
   try {
     await connectToDatabase();
 
     const {} = deleteMember;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+export default async function getAllMembers() {
+  try {
+    await connectToDatabase();
+
+    const members = await Member.find({}).select("name  clerkId").lean();
+
+    return members;
   } catch (error) {
     console.log(error);
     throw error;

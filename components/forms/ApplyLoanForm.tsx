@@ -7,47 +7,178 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { LoanSchema } from "@/lib/validations";
+import { loanTypes } from "@/constants";
+import { loanTypeInterface, MemberInterface } from "@/lib/Interfaces";
 
-export default function ApplyLoanForm() {
+interface ApplyLoanInterface {
+  userId: string;
+  members: MemberInterface[];
+}
+
+export default function ApplyLoanForm({ userId, members }: ApplyLoanInterface) {
+  console.log(userId);
+
   const form = useForm<z.infer<typeof LoanSchema>>({
     resolver: zodResolver(LoanSchema),
     defaultValues: {
-      username: "",
+      amount: 0,
+      age: undefined,
+      type: "",
+      guarantors: [],
     },
   });
 
   function onSubmit(values: z.infer<typeof LoanSchema>) {
-    console.log(values);
+    console.log("Form Submitted", values);
   }
+
+  // Handle value change and log the selected value
+  const handleValueChange = (value: string, field: never) => {
+    console.log("Selected Value:", value);
+    console.log("Field Info:", field);
+
+    // Update the form field's value using field.onChange
+    // field.onChange(value);
+  };
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className=" flex flex-col gap-5"
+      >
+        <div className="flex-between gap-8">
+          {/* AMOUNT */}
+          <FormField
+            control={form.control}
+            name="amount"
+            render={({ field }) => (
+              <FormItem className="flex flex-1 flex-col gap-px">
+                <FormLabel className=" space-x-2 text-[1.1rem] dark:text-orange10">
+                  Loan Amount<span className="text-orange70">*</span>
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    className="min-h-12 border-b-2 border-orange40 bg-dark20 text-xl focus:ring focus:ring-orange-400 dark:border-orange-950 dark:bg-dark80 dark:hover:bg-dark70"
+                    value={field.value || ""}
+                    onChange={(e) => field.onChange(Number(e.target.value))}
+                  />
+                </FormControl>
+                <FormMessage className="text-red-500" />
+              </FormItem>
+            )}
+          />
+          {/* AGE */}
+          <FormField
+            control={form.control}
+            name="age"
+            render={({ field }) => (
+              <FormItem className="flex flex-1 flex-col gap-px">
+                <FormLabel className=" space-x-2 text-[1.1rem] dark:text-orange10">
+                  Enter Your Age<span className="text-orange70">*</span>
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    className="min-h-12 border-b-2 border-orange40 bg-dark20 text-xl focus:ring focus:ring-orange-400 dark:border-orange-950 dark:bg-dark80 dark:hover:bg-dark70"
+                    value={field.value || ""}
+                    onChange={(e) => field.onChange(Number(e.target.value))}
+                  />
+                </FormControl>
+                <FormMessage className="text-red-500" />
+              </FormItem>
+            )}
+          />
+        </div>
+        {/* TYPE OF LOAN */}
         <FormField
           control={form.control}
-          name="username"
+          name="type"
           render={({ field }) => (
-            <FormItem>
-              <FormLabel>Username</FormLabel>
+            <FormItem className="flex flex-1 flex-col gap-px">
+              <FormLabel className="space-x-2 text-[1.1rem] dark:text-orange10 ">
+                Loan Type<span className="text-orange70">*</span>
+              </FormLabel>
               <FormControl>
-                <Input placeholder="shadcn" {...field} />
+                <Select
+                  onValueChange={(value) => {
+                    console.log("Loan Type Selected:", value); // Log the selected loan type
+                    field.onChange(value);
+                  }}
+                >
+                  <SelectTrigger className="min-h-12 border-b-2 border-orange40 bg-dark20 text-xl focus:ring focus:ring-orange-400 dark:border-orange-950 dark:bg-dark80 dark:hover:bg-dark70 ">
+                    <SelectValue placeholder="Select loanType" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-dark20 text-[1rem] dark:bg-dark90 dark:hover:bg-dark80 ">
+                    {loanTypes.map((loanType: loanTypeInterface) => (
+                      <SelectItem
+                        className="text-base hover:text-orange50"
+                        key={loanType.value}
+                        value={loanType.value}
+                      >
+                        {loanType.category}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </FormControl>
-              <FormDescription>
-                This is your public display name.
-              </FormDescription>
-              <FormMessage />
+              <FormMessage className="text-red-500" />
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        {/* GUARANTORS */}
+        <FormField
+          control={form.control}
+          name="guarantors"
+          render={({ field }) => (
+            <FormItem className="flex flex-1 flex-col gap-px">
+              <FormLabel className="space-x-2 text-[1.1rem] dark:text-orange10 ">
+                Select Guarantors<span className="text-orange70">*</span>
+              </FormLabel>
+              <FormControl>
+                <Select
+                  // @ts-ignore
+                  onValueChange={(value) => handleValueChange(value, field)}
+                >
+                  <SelectTrigger className="min-h-12 border-b-2 border-orange40  bg-dark20 text-xl focus:ring focus:ring-orange-400 dark:border-orange-950 dark:bg-dark80 dark:hover:bg-dark70 ">
+                    <SelectValue placeholder="Select A Guarantor" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-dark20 text-[1rem] dark:bg-dark90 dark:hover:bg-dark80 ">
+                    {members.map((member: MemberInterface) => (
+                      <SelectItem
+                        className="text-base hover:text-orange50"
+                        key={member.clerkId}
+                        value={member.clerkId}
+                      >
+                        {member.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </FormControl>
+              <FormMessage className="text-red-500" />
+            </FormItem>
+          )}
+        />
+        {/* SUBMIT */}
+        <div>
+          <Button type="submit">Submit</Button>
+        </div>
       </form>
     </Form>
   );

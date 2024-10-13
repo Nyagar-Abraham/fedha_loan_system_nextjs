@@ -57,9 +57,9 @@ export async function POST(req: Request) {
     });
   }
 
-  // const { id } = evt.data;
+  const { id } = evt.data;
   const eventType = evt.type;
-  console.log(evt.data);
+  console.log("data", evt.data);
 
   if (eventType === "user.created") {
     const { id, email_addresses, image_url, username, first_name, last_name } =
@@ -71,9 +71,9 @@ export async function POST(req: Request) {
     const mongoMember = await createMember({
       clerkId: id,
       name: `${first_name}${last_name ? ` ${last_name}` : ""}`,
-      username: username!,
+      username: username || "null",
       email: email_addresses[0].email_address,
-      picture: image_url,
+      picture: image_url || "null",
       path: "/",
     });
 

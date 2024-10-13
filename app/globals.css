@@ -68,6 +68,25 @@ body {
   }
 }
 
+@layer utilities {
+  .bg-dark100-light10 {
+    @apply dark:bg-dark100 bg-dark10 text-dark90 dark:text-dark10;
+  }
+  .bg-dark90-light20 {
+    @apply dark:bg-dark90 bg-dark20 text-dark80 dark:text-dark20;
+  }
+  .border-main {
+    @apply dark:border-dark80 border-dark40;
+  }
+
+  .flex-center {
+    @apply flex items-center justify-center;
+  }
+  .flex-between {
+    @apply flex items-center justify-between;
+  }
+}
+
 @layer base {
   * {
     @apply border-border;

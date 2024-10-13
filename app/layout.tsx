@@ -32,7 +32,7 @@ export default function RootLayout({
       <html lang="en">
         <body
           className={cn(
-            "antialiased dark:bg-slate-950 bg-slate-50 flex flex-col flex-1 text-slate-800 dark:text-slate-50 min-h-screen relative",
+            "antialiased  flex flex-col flex-1 bg-dark100-light10 min-h-screen relative",
             josefin.className
           )}
         >

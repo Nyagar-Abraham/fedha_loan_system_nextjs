@@ -1,7 +1,13 @@
 import { z } from "zod";
 
+// const guarantorSchema = z.object({
+//   _id: z.string(),
+//   amount: z.number(),
+// });
+
 export const LoanSchema = z.object({
-  username: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
+  amount: z.number(),
+  age: z.number(),
+  type: z.string().min(2),
+  guarantors: z.array(z.string().min(2)).min(1).max(3),
 });
