@@ -12,7 +12,7 @@ export interface loanTypeInterface {
 }
 
 export interface MemberInterface {
-  [x: string]: any;
+  [x: string]: unknown;
   name: string;
   clerkId: string;
   _id: unknown;
