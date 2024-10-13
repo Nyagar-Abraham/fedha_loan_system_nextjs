@@ -152,7 +152,8 @@ export default function ApplyLoanForm({ userId, members }: ApplyLoanInterface) {
               </FormLabel>
               <FormControl>
                 <Select
-                  // @ts-ignore
+                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                  // @ts-expect-error
                   onValueChange={(value) => handleValueChange(value, field)}
                 >
                   <SelectTrigger className="min-h-12 border-b-2 border-orange40  bg-dark20 text-xl focus:ring focus:ring-orange-400 dark:border-orange-950 dark:bg-dark80 dark:hover:bg-dark70 ">
