@@ -9,9 +9,12 @@ const Header = () => {
   const pathname = usePathname();
   return (
     <header
-      className={cn("fixed inset-x-0 top-0 z-20   px-8 py-5 backdrop-blur-sm", {
-        "border-b border-main  backdrop-blur-lg": pathname !== "/",
-      })}
+      className={cn(
+        "fixed backdrop-blur-sm inset-x-0 top-0 z-20   px-8 py-5 ",
+        {
+          "border-b border-main  backdrop-blur-lg": pathname !== "/",
+        }
+      )}
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between">
         <Logo />

@@ -31,6 +31,7 @@ import React, { useRef, useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { calculateLoanDetails, cn } from "@/lib/utils";
 import applyLoan from "@/lib/actions/loan.actions";
+import { Loader } from "lucide-react";
 
 interface ApplyLoanInterface {
   userId: string;
@@ -50,6 +51,8 @@ export default function ApplyLoanForm({ userId, members }: ApplyLoanInterface) {
   const timeoutId = useRef();
   const [selectedValue, setSelectedValue] = useState<string | undefined>("");
   const { toast } = useToast();
+
+  console.log({ guarantorContributions });
 
   // get user details
   const currentUser = members.find(
@@ -78,6 +81,7 @@ export default function ApplyLoanForm({ userId, members }: ApplyLoanInterface) {
           variant: "destructive",
           description:
             "You did not fill one of the input for guarantors contributions",
+          duration: 5000,
         });
         return;
       }
@@ -100,7 +104,6 @@ export default function ApplyLoanForm({ userId, members }: ApplyLoanInterface) {
 
         return;
       }
-      console.log(values.type);
 
       // get loan Details
       const loanDetails = calculateLoanDetails(
@@ -128,11 +131,17 @@ export default function ApplyLoanForm({ userId, members }: ApplyLoanInterface) {
       if (!loan) {
         toast({
           title: "Error Applying Loan",
+          variant: "destructive",
+          duration: 5000,
         });
       } else {
         toast({
           title: "Loan Successfully applied",
+          duration: 5000,
         });
+
+        form.reset();
+        setGuarantorContributions([]);
       }
     } catch (error) {
       console.log(error);
@@ -151,18 +160,28 @@ export default function ApplyLoanForm({ userId, members }: ApplyLoanInterface) {
   const handleValueChange = (value: string, field: any) => {
     if (field.name === "guarantors") {
       if (value !== "") {
+        // add the id  to guarantors array
         if (!field.value.includes(value.trim() as never)) {
           form.setValue("guarantors", [...field.value, value.trim()]);
           form.clearErrors("guarantors");
-
+          console.log(form.getValues());
           resetSelect();
         } else {
+          // remove the id  to guarantors array
           form.setValue(
             "guarantors",
             field.value.filter((v: string) => v !== value.trim())
           );
           form.clearErrors("guarantors");
+          console.log("VALUE", value.trim());
 
+          setGuarantorContributions((contribution) =>
+            contribution.filter(
+              (contibution: ContribInterface) =>
+                contibution._id !== value.trim()
+            )
+          );
+          console.log(form.getValues());
           resetSelect();
         }
       } else {
@@ -213,9 +232,9 @@ export default function ApplyLoanForm({ userId, members }: ApplyLoanInterface) {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className=" flex flex-col gap-5"
+        className=" flex flex-col gap-8"
       >
-        <div className="flex-between gap-8">
+        <div className="flex-between gap-6">
           {/* AMOUNT */}
           <FormField
             control={form.control}
@@ -376,12 +395,13 @@ export default function ApplyLoanForm({ userId, members }: ApplyLoanInterface) {
         <div className="mt-6 flex items-center justify-end">
           <Button
             className={cn(
-              "text-xl font-semibold bg-green80 hover:bg-green90 text-green10 px-8 py-3 rounded-md "
+              "text-2xl flex gap-4 items-center font-semibold bg-green80 hover:bg-green90 text-green10 px-12 py-5 rounded-md "
             )}
             disabled={submitting}
             type="submit"
           >
-            Submit
+            {submitting ? "Submmitting..." : "Submit"}
+            {submitting && <Loader size={20} className="animate-spin" />}
           </Button>
         </div>
       </form>
