@@ -2,6 +2,7 @@
 // @ts-nocheck
 import Loans from "@/components/Dashboard/Loans";
 import MemberDisplay from "@/components/Dashboard/MemberDisplay";
+import Noloan from "@/components/Noloan";
 
 import { getCurrentUser } from "@/lib/actions/member.actions";
 import { auth } from "@clerk/nextjs/server";
@@ -12,10 +13,6 @@ const page = async () => {
   const { userId } = auth();
 
   const member = await getCurrentUser({ userId });
-  // console.log(member);
-  // const [memberLoans] = await Promise.all([
-  //   getUserLoan({ userId: member._id }),
-  // ]);
 
   const memberLoans = member?.loans;
 
@@ -33,11 +30,18 @@ const page = async () => {
           shares={member.shares}
           avatar={member?.picture}
         />
-        <h1 className="mb-3 mt-9 text-3xl font-light text-orange90">
-          Your loans
-        </h1>
 
-        <Loans loans={memberLoans} />
+        {memberLoans.length > 0 ? (
+          <h1 className="mb-3 mt-9 text-3xl font-light text-orange90">
+            Your loans
+          </h1>
+        ) : (
+          <h1 className="mb-3 mt-9 text-3xl font-light text-orange90">
+            Your have no loan
+          </h1>
+        )}
+
+        {memberLoans.length > 0 ? <Loans loans={memberLoans} /> : <Noloan />}
       </div>
     </div>
   );
