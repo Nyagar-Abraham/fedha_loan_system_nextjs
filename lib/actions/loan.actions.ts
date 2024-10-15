@@ -4,12 +4,13 @@ import Member from "@/database/members.model";
 import { connectToDatabase } from "../mongoose";
 import { ApplyLoanParams } from "./shared.types";
 import Loan from "@/database/loans.model";
+import { revalidatePath } from "next/cache";
 
 export async function applyLoan(applyLoanParams: ApplyLoanParams) {
   try {
     await connectToDatabase();
 
-    const { age, loanData } = applyLoanParams;
+    const { age, path, loanData } = applyLoanParams;
 
     // create new loan
     const loan = (await Loan.create(loanData)).toObject();
@@ -39,6 +40,7 @@ export async function applyLoan(applyLoanParams: ApplyLoanParams) {
       })
     );
 
+    revalidatePath(path);
     return loan;
   } catch (error) {
     console.log(error);
