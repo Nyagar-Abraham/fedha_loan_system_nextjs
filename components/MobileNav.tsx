@@ -65,7 +65,7 @@ export function MobileNav() {
             <SignedIn>
               <SheetClose
                 asChild
-                className=" flex-1 rounded-md px-4 py-3 text-xl font-semibold dark:bg-orange80 dark:text-orange10 hover:dark:bg-orange60"
+                className=" flex-1 rounded-md border-2 px-4 py-3 text-xl font-semibold dark:border-orange80 dark:text-orange10 hover:dark:border-orange60"
               >
                 <SignOutButton />
               </SheetClose>
@@ -74,7 +74,7 @@ export function MobileNav() {
             <SignedOut>
               <SheetClose
                 asChild
-                className=" flex-1 rounded-md px-4 py-3 text-xl font-semibold dark:bg-orange80 dark:text-orange10 hover:dark:bg-orange60"
+                className=" flex-1 rounded-md border-2 px-4 py-3 text-xl font-semibold dark:border-orange80 dark:text-orange10 hover:dark:border-orange60"
               >
                 <SignInButton />
               </SheetClose>

@@ -37,7 +37,7 @@ const Navigation = () => {
 
         <li
           className={cn(
-            "bg-orange90 text-orange20 px-4 py-2 font-semibold rounded-md hover:bg-orange70"
+            "border-2 border-orange90 text-orange90 px-4 py-2 font-semibold rounded-md hover:border-orange70 hover:text-orange70"
           )}
         >
           <SignedIn>

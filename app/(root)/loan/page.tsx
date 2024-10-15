@@ -1,5 +1,6 @@
 import ApplyLoanForm from "@/components/forms/ApplyLoanForm";
-import getAllMembers from "@/lib/actions/member.actions";
+import { getAllMembers } from "@/lib/actions/member.actions";
+
 import { auth } from "@clerk/nextjs/server";
 import React from "react";
 

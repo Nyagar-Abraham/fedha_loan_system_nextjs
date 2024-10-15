@@ -1,7 +1,6 @@
 /* eslint-disable no-empty-pattern */
 "use server";
 
-import Member from "@/database/members.model";
 import { connectToDatabase } from "../mongoose";
 import {
   CreateMemberParams,
@@ -9,6 +8,8 @@ import {
   UpdateMemberParams,
 } from "./shared.types";
 import { revalidatePath } from "next/cache";
+import Member from "@/database/members.model";
+import Loan from "@/database/loans.model";
 
 // CREATE MEMBER
 export async function createMember(memberParams: CreateMemberParams) {
@@ -57,13 +58,29 @@ export async function deleteMember(deleteMember: DeleteMemberParams) {
   }
 }
 
-export default async function getAllMembers() {
+export async function getAllMembers() {
   try {
     await connectToDatabase();
 
     const members = await Member.find({}).select("name shares clerkId").lean();
 
     return members;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+export async function getCurrentUser({ userId }: { userId: string }) {
+  try {
+    await connectToDatabase();
+    await Loan.find({});
+
+    const member = await Member.findOne({ clerkId: userId })
+      .populate("loans")
+      .lean();
+
+    return member;
   } catch (error) {
     console.log(error);
     throw error;

@@ -12,7 +12,8 @@ const Header = () => {
       className={cn(
         "fixed backdrop-blur-sm inset-x-0 top-0 z-20   px-8 py-5 ",
         {
-          "border-b border-main  backdrop-blur-lg": pathname !== "/",
+          "border-b dark:border-dark70 border-dark40  backdrop-blur-lg":
+            pathname !== "/",
         }
       )}
     >

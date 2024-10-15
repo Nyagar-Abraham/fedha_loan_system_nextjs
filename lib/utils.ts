@@ -36,3 +36,7 @@ export function calculateLoanDetails(
     totalLoan,
   };
 }
+
+export function formatToCurrency(amount: number): string {
+  return `$${amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+}

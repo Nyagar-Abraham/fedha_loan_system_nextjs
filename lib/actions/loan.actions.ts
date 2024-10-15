@@ -5,7 +5,7 @@ import { connectToDatabase } from "../mongoose";
 import { ApplyLoanParams } from "./shared.types";
 import Loan from "@/database/loans.model";
 
-export default async function applyLoan(applyLoanParams: ApplyLoanParams) {
+export async function applyLoan(applyLoanParams: ApplyLoanParams) {
   try {
     await connectToDatabase();
 
@@ -14,10 +14,8 @@ export default async function applyLoan(applyLoanParams: ApplyLoanParams) {
     // create new loan
     const loan = (await Loan.create(loanData)).toObject();
 
-    console.log({ loan });
-
     // associate loan id with user
-    const member = await Member.findByIdAndUpdate(
+    await Member.findByIdAndUpdate(
       loanData.member,
       {
         age,
@@ -26,12 +24,10 @@ export default async function applyLoan(applyLoanParams: ApplyLoanParams) {
       { new: true }
     );
 
-    console.log({ member });
-
     const guarantorIds = loanData.guarantors;
     const loanId = loan._id;
 
-    const updateGuarantors = await Promise.all(
+    await Promise.all(
       guarantorIds.map(async (guarantorId) => {
         return await Member.findByIdAndUpdate(
           guarantorId,
@@ -43,10 +39,6 @@ export default async function applyLoan(applyLoanParams: ApplyLoanParams) {
       })
     );
 
-    console.log({ updateGuarantors });
-
-    console.log("DONE");
-
     return loan;
   } catch (error) {
     console.log(error);
@@ -54,7 +46,20 @@ export default async function applyLoan(applyLoanParams: ApplyLoanParams) {
   }
 }
 
-// export default async function createMember(memberParams:CreateMemberParams){
+export async function getUserLoan({ userId }: { userId: string }) {
+  try {
+    await connectToDatabase();
+
+    const loans = Loan.find({ member: userId }).lean();
+
+    return loans;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+// export  async function createMember(memberParams:CreateMemberParams){
 //   try {
 //     await connectToDatabase();
 
