@@ -2,7 +2,12 @@ import ApplyLoanForm from "@/components/forms/ApplyLoanForm";
 import { getAllMembers } from "@/lib/actions/member.actions";
 
 import { auth } from "@clerk/nextjs/server";
+import { Metadata } from "next";
 import React from "react";
+
+export const metadata: Metadata = {
+  title: "Apply loan",
+};
 
 const page = async () => {
   const { userId } = auth();

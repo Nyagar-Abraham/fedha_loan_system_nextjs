@@ -9,6 +9,11 @@ import { getUserLoan } from "@/lib/actions/loan.actions";
 
 import { getCurrentUser } from "@/lib/actions/member.actions";
 import { auth } from "@clerk/nextjs/server";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Dashboard",
+};
 
 const page = async ({ searchParams }: never) => {
   const { userId } = auth();
