@@ -48,13 +48,37 @@ export async function applyLoan(applyLoanParams: ApplyLoanParams) {
   }
 }
 
-export async function getUserLoan({ userId }: { userId: string }) {
+export async function getUserLoan({
+  userId,
+  page,
+  pageSize,
+}: {
+  userId: string;
+  page: number;
+  pageSize: number;
+}) {
   try {
     await connectToDatabase();
 
-    const loans = Loan.find({ member: userId }).lean();
+    const skipAmount = (page - 1) * pageSize;
 
-    return loans;
+    const member = await Member.findOne({ clerkId: userId });
+
+    const loans = await Loan.find({ member: member._id })
+      .skip(skipAmount)
+      .limit(pageSize)
+      .lean();
+
+    const totalLoans = await Loan.countDocuments({ member: member._id });
+
+    const isNext = totalLoans > skipAmount + loans.length;
+
+    console.log({ isNext });
+    console.log({ totalLoans });
+    console.log(loans.length);
+    console.log({ skipAmount });
+
+    return { loans, isNext };
   } catch (error) {
     console.log(error);
     throw error;

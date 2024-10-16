@@ -1,6 +1,7 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { LoanDetails, LoanType } from "./Interfaces";
+import queryString from "query-string";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -40,3 +41,47 @@ export function calculateLoanDetails(
 export function formatToCurrency(amount: number): string {
   return `$${amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 }
+
+interface UrlQueryParams {
+  params: string;
+  key: string;
+  value: string | null;
+}
+
+export const formUrlQuery = ({ params, key, value }: UrlQueryParams) => {
+  const currentUrl = queryString.parse(params);
+
+  currentUrl[key] = value;
+
+  return queryString.stringifyUrl(
+    {
+      url: window.location.pathname,
+      query: currentUrl,
+    },
+    { skipNull: true }
+  );
+};
+
+interface RemoveUrlQueryParams {
+  params: string;
+  keysToRemove: string[];
+}
+
+export const removeKeysFromQuery = ({
+  params,
+  keysToRemove,
+}: RemoveUrlQueryParams) => {
+  const currentUrl = queryString.parse(params);
+
+  keysToRemove.forEach((key) => {
+    delete currentUrl[key];
+  });
+
+  return queryString.stringifyUrl(
+    {
+      url: window.location.pathname,
+      query: currentUrl,
+    },
+    { skipNull: true }
+  );
+};

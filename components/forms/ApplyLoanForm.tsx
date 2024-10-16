@@ -119,6 +119,7 @@ export default function ApplyLoanForm({ userId, members }: ApplyLoanInterface) {
 
       const loan = await applyLoan({
         age: values?.age,
+        path: "/dashboard",
         loanData: {
           member: currentUser?._id!,
           loanType: values.type,

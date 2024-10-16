@@ -3,18 +3,27 @@
 import Loans from "@/components/Dashboard/Loans";
 import MemberDisplay from "@/components/Dashboard/MemberDisplay";
 import Noloan from "@/components/Noloan";
+import Pagination from "@/components/Pagination";
+import { getUserLoan } from "@/lib/actions/loan.actions";
 
 import { getCurrentUser } from "@/lib/actions/member.actions";
 import { auth } from "@clerk/nextjs/server";
 
 import React from "react";
 
-const page = async () => {
+const page = async ({ searchParams }: { SearchParamsProps }) => {
   const { userId } = auth();
 
-  const member = await getCurrentUser({ userId });
-
-  const memberLoans = member?.loans;
+  const [member, { loans, isNext }] = await Promise.all([
+    getCurrentUser({
+      userId,
+    }),
+    getUserLoan({
+      userId,
+      page: searchParams?.page ? +searchParams.page : 1,
+      pageSize: 4,
+    }),
+  ]);
 
   return (
     <div className="flex flex-col">
@@ -31,7 +40,7 @@ const page = async () => {
           avatar={member?.picture}
         />
 
-        {memberLoans.length > 0 ? (
+        {loans.length > 0 ? (
           <h1 className="mb-3 mt-9 text-3xl font-light text-orange90">
             Your loans
           </h1>
@@ -41,7 +50,14 @@ const page = async () => {
           </h1>
         )}
 
-        {memberLoans.length > 0 ? <Loans loans={memberLoans} /> : <Noloan />}
+        {loans.length > 0 ? <Loans loans={loans} /> : <Noloan />}
+
+        <div className=" flex-center  mt-12   py-6 ">
+          <Pagination
+            isNext={isNext}
+            pageNumber={searchParams?.page ? +searchParams.page : 1}
+          />
+        </div>
       </div>
     </div>
   );

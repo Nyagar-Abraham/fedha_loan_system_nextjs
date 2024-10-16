@@ -24,6 +24,7 @@ export interface DeleteMemberParams {
 
 export interface ApplyLoanParams {
   age: number;
+  path: string;
   loanData: {
     member: string;
     loanType: string;

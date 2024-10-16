@@ -74,11 +74,10 @@ export async function getAllMembers() {
 export async function getCurrentUser({ userId }: { userId: string }) {
   try {
     await connectToDatabase();
+
     await Loan.find({});
 
-    const member = await Member.findOne({ clerkId: userId })
-      .populate("loans")
-      .lean();
+    const member = await Member.findOne({ clerkId: userId }).lean();
 
     return member;
   } catch (error) {
