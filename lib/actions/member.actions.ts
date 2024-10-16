@@ -86,7 +86,43 @@ export async function getCurrentUser({ userId }: { userId: string }) {
   }
 }
 
-// export default async function createMember(memberParams:CreateMemberParams){
+export default async function addExitNotice({
+  clerkId,
+  noticeExist,
+}: {
+  clerkId: string;
+  noticeExist: boolean;
+}) {
+  try {
+    await connectToDatabase();
+    let member;
+    if (!noticeExist) {
+      member = await Member.findOneAndUpdate(
+        { clerkId },
+        {
+          exitNoticeDate: new Date(),
+        },
+        { new: true }
+      ).lean();
+    } else {
+      member = await Member.findOneAndUpdate(
+        { clerkId },
+        { $unset: { exitNoticeDate: "" } },
+        { new: true }
+      ).lean();
+    }
+
+    console.log({ member });
+
+    revalidatePath("/dashboard");
+    return member;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+// export async function createMember(memberParams:CreateMemberParams){
 //   try {
 //     await connectToDatabase();
 
