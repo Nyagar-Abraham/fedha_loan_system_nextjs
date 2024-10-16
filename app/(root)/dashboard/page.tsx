@@ -10,9 +10,7 @@ import { getUserLoan } from "@/lib/actions/loan.actions";
 import { getCurrentUser } from "@/lib/actions/member.actions";
 import { auth } from "@clerk/nextjs/server";
 
-import React from "react";
-
-const page = async ({ searchParams }: { SearchParamsProps }) => {
+const page = async ({ searchParams }: never) => {
   const { userId } = auth();
 
   const [member, { loans, isNext }] = await Promise.all([
