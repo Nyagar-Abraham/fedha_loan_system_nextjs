@@ -9,6 +9,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      screens:{
+         mdl:"970px",
+      },
       colors: {
         dark100: "#050506",
         dark90: "#121214",

@@ -26,7 +26,7 @@ import { usePathname } from "next/navigation";
 export function MobileNav() {
   const pathname = usePathname();
   return (
-    <div className="block md:hidden">
+    <div className="block mdl:hidden">
       <Sheet>
         <SheetTrigger asChild>
           <HamburgerMenuIcon

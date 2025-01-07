@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 
 const Logo = () => {
   const pathname = usePathname();
+  
   return (
     <Link href="/" className="z-10 flex items-center gap-4">
       <Image

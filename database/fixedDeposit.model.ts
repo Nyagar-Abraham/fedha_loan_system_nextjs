@@ -23,5 +23,7 @@ const FixedDepositSchema: Schema = new Schema({
   },
 });
 
-export default models.FixedDeposit ||
-  model<IFixedDeposit>("FixedDeposit", FixedDepositSchema);
+const FixedDeposit = models.FixedDeposit ||
+model<IFixedDeposit>("FixedDeposit", FixedDepositSchema);
+
+export default FixedDeposit;

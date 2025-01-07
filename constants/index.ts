@@ -1,3 +1,5 @@
+
+
 export const NavRoutes = [
   { href: "/dashboard", route: "Dashboard" },
   { href: "/loan", route: "Apply Loan" },
@@ -34,3 +36,23 @@ export const loanTypes = [
     repaymentPeriod: 4,
   },
 ];
+
+
+
+const themes = [
+  {
+    theme: "light",
+    name: "Light",
+  },
+  {
+    theme: "dark",
+    name: "Dark",
+  },
+  {
+    theme: "system",
+    name: "System",
+  },
+];
+
+export default themes;
+

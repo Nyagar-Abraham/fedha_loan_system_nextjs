@@ -7,10 +7,11 @@ import { cn } from "@/lib/utils";
 
 const Header = () => {
   const pathname = usePathname();
+
   return (
     <header
       className={cn(
-        "fixed backdrop-blur-sm inset-x-0 top-0 z-20   px-8 py-5 ",
+        "fixed backdrop-blur-sm inset-x-0 top-0 z-20 px-8 py-5 ",
         {
           "border-b dark:border-dark70 border-dark40  backdrop-blur-lg":
             pathname !== "/",
