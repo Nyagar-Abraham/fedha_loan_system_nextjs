@@ -28,7 +28,7 @@ const Popup = ({ noticeExist }: { noticeExist: boolean }) => {
   const { toast } = useToast();
   const { userId } = useAuth();
 
-  console.log("Notice", noticeExist);
+  console.log("Notice", noticeExist, useAuth());
 
   const handleExitNotice = async () => {
     const member = await addExitNotice({ clerkId: userId!, noticeExist });
@@ -51,10 +51,11 @@ const Popup = ({ noticeExist }: { noticeExist: boolean }) => {
           <AlertDialogTrigger className=" bg-dark90-light20 w-full rounded-md  px-2 py-1 text-start  text-orange20 hover:bg-white dark:hover:bg-dark80">
             {noticeExist ? "Remove Exit Notice" : "Place Exit Notice"}
           </AlertDialogTrigger>
-          <AlertDialogContent className="bg-dark100-light10 border border-orange40">
+          <AlertDialogContent className="bg-dark100-light10 
+          rounded-sm">
             <AlertDialogHeader>
               <AlertDialogTitle className="text-xl font-semibold text-orange20">
-                Continue to remove notice
+                Continue to {noticeExist ?"remove":"place" } notice
               </AlertDialogTitle>
               <AlertDialogDescription className="text-[0.9rem]">
                 {noticeExist ? (
@@ -75,7 +76,7 @@ const Popup = ({ noticeExist }: { noticeExist: boolean }) => {
                 )}
               </AlertDialogDescription>
             </AlertDialogHeader>
-            <AlertDialogFooter className="space-x-4">
+            <AlertDialogFooter className="sm:gap-4">
               <AlertDialogCancel className="bg-orange70 text-base uppercase  text-white hover:bg-orange80">
                 Cancel
               </AlertDialogCancel>

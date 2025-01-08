@@ -50,8 +50,9 @@ export default function ApplyLoanForm({ userId, members }: ApplyLoanInterface) {
   const [guarantorContributions, setGuarantorContributions] = useState<
     ContribInterface[]
   >([]);
-  const timeoutId = useRef();
   const [selectedValue, setSelectedValue] = useState<string | undefined>("");
+
+  const timeoutId = useRef();
   const { toast } = useToast();
   const router = useRouter();
 

@@ -35,7 +35,7 @@ const page = async ({ searchParams }: never) => {
     <div className="flex flex-col">
       <div className="flex-between mb-7 mt-3">
         <h1 className=" text-4xl font-semibold text-orange90">
-          👋 Welcome {member?.name ? member?.name : member?.usename}
+          👋 Welcome {member?.name ? member?.name.split("-")[0].toString() : member?.usename}
         </h1>
         <Popup noticeExist={noticeExist} />
       </div>

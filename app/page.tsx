@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export default async function Home() {
   return (
-    <main className="mt-24  ">
+    <main className="mt-24 md:mt-32 xl:mt-40  ">
       <Image
         src={bg}
         fill

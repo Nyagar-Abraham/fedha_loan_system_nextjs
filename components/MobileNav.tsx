@@ -44,20 +44,26 @@ export function MobileNav() {
               Fedha Youth Group
             </SheetTitle>
           </SheetHeader>
-          <div className="flex flex-col gap-4 ">
+          <div className="flex flex-col gap-4 items-start ">
             {NavRoutes.map((navRoute: navRoutesInterface) => (
               <SheetClose key={navRoute.href} asChild>
-                <Link
-                  href={navRoute.href}
-                  className={cn(
-                    "bg:slate-200 text-xl flex-1 rounded-md px-4 py-3 dark:bg-dark90 hover:dark:bg-dark80",
-                    {
-                      "border-b-2 border-green80": pathname === navRoute.href,
-                    }
-                  )}
-                >
-                  {navRoute.route}
-                </Link>
+               <Link
+                href={navRoute.href}
+                className={cn(
+                  "translate-all translate-y-1 px-4 py-2  flex-col flex group", // Added "group" class
+                  {
+                    "text-green100  ": pathname === navRoute.href,
+                  }
+                )}
+              >
+                <span className="text-xl">{navRoute.route}</span>
+                <span className={cn(" mx-auto w-0 h-1 rounded-full transition-all duration-300 ease-out group-hover:w-full",
+                  {
+                    "bg-green100 ": pathname === navRoute.href,
+                    "bg-orange80 ": pathname !== navRoute.href,
+                  }
+                )}></span>
+            </Link>
               </SheetClose>
             ))}
           </div>
@@ -65,7 +71,7 @@ export function MobileNav() {
             <SignedIn>
               <SheetClose
                 asChild
-                className=" flex-1 rounded-md border-2 px-4 py-3 text-xl font-semibold dark:border-orange80 dark:text-orange10 hover:dark:border-orange60"
+                className="duration-200 flex-1 rounded-md  px-4 py-3 text-xl font-semibold  hover:text-orange10 hover:bg-orange80 text-orange80 bg-orange10 dark:bg-orange20 dark:hover:bg-orange80  "
               >
                 <SignOutButton />
               </SheetClose>
@@ -74,7 +80,7 @@ export function MobileNav() {
             <SignedOut>
               <SheetClose
                 asChild
-                className=" flex-1 rounded-md border-2 px-4 py-3 text-xl font-semibold dark:border-orange80 dark:text-orange10 hover:dark:border-orange60"
+                 className="duration-200  flex-1 rounded-md  px-4 py-3 text-xl font-semibold  hover:text-orange10 hover:bg-orange80 text-orange80 bg-orange10 dark:bg-orange20 dark:hover:bg-orange80 "
               >
                 <SignInButton />
               </SheetClose>

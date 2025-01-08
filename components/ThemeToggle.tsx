@@ -3,7 +3,7 @@
 import * as React from "react";
 import { Sun, Moon, Laptop } from "lucide-react";
 import { useTheme } from "next-themes";
-import themes from "@/constants";
+import {themes} from "@/constants";
 
 
 import { Button } from "@/components/ui/button";
@@ -23,7 +23,7 @@ interface Theme {
 export default function ThemeToggle() {
   const {theme,setTheme} = useTheme();
 
-  console.log( useTheme())
+
 
 
 
@@ -41,7 +41,7 @@ export default function ThemeToggle() {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         {themes.map((t:Theme) =>
-         (<DropdownMenuItem key={t.name} className={cn("flex items-center gap-4 border-l-4",{
+         (<DropdownMenuItem key={t.name} className={cn("flex items-center gap-4 border-l-4 hover:border-orange30",{
           " border-orange80 ":theme === t.theme,
           " border-transparent ":theme !== t.theme,
          })} onClick={() => setTheme(t.theme)}>
