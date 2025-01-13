@@ -1,14 +1,14 @@
-import type { Metadata } from "next";
-// import localFont from "next/font/local";
-import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
-import React from "react";
+import type { Metadata } from "next";
+import "./globals.css";
 // eslint-disable-next-line camelcase
 import { Josefin_Sans } from "next/font/google";
-import { cn } from "@/lib/utils";
+import React from "react";
+
 import Header from "@/components/Header";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
+import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: {
