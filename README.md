@@ -14,6 +14,55 @@ pnpm dev
 bun dev
 ```
 
+run the follong commands to install the Eslint & prettier plugin define in the .eslintrc.json file 
+
+```bash
+npm i eslint-plugin-standard
+npm i eslint-config-prettier
+npm i eslint-plugin-tailwindcss
+npm i eslint-plugin-import --save-dev
+```
+
+
+create a .vscode/settings.json in the project root folder add the following Eslint & Prettier Setups 
+
+```bash
+
+{
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": "explicit",
+        "source.addMissingImports": "explicit"
+    },
+    "prettier.tabWidth": 2,
+    "prettier.useTabs": false,
+    "prettier.semi": true,
+    "prettier.singleQuote": false,
+    "prettier.jsxSingleQuote": false,
+    "prettier.trailingComma": "es5",
+    "prettier.arrowParens": "always",
+    "[json]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[typescript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[typescriptreact]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[javascriptreact]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "typescript.tsdk": "node_modules/typescript/lib"
+}
+
+```
+
+then on vscode editor press 'ctr+shift+p' and type 'Restart Eslint Server'
+
+for the environment varable reach out, on whatsapp.
+
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
