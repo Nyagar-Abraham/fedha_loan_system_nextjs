@@ -46,13 +46,13 @@ export function MobileNav() {
               Fedha Youth Group
             </SheetTitle>
           </SheetHeader>
-          <div className="flex flex-col items-start gap-4 ">
+          <div className="flex flex-col  gap-4 ">
             {NavRoutes.map((navRoute: navRoutesInterface) => (
               <SheetClose key={navRoute.href} asChild>
                 <Link
                   href={navRoute.href}
                   className={cn(
-                    "translate-all translate-y-1 px-4 py-2  flex-col flex group", // Added "group" class
+                    "translate-all bg-white translate-y-1 px-4 py-2  flex-col flex group rounded-sm bg-dark90-light20", // Added "group" class
                     {
                       "text-green100  ": pathname === navRoute.href,
                     }
@@ -72,11 +72,11 @@ export function MobileNav() {
               </SheetClose>
             ))}
           </div>
-          <div className="mt-auto flex flex-col gap-4">
+          <div className="mb-24 mt-auto flex flex-col gap-4">
             <SignedIn>
               <SheetClose
                 asChild
-                className="flex-1 rounded-md bg-orange10  px-4 py-3 text-xl font-semibold  text-orange80 duration-200 hover:bg-orange80 hover:text-orange10 dark:bg-orange20 dark:hover:bg-orange80  "
+                className="flex-1  rounded-md bg-orange10 px-4  py-3 text-xl font-semibold text-orange80  duration-200 hover:bg-orange80 hover:text-orange10  dark:bg-orange70 dark:text-white  dark:hover:bg-orange80"
               >
                 <SignOutButton />
               </SheetClose>
@@ -85,19 +85,17 @@ export function MobileNav() {
             <SignedOut>
               <SheetClose
                 asChild
-                className="flex-1  rounded-md bg-orange10  px-4 py-3 text-xl font-semibold  text-orange80 duration-200 hover:bg-orange80 hover:text-orange10 dark:bg-orange20 dark:hover:bg-orange80 "
+                className="flex-1  rounded-md bg-orange10 px-4  py-3 text-xl font-semibold text-orange80  duration-200 hover:bg-orange80 hover:text-orange10  dark:bg-orange70 dark:hover:bg-orange80 "
               >
                 <SignInButton />
               </SheetClose>
             </SignedOut>
-            <SheetClose
-              asChild
-              className="flex flex-1 items-center justify-center text-xl"
-            >
-              <div>
+
+            <div className="flex flex-1 items-center justify-center text-xl">
+              <SheetClose asChild>
                 <ThemeToggle />
-              </div>
-            </SheetClose>
+              </SheetClose>
+            </div>
           </div>
         </SheetContent>
       </Sheet>

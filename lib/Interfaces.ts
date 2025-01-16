@@ -1,4 +1,5 @@
 import { StaticImageData } from "next/image";
+import { DraggableLocation } from "react-beautiful-dnd";
 
 export interface navRoutesInterface {
   route: string;
@@ -6,14 +7,16 @@ export interface navRoutesInterface {
 }
 
 export interface loanTypeInterface {
+  id: string;
   category: string;
   value: string;
   maximumAmount: string;
   interestRate: number;
   repaymentPeriod: number;
-  monthlyInstallement:string;
-  bank:string;
-  logo:StaticImageData
+  monthlyInstallement: string;
+  bank: string;
+  logo: StaticImageData;
+  isRecommended: boolean;
 }
 
 export interface MemberInterface {
@@ -39,3 +42,17 @@ export type LoanDetails = {
   interestRate: number;
   totalLoan: number;
 };
+
+export type LoanBoard = {
+  loans: loanTypeInterface[];
+  order: string[];
+};
+
+type onDragPayload = {
+  source: DraggableLocation;
+  destination: DraggableLocation;
+};
+
+export type LoanAction =
+  | { type: "SET_LOANS"; payload: LoanBoard }
+  | { type: "MOVE_LOAN"; payload: onDragPayload };

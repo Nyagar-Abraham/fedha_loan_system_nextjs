@@ -9,8 +9,8 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      screens:{
-         mdl:"970px",
+      screens: {
+        mdl: "970px",
       },
       colors: {
         dark100: "#050506",
@@ -96,4 +96,5 @@ const config: Config = {
   },
   plugins: [require("tailwindcss-animate")],
 };
+
 export default config;

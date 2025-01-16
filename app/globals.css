@@ -86,7 +86,7 @@ body {
     @apply flex items-center justify-center;
   }
   .flex-between {
-    @apply flex items-center justify-between;
+    @apply flex  items-center justify-between;
   }
 }
 
