@@ -75,7 +75,7 @@ body {
   .bg-dark90-light20 {
     @apply dark:bg-dark90 bg-dark10 text-dark80 dark:text-dark20;
   }
-  .bg-dark80-light20 {
+  .bg-dark80-light30 {
     @apply dark:bg-dark80 bg-dark10 text-dark80 dark:text-dark10;
   }
   .border-main {

@@ -1,11 +1,19 @@
 import { clsx, type ClassValue } from "clsx";
-import { twMerge } from "tailwind-merge";
-import { LoanDetails, LoanType } from "./Interfaces";
 import queryString from "query-string";
+import { twMerge } from "tailwind-merge";
+
+import { LoanDetails, LoanType } from "../utils/Interfaces";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const stringify = (value: any) => JSON.stringify(value);
+
+export const parse = (value: string) => JSON.parse(value);
+
+export const convertFileToUrl = (file: File) => URL.createObjectURL(file);
 
 export function calculateLoanDetails(
   loanTypes: LoanType[],

@@ -19,6 +19,11 @@ export interface loanTypeInterface {
   isRecommended: boolean;
 }
 
+export interface BankInterface {
+  name: string;
+  logo: string;
+}
+
 export interface MemberInterface {
   [x: string]: unknown;
   name: string;

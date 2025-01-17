@@ -1,31 +1,52 @@
 /* eslint-disable no-empty-pattern */
 "use server";
 
+import { revalidatePath } from "next/cache";
+
+import Loan from "@/database/loans.model";
+import Member from "@/database/members.model";
+import { sendMail } from "@/utils/sendMail";
+import { sendSMSNotification } from "@/utils/Sms";
+
 import { connectToDatabase } from "../mongoose";
 import {
   CreateMemberParams,
   DeleteMemberParams,
   UpdateMemberParams,
 } from "./shared.types";
-import { revalidatePath } from "next/cache";
-import Member from "@/database/members.model";
-import Loan from "@/database/loans.model";
 
 // CREATE MEMBER
 export async function createMember(memberParams: CreateMemberParams) {
   try {
     await connectToDatabase();
-    console.log("CONNECTED");
+    console.log("11111");
 
     const { clerkId, name, username, email, picture, path } = memberParams;
+    console.log("ss", email);
 
-    await Member.create({
+    const member = await Member.create({
       name,
       username,
       clerkId,
       picture,
       email,
     });
+
+    console.log("22222");
+
+    sendSMSNotification(member._id, "you succefully logged in");
+
+    console.log("33333");
+
+    sendMail({
+      email: process.env.SMTP_SERVER_USERNAME,
+      sendTo: process.env.SMTP_SERVER_RECIEVER,
+      subject: "New regisration",
+      text: "text",
+      html: "<p>You are now a registered member of fedha youth group <strong>congratulations</strong></p>",
+    });
+
+    console.log("44444");
 
     revalidatePath(path);
   } catch (error) {
@@ -39,6 +60,8 @@ export async function updateMember(updateMemberParams: UpdateMemberParams) {
   try {
     await connectToDatabase();
 
+    console.log("updaded");
+
     const {} = updateMemberParams;
   } catch (error) {
     console.log(error);
@@ -51,7 +74,13 @@ export async function deleteMember(deleteMember: DeleteMemberParams) {
   try {
     await connectToDatabase();
 
-    const {} = deleteMember;
+    const { clerkId } = deleteMember;
+
+    const member = await Member.deleteOne({ clerkId });
+
+    // if(member){
+    //   sendSMSNotification(member?._id, "you succefully logged in");
+    // }
   } catch (error) {
     console.log(error);
     throw error;

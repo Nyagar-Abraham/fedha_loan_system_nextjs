@@ -9,8 +9,8 @@ import {
 } from "react-beautiful-dnd";
 
 import { useLoan } from "@/context/LoanContext";
-import { loanTypeInterface } from "@/lib/Interfaces";
 import { cn } from "@/lib/utils";
+import { loanTypeInterface } from "@/utils/Interfaces";
 
 import Loan from "./Loan";
 

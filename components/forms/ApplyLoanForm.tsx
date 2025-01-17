@@ -4,8 +4,12 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader } from "lucide-react";
+import { useRouter } from "next/navigation";
+import React, { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -15,6 +19,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -22,22 +27,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
-import { LoanSchema } from "@/lib/validations";
 import { loanTypes } from "@/constants";
-import { loanTypeInterface, MemberInterface } from "@/lib/Interfaces";
-import { Label } from "../ui/label";
-import React, { useRef, useState } from "react";
 import { useToast } from "@/hooks/use-toast";
-import { calculateLoanDetails, cn } from "@/lib/utils";
-
-import { Loader } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { applyLoan } from "@/lib/actions/loan.actions";
+import { calculateLoanDetails, cn, parse } from "@/lib/utils";
+import { loanTypeInterface, MemberInterface } from "@/utils/Interfaces";
+import { LoanSchema } from "@/utils/validations";
+
+import { Label } from "../ui/label";
 
 interface ApplyLoanInterface {
   userId: string;
-  members: MemberInterface[];
+  membersString: string;
 }
 
 interface ContribInterface {
@@ -45,7 +46,10 @@ interface ContribInterface {
   value: number;
 }
 
-export default function ApplyLoanForm({ userId, members }: ApplyLoanInterface) {
+export default function ApplyLoanForm({
+  userId,
+  membersString,
+}: ApplyLoanInterface) {
   const [submitting, setSubmitting] = useState(false);
   const [guarantorContributions, setGuarantorContributions] = useState<
     ContribInterface[]
@@ -55,6 +59,9 @@ export default function ApplyLoanForm({ userId, members }: ApplyLoanInterface) {
   const timeoutId = useRef();
   const { toast } = useToast();
   const router = useRouter();
+  console.log(membersString);
+  const members = parse(membersString);
+  console.log(members);
 
   console.log({ guarantorContributions });
 
@@ -253,7 +260,7 @@ export default function ApplyLoanForm({ userId, members }: ApplyLoanInterface) {
                 <FormControl>
                   <Input
                     type="number"
-                    className="dark:hover:bg-dark7 min-h-12 border-b-2 border-orange40 bg-dark20 text-xl hover:bg-dark10 focus:ring focus:ring-orange-400 dark:border-orange-950 dark:bg-dark80 dark:hover:bg-dark70"
+                    className=" min-h-12 border-b-2 border-orange40 bg-dark20 text-xl hover:bg-dark10 focus:ring focus:ring-orange-400 dark:border-orange-950 dark:bg-dark80 dark:hover:bg-dark70"
                     value={field.value || ""}
                     onChange={(e) => field.onChange(Number(e.target.value))}
                   />

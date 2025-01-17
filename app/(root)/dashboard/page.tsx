@@ -2,7 +2,7 @@
 // @ts-nocheck
 import Loans from "@/components/Dashboard/Loans";
 import MemberDisplay from "@/components/Dashboard/MemberDisplay";
-import Noloan from "@/components/Noloan";
+import Noloan from "@/components/loans/Noloan";
 import Pagination from "@/components/Pagination";
 import Popup from "@/components/Popup";
 import { getUserLoan } from "@/lib/actions/loan.actions";
@@ -35,7 +35,10 @@ const page = async ({ searchParams }: never) => {
     <div className="flex flex-col">
       <div className="flex-between mb-7 mt-3">
         <h1 className=" text-4xl font-semibold text-orange90">
-          👋 Welcome {member?.name ? member?.name.split("-")[0].toString() : member?.usename}
+          👋 Welcome{" "}
+          {member?.name
+            ? member?.name.split("-")[0].toString()
+            : member?.usename}
         </h1>
         <Popup noticeExist={noticeExist} />
       </div>

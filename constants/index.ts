@@ -1,3 +1,4 @@
+import barclaysLogo from "@/public/barclays-bank-logo.jpeg";
 import commercialLogo from "@/public/commercial-bank-logo.png";
 import equityLogo from "@/public/equity-bank-logo.png";
 import kcbLogo from "@/public/kcb-bank-logo.jpg";
@@ -29,8 +30,8 @@ export const loanTypes = [
     interestRate: 0.003,
     repaymentPeriod: 1,
     monthlyInstallement: "2% of loan",
-    bank: "Equity Bank",
-    logo: equityLogo,
+    bank: "Barclays Bank",
+    logo: barclaysLogo,
     isRecommended: false,
   },
 
@@ -75,4 +76,21 @@ export const themes = [
   },
 ];
 
-// export const
+export const banks = [
+  {
+    name: "Equity",
+    logo: equityLogo,
+  },
+  {
+    name: "KCB",
+    logo: kcbLogo,
+  },
+  {
+    name: "Barclays",
+    logo: barclaysLogo,
+  },
+  {
+    name: "Commercial",
+    logo: commercialLogo,
+  },
+];

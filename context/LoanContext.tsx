@@ -9,7 +9,7 @@ import {
 } from "react";
 
 import { loanTypes } from "@/constants";
-import { LoanAction, LoanBoard, loanTypeInterface } from "@/lib/Interfaces";
+import { LoanAction, LoanBoard, loanTypeInterface } from "@/utils/Interfaces";
 
 const loanInitialState: LoanBoard = {
   loans: loanTypes,

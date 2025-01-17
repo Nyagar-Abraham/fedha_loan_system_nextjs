@@ -20,8 +20,8 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { NavRoutes } from "@/constants";
-import { navRoutesInterface } from "@/lib/Interfaces";
 import { cn } from "@/lib/utils";
+import { navRoutesInterface } from "@/utils/Interfaces";
 
 import ThemeToggle from "./ThemeToggle";
 
