@@ -1,11 +1,10 @@
+/* eslint-disable no-unused-vars */
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import Image from "next/image";
-import { useForm, UseFormReturn } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -14,34 +13,28 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { banks } from "@/constants";
-import { BankInterface } from "@/utils/Interfaces";
 import { AddLoanFormSchema } from "@/utils/validations";
 
 import SubmitButtom from "../SubmitButtom";
+import FormFieldComp from "./FormFieldComp";
 import { Checkbox } from "../ui/checkbox";
 import { DialogFooter } from "../ui/dialog";
 
-// {
-//   id: "normal",
-//   category: "Normal Loan",
-//   value: "Normal",
-//   maximumAmount: "3x shares amount",
-//   interestRate: 0.01,
-//   repaymentPeriod: 3,
-//   monthlyInstallment: "4% of loan",
-//   bank: "Commercial Bank",
-//   logo: commercialLogo,
-//   isRecommended: false,
-// },
+enum Fields {
+  NAME = "name",
+  INTRESTRATE = "intrestRate",
+  MAXIMUMLOANAMOUNT = "maximumLoanAmount",
+  REPAYMENTPERIOD = "repaymentPeriod",
+  ELIGIBILITYCRITERIA = "eligibilityCriteria",
+  LOANPROCESSINGFEE = "loanProcessingFee",
+  DOWNPAYMENT = "downPayment",
+  VEHICLETYPE = "vehicleType",
+  PROPERTYTYPE = "propertyType",
+  MORATORIUMPERIOD = "moratoriumPeriod",
+  COLLATERALREQUIRED = "collateralRequired",
+  BUSINESSTYPE = "businessType",
+  LOANPURPOSE = "loanPurpose",
+}
 
 export function AddLoanForm() {
   // 1. Define your form.
@@ -49,22 +42,24 @@ export function AddLoanForm() {
     resolver: zodResolver(AddLoanFormSchema),
     defaultValues: {
       name: "",
-      category: "",
-      maximumAmount: "",
       intrestRate: 0,
+      maximumLoanAmount: 0,
       repaymentPeriod: 0,
-      monthlyInstallment: "",
-      bank: undefined,
-      isRecommended: false,
+      eligibilityCriteria: [],
+      loanProcessingFee: 0,
+      downPayment: 0,
+      vehicleType: "",
+      propertyType: "",
+      moratoriumPeriod: "",
+      collateralRequired: false,
+      businessType: "",
+      loanPurpose: "",
     },
   });
 
   const isSubmitting = form.formState.isSubmitting;
 
-  // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof AddLoanFormSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
     console.log(values);
   }
 
@@ -75,114 +70,91 @@ export function AddLoanForm() {
         className="space-y-4 overflow-y-scroll px-2 hide-scrollbar "
       >
         {/* name */}
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem className="flex flex-1 flex-col gap-px">
-              <FormLabel className=" space-x-2 text-[1.1rem] dark:text-orange10">
-                Loan name<span className="text-orange70">*</span>
-              </FormLabel>
-              <FormControl>
-                <Input
-                  className=" min-h-12 border-b-2 border-orange40 bg-dark20 text-xl hover:bg-dark10 focus:ring focus:ring-orange-400 dark:border-orange-950 dark:bg-dark80 dark:hover:bg-dark70"
-                  value={field.value || ""}
-                  onChange={(e) => field.onChange(e)}
-                />
-              </FormControl>
-              <FormMessage className="text-red-500" />
-            </FormItem>
-          )}
+        <FormFieldComp
+          name={Fields.NAME}
+          label=" Loan name"
+          className=""
+          form={form}
         />
+
         {/* category */}
-        <FormField
-          control={form.control}
-          name="category"
-          render={({ field }) => (
-            <FormItem className="flex flex-1 flex-col gap-px">
-              <FormLabel className=" space-x-2 text-[1.1rem] dark:text-orange10">
-                Loan Category<span className="text-orange70">*</span>
-              </FormLabel>
-              <FormControl>
-                <Input
-                  className=" min-h-12 border-b-2 border-orange40 bg-dark20 text-xl hover:bg-dark10 focus:ring focus:ring-orange-400 dark:border-orange-950 dark:bg-dark80 dark:hover:bg-dark70"
-                  value={field.value || ""}
-                  onChange={(e) => field.onChange(e)}
-                />
-              </FormControl>
-              <FormMessage className="text-red-500" />
-            </FormItem>
-          )}
+        <FormFieldComp
+          name={Fields.INTRESTRATE}
+          label="intrest rate"
+          type="number"
+          className=""
+          form={form}
         />
         {/* maximumAmount */}
-        <FormField
-          control={form.control}
-          name="maximumAmount"
-          render={({ field }) => (
-            <FormItem className="flex flex-1 flex-col gap-px">
-              <FormLabel className=" space-x-2 text-[1.1rem] dark:text-orange10">
-                Loan maximumAmount<span className="text-orange70">*</span>
-              </FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="3x shares amount"
-                  className=" min-h-12 border-b-2 border-orange40 bg-dark20 text-xl hover:bg-dark10 focus:ring focus:ring-orange-400 dark:border-orange-950 dark:bg-dark80 dark:hover:bg-dark70"
-                  value={field.value || ""}
-                  onChange={(e) => field.onChange(e)}
-                />
-              </FormControl>
-              <FormMessage className="text-red-500" />
-            </FormItem>
-          )}
+        <FormFieldComp
+          name={Fields.MAXIMUMLOANAMOUNT}
+          label="maximum loan amount"
+          type="number"
+          className=""
+          form={form}
+        />
+        {/* repayment period */}
+        <FormFieldComp
+          name={Fields.REPAYMENTPERIOD}
+          label="repayment period"
+          type="number"
+          className=""
+          form={form}
+        />
+        {/* eligibility criteria */}
+        <FormFieldComp
+          name={Fields.ELIGIBILITYCRITERIA}
+          label="eligibility criteria"
+          className=""
+          form={form}
+        />
+        {/* Loan proccesing fee */}
+        <FormFieldComp
+          name={Fields.LOANPROCESSINGFEE}
+          label="Loan proccesing fee"
+          type="number"
+          className=""
+          form={form}
+        />
+        {/* downpayment */}
+        <FormFieldComp
+          name={Fields.DOWNPAYMENT}
+          label="downpayment"
+          type="number"
+          className=""
+          form={form}
+        />
+        {/* vehicle type */}
+        <FormFieldComp
+          name={Fields.VEHICLETYPE}
+          label="vehicle type "
+          className=""
+          form={form}
+        />
+        {/* property type */}
+        <FormFieldComp
+          name={Fields.PROPERTYTYPE}
+          label="property type "
+          className=""
+          form={form}
+        />
+        {/*  moratorium period */}
+        <FormFieldComp
+          name={Fields.MORATORIUMPERIOD}
+          label="moratorium period "
+          className=""
+          form={form}
+        />
+        {/* bussiness type */}
+        <FormFieldComp
+          name={Fields.BUSINESSTYPE}
+          label="bussiness type  "
+          className=""
+          form={form}
         />
         <div className="flex gap-4">
-          {/* interest rate */}
-          <FormField
-            control={form.control}
-            name="intrestRate"
-            render={({ field }) => (
-              <FormItem className="flex flex-1 flex-col gap-px">
-                <FormLabel className=" space-x-2 text-[1.1rem] dark:text-orange10">
-                  IntrestRate<span className="text-orange70">*</span>
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="0.01"
-                    type="number"
-                    className=" min-h-12 border-b-2 border-orange40 bg-dark20 text-xl hover:bg-dark10 focus:ring focus:ring-orange-400 dark:border-orange-950 dark:bg-dark80 dark:hover:bg-dark70"
-                    value={field.value || ""}
-                    onChange={(e) => field.onChange(Number(e.target.value))}
-                  />
-                </FormControl>
-                <FormMessage className="text-red-500" />
-              </FormItem>
-            )}
-          />
-          {/* repaymentPeriod */}
-          <FormField
-            control={form.control}
-            name="repaymentPeriod"
-            render={({ field }) => (
-              <FormItem className="flex flex-1 flex-col gap-px">
-                <FormLabel className=" space-x-2 text-[1.1rem] dark:text-orange10">
-                  repayment Period <span className="text-orange70">*</span>
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    type="number"
-                    className=" min-h-12 border-b-2 border-orange40 bg-dark20 text-xl hover:bg-dark10 focus:ring focus:ring-orange-400 dark:border-orange-950 dark:bg-dark80 dark:hover:bg-dark70"
-                    value={field.value || ""}
-                    onChange={(e) => field.onChange(Number(e.target.value))}
-                  />
-                </FormControl>
-                <FormMessage className="text-red-500" />
-              </FormItem>
-            )}
-          />
-        </div>
-        <div className="flex gap-4">
           {/* TYPE OF BANK */}
-          <FormField
+          {/* <FormField
             control={form.control}
             name="bank"
             render={({ field }) => (
@@ -224,45 +196,26 @@ export function AddLoanForm() {
                 <FormMessage className="text-red-500" />
               </FormItem>
             )}
-          />
+          /> */}
           {/*  monthlyInstallment */}
           <FormField
             control={form.control}
-            name="monthlyInstallment"
+            name={Fields.COLLATERALREQUIRED}
             render={({ field }) => (
               <FormItem className="flex flex-1 flex-col gap-px">
                 <FormLabel className=" space-x-2 text-[1.1rem] dark:text-orange10">
-                  monthly Installments<span className="text-orange70">*</span>
+                  collateral requred<span className="text-orange70">*</span>
                 </FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="4% of loan"
-                    className=" min-h-12 border-b-2 border-orange40 bg-dark20 text-xl hover:bg-dark10 focus:ring focus:ring-orange-400 dark:border-orange-950 dark:bg-dark80 dark:hover:bg-dark70"
-                    value={field.value || ""}
-                    onChange={(e) => field.onChange(e)}
-                  />
+
+                <FormControl className="flex items-center">
+                  <Checkbox {...field} className="" />
                 </FormControl>
                 <FormMessage className="text-red-500" />
               </FormItem>
             )}
           />
         </div>
-        {/* isReccommended */}
-        <FormField
-          control={form.control}
-          name="isRecommended"
-          render={({ field }) => (
-            <FormItem className="flex flex-1  items-center  gap-2">
-              <FormLabel className=" space-x-2 text-[1.1rem] dark:text-orange10">
-                IsRecommended<span className="text-orange70">*</span>
-              </FormLabel>
-              <FormControl className="flex items-center">
-                <Checkbox {...field} className="" />
-              </FormControl>
-              <FormMessage className="text-red-500" />
-            </FormItem>
-          )}
-        />
+
         <DialogFooter className="mt-2">
           <SubmitButtom submitting={isSubmitting} />
         </DialogFooter>

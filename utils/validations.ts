@@ -19,18 +19,23 @@ export const AddLoanFormSchema = z.object({
       message: "name must be at least 2 characters.",
     })
     .max(500),
-  category: z.string().min(4).max(500),
-  maximumAmount: z.string().min(3).max(1000),
   intrestRate: z
     .number()
     .refine(
       (n) => !z.number().int().safeParse(n).success,
       "should not be integer"
     ),
-  repaymentPeriod: z.number().int(),
-  monthlyInstallment: z.string().min(3).max(1000),
-  bank: z.enum(["Commercial Bank", "Equity Bank", "KCB Bank", "Barclays Bank"]),
-  isRecommended: z.boolean(),
+  maximumLoanAmount: z.number().min(1000).max(100000),
+  repaymentPeriod: z.number().int().min(0),
+  eligibilityCriteria: z.optional(z.array(z.string().min(3).max(500)).max(10)),
+  loanProcessingFee: z.number().int().min(0),
+  downPayment: z.optional(z.number().int().min(0)),
+  vehicleType: z.optional(z.string().min(2).max(100)),
+  propertyType: z.optional(z.string().min(2).max(500)),
+  moratoriumPeriod: z.optional(z.string().min(2).max(500)),
+  collateralRequired: z.optional(z.boolean()),
+  businessType: z.optional(z.string().min(2).max(500)),
+  loanPurpose: z.optional(z.string().min(2).max(500)),
 });
 
 export const ContributionSchema = z.object({
