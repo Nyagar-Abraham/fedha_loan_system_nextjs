@@ -20,7 +20,7 @@ const page = async ({ searchParams }: { name: string }) => {
   console.log("name", name);
 
   return (
-    <div className="mx-auto max-w-[50rem] ">
+    <div className="mx-auto  ">
       <div className="mb-7 flex items-center justify-between ">
         <h1 className=" mt-3  text-4xl font-semibold text-orange90">Loans</h1>
         <Popup />

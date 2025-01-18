@@ -1,32 +1,28 @@
-import { Schema, models, model, Document } from "mongoose";
+import { Schema, model, models, Document } from "mongoose";
 
 export interface IFixedDeposit extends Document {
-  member: Schema.Types.ObjectId;
-  totalAmount: number;
-  monthlyInterestRate: number;
-  interestEarned: number;
+  memberId: Schema.Types.ObjectId;
+  principalAmount: number;
+  interestRate: number;
+  startDate: Date;
+  maturityDate: Date;
+  status: "active" | "matured" | "withdrawn";
+  totalMaturityAmount?: number;
 }
 
-const FixedDepositSchema: Schema = new Schema({
-  member: {
-    type: Schema.Types.ObjectId,
-    ref: "Member",
+const FixedDepositSchema = new Schema<IFixedDeposit>({
+  memberId: { type: Schema.Types.ObjectId, ref: "Member", required: true },
+  principalAmount: { type: Number, required: true, min: 0 },
+  interestRate: { type: Number, required: true, min: 0, default: 0.06 },
+  startDate: { type: Date, required: true },
+  maturityDate: { type: Date, required: true },
+  status: {
+    type: String,
     required: true,
+    enum: ["active", "matured", "withdrawn"],
+    default: "active",
   },
-  totalAmount: {
-    type: Number,
-    required: true,
-  },
-  monthlyInterestRate: {
-    type: Number,
-    required: true,
-    default: 0.006, // 0.6% per month by default
-  },
-  interestEarned: {
-    type: Number,
-    required: true,
-    default: 0,
-  },
+  totalMaturityAmount: { type: Number, min: 0 },
 });
 
 const FixedDeposit =

@@ -26,6 +26,7 @@ import { banks } from "@/constants";
 import { BankInterface } from "@/utils/Interfaces";
 import { AddLoanFormSchema } from "@/utils/validations";
 
+import SubmitButtom from "../SubmitButtom";
 import { Checkbox } from "../ui/checkbox";
 import { DialogFooter } from "../ui/dialog";
 
@@ -58,6 +59,8 @@ export function AddLoanForm() {
     },
   });
 
+  const isSubmitting = form.formState.isSubmitting;
+
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof AddLoanFormSchema>) {
     // Do something with the form values.
@@ -67,7 +70,10 @@ export function AddLoanForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="space-y-4 overflow-y-scroll px-2 hide-scrollbar "
+      >
         {/* name */}
         <FormField
           control={form.control}
@@ -258,12 +264,7 @@ export function AddLoanForm() {
           )}
         />
         <DialogFooter className="mt-2">
-          <Button
-            className="bg-green80 text-xl text-white  hover:bg-green90"
-            type="submit"
-          >
-            Submit
-          </Button>
+          <SubmitButtom submitting={isSubmitting} />
         </DialogFooter>
       </form>
     </Form>

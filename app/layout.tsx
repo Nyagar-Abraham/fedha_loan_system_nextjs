@@ -48,10 +48,10 @@ export default function RootLayout({
         },
       }}
     >
-      <html lang="en">
+      <html className="hide-scrollbar" lang="en">
         <body
           className={cn(
-            "antialiased  flex flex-col flex-1 bg-dark100-light10 min-h-screen transition-all  relative",
+            "antialiased  flex flex-col flex-1 bg-dark100-light10 min-h-screen transition-all  relative ",
             josefin.className
           )}
         >

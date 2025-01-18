@@ -18,6 +18,7 @@ const loanInitialState: LoanBoard = {
 
 const LoanContext = createContext({
   LoanState: loanInitialState,
+  // @ts-ignore
   dispatch: (action: LoanAction) => {},
 });
 
