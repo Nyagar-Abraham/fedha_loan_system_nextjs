@@ -1,4 +1,4 @@
-import { Schema, models, model, Document, Date } from "mongoose";
+import { Schema, models, model, Document } from "mongoose";
 
 export interface IMember extends Document {
   clerkId: string;

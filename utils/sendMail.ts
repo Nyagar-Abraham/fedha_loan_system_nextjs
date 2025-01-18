@@ -44,7 +44,7 @@ export async function sendMail({
   html?: string;
 }) {
   try {
-    const isVerified = await transporter.verify();
+    await transporter.verify();
   } catch (error) {
     console.error(
       "Something Went Wrong",

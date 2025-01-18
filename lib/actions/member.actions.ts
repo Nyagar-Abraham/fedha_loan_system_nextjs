@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 
 import Loan from "@/database/loans.model";
 import Member from "@/database/members.model";
-import { sendMail } from "@/utils/sendMail";
+// import { sendMail } from "@/utils/sendMail";
 import { sendSMSNotification } from "@/utils/Sms";
 
 import { connectToDatabase } from "../mongoose";
@@ -38,13 +38,13 @@ export async function createMember(memberParams: CreateMemberParams) {
 
     console.log("33333");
 
-    sendMail({
-      email: process.env.SMTP_SERVER_USERNAME,
-      sendTo: process.env.SMTP_SERVER_RECIEVER,
-      subject: "New regisration",
-      text: "text",
-      html: "<p>You are now a registered member of fedha youth group <strong>congratulations</strong></p>",
-    });
+    // sendMail({
+    //   email: process.env.SMTP_SERVER_USERNAME,
+    //   sendTo: process.env.SMTP_SERVER_RECIEVER,
+    //   subject: "New regisration",
+    //   text: "text",
+    //   html: "<p>You are now a registered member of fedha youth group <strong>congratulations</strong></p>",
+    // });
 
     console.log("44444");
 
@@ -76,11 +76,7 @@ export async function deleteMember(deleteMember: DeleteMemberParams) {
 
     const { clerkId } = deleteMember;
 
-    const member = await Member.deleteOne({ clerkId });
-
-    // if(member){
-    //   sendSMSNotification(member?._id, "you succefully logged in");
-    // }
+    await Member.deleteOne({ clerkId });
   } catch (error) {
     console.log(error);
     throw error;

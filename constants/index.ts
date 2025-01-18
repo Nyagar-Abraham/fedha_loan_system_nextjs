@@ -5,7 +5,7 @@ import kcbLogo from "@/public/kcb-bank-logo.jpg";
 
 export const NavRoutes = [
   { href: "/dashboard", route: "Dashboard" },
-  { href: "/loan", route: "Apply Loan" },
+  { href: "/loan", route: "Loans" },
   // { href: "/payloan", route: "Pay Loan" },
 ];
 
@@ -93,4 +93,9 @@ export const banks = [
     name: "Commercial",
     logo: commercialLogo,
   },
+];
+
+export const contributiontypes = [
+  { type: "normal", label: "Normal Deposit" },
+  { type: "fixed", label: "Fixed Deposit" },
 ];

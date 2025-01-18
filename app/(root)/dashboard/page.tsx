@@ -1,15 +1,15 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 // @ts-nocheck
+import { auth } from "@clerk/nextjs/server";
+import { Metadata } from "next";
+
 import Loans from "@/components/Dashboard/Loans";
 import MemberDisplay from "@/components/Dashboard/MemberDisplay";
 import Noloan from "@/components/loans/Noloan";
 import Pagination from "@/components/Pagination";
 import Popup from "@/components/Popup";
 import { getUserLoan } from "@/lib/actions/loan.actions";
-
 import { getCurrentUser } from "@/lib/actions/member.actions";
-import { auth } from "@clerk/nextjs/server";
-import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Dashboard",

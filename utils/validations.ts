@@ -32,3 +32,9 @@ export const AddLoanFormSchema = z.object({
   bank: z.enum(["Commercial Bank", "Equity Bank", "KCB Bank", "Barclays Bank"]),
   isRecommended: z.boolean(),
 });
+
+export const ContributionSchema = z.object({
+  amount: z.number().min(500, { message: "Amount must be at least 500" }),
+  date: z.date().min(new Date(), { message: "Date cannot be in the past" }),
+  typeOfContribution: z.enum(["normal", "fixed"]),
+});

@@ -32,6 +32,11 @@ export interface MemberInterface {
   shares: number;
 }
 
+export interface ContributiontypesInterface {
+  type: string;
+  label: string;
+}
+
 export type LoanType = {
   category: string;
   value: string;

@@ -1,10 +1,12 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
+
+import Loan from "@/database/loans.model";
 import Member from "@/database/members.model";
+
 import { connectToDatabase } from "../mongoose";
 import { ApplyLoanParams } from "./shared.types";
-import Loan from "@/database/loans.model";
-import { revalidatePath } from "next/cache";
 
 export async function applyLoan(applyLoanParams: ApplyLoanParams) {
   try {

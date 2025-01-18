@@ -1,7 +1,6 @@
 import { ID } from "node-appwrite";
 
 import { messaging } from "@/lib/appwrite.config";
-import { parseStringify } from "@/lib/utils";
 
 export const sendSMSNotification = async (userId: string, content: string) => {
   try {
@@ -12,7 +11,7 @@ export const sendSMSNotification = async (userId: string, content: string) => {
       [userId]
     );
 
-    return parseStringify(message);
+    return message;
   } catch (error) {
     console.log(error);
   }

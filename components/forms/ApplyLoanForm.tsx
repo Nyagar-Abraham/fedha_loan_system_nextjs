@@ -4,13 +4,11 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -34,6 +32,7 @@ import { calculateLoanDetails, cn, parse } from "@/lib/utils";
 import { loanTypeInterface, MemberInterface } from "@/utils/Interfaces";
 import { LoanSchema } from "@/utils/validations";
 
+import SubmitButtom from "../SubmitButtom";
 import { Label } from "../ui/label";
 
 interface ApplyLoanInterface {
@@ -410,16 +409,7 @@ export default function ApplyLoanForm({
         />
         {/* SUBMIT */}
         <div className="mt-6 flex items-center justify-end">
-          <Button
-            className={cn(
-              "text-2xl flex gap-4 items-center font-semibold bg-green80 hover:bg-green90 text-green10 px-12 py-5 rounded-md "
-            )}
-            disabled={submitting}
-            type="submit"
-          >
-            {submitting ? "Submmitting..." : "Submit"}
-            {submitting && <Loader size={20} className="animate-spin" />}
-          </Button>
+          <SubmitButtom submitting={submitting} />
         </div>
       </form>
     </Form>
