@@ -33,7 +33,7 @@ export interface MemberInterface {
 }
 
 export interface ContributiontypesInterface {
-  type: string;
+  value: string;
   label: string;
 }
 

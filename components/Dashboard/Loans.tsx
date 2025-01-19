@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { cn, formatToCurrency } from "@/lib/utils";
 import Link from "next/link";
+
+import { cn, formatToCurrency } from "@/lib/utils";
 
 const Loans = ({ loans }: { loans: any }) => {
   return (

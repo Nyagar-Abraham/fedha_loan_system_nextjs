@@ -1,6 +1,29 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { format } from "path";
+
+import { CalendarIcon } from "lucide-react";
 import React from "react";
 import { UseFormReturn, ControllerRenderProps } from "react-hook-form";
 
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { cn } from "@/lib/utils";
+
+import FormlabelComp from "./FormlabelComp";
+import { Checkbox } from "../ui/checkbox";
 import {
   FormField,
   FormItem,
@@ -9,6 +32,10 @@ import {
   FormMessage,
 } from "../ui/form";
 import { Input } from "../ui/input";
+interface SelectOrRadioItem {
+  label: string;
+  value: string;
+}
 
 interface FormFieldProps {
   form: UseFormReturn<any>;
@@ -18,6 +45,12 @@ interface FormFieldProps {
   required?: boolean;
   type?: "text" | "number" | "email" | "password";
   className?: string;
+  isCheckbox?: boolean;
+  isSelect?: boolean;
+  isDatepicker?: boolean;
+  isRadioButton?: boolean;
+  selectItems?: SelectOrRadioItem[];
+  radioItems?: SelectOrRadioItem[];
 }
 
 const FormFieldComp: React.FC<FormFieldProps> = ({
@@ -28,6 +61,12 @@ const FormFieldComp: React.FC<FormFieldProps> = ({
   required = false,
   type = "text",
   className = "",
+  isCheckbox = false,
+  isSelect = false,
+  isRadioButton = false,
+  selectItems,
+  radioItems,
+  isDatepicker,
 }) => {
   return (
     <FormField
@@ -35,19 +74,119 @@ const FormFieldComp: React.FC<FormFieldProps> = ({
       name={name}
       render={({ field }: { field: ControllerRenderProps<any, string> }) => (
         <FormItem className="flex flex-1 flex-col gap-2">
-          <FormLabel className="text-[1.1rem] dark:text-orange10">
-            {label}
-            {required && <span className="text-orange70">*</span>}
-          </FormLabel>
-          <FormControl>
-            <Input
-              type={type}
-              className={`min-h-12 border-b-2 border-orange40 bg-dark20 text-xl hover:bg-dark10 focus:ring focus:ring-orange-400 dark:border-orange-950 dark:bg-dark80 dark:hover:bg-dark70 ${className}`}
-              placeholder={placeholder}
-              value={field.value || ""}
-              onChange={field.onChange}
-            />
-          </FormControl>
+          <FormlabelComp label={label} />
+          {isDatepicker ? (
+            // DATE PICKER
+            <Popover>
+              <PopoverTrigger asChild>
+                <FormControl>
+                  <Button
+                    variant={"outline"}
+                    className={cn(
+                      "w-[240px] pl-3 text-left font-normal",
+                      !field.value && "text-muted-foreground"
+                    )}
+                  >
+                    {field.value ? (
+                      format(field.value, "PPP")
+                    ) : (
+                      <span className="text-red-300">Pick a date</span>
+                    )}
+                    <CalendarIcon className="ml-auto size-4 opacity-50" />
+                  </Button>
+                </FormControl>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                <Calendar
+                  mode="single"
+                  selected={field.value}
+                  onSelect={field.onChange}
+                  disabled={(date: Date) =>
+                    date <= new Date() || date > new Date("2030-01-01")
+                  }
+                  initialFocus
+                />
+              </PopoverContent>
+            </Popover>
+          ) : (
+            // OTHERS
+            <FormControl>
+              {isCheckbox ? (
+                // CHECKBOX
+                <Checkbox
+                  {...field}
+                  className="border-orange80 data-[state=checked]:text-orange70"
+                />
+              ) : isRadioButton ? (
+                // RADIO bUTTON
+                <RadioGroup
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                  className="flex flex-col"
+                >
+                  {radioItems.map((item) => (
+                    <FormItem
+                      key={item.value}
+                      className={cn(
+                        `flex items-center space-x-3 space-y-0 rounded-md  border border-orange20/30 p-2 duration-200 hover:border-orange70 hover:text-orange70 dark:hover:border-orange70 ${className}`
+                      )}
+                    >
+                      <FormControl>
+                        <RadioGroupItem value={item.value} />
+                      </FormControl>
+                      <FormLabel className="font-normal">
+                        {item.label}
+                      </FormLabel>
+                    </FormItem>
+                  ))}
+                </RadioGroup>
+              ) : isSelect ? (
+                // SELECT
+                <Select
+                  onValueChange={(value) => {
+                    console.log("bank Selected:", value); // Log the selected loan type
+                    field.onChange(`${value} Bank`);
+                  }}
+                >
+                  <SelectTrigger
+                    className={cn(
+                      `min-h-12 border-b-2 border-orange40 bg-dark20 text-xl hover:bg-dark10 focus:ring focus:ring-orange-400 dark:border-orange-950 dark:bg-dark80 dark:hover:bg-dark70 ${className}`
+                    )}
+                  >
+                    <SelectValue placeholder={placeholder} />
+                  </SelectTrigger>
+                  <SelectContent className="bg-dark20 text-[1rem] dark:bg-dark90 dark:hover:bg-dark80 ">
+                    {selectItems.map((item) => (
+                      <SelectItem
+                        className=" items-center gap-3 text-base hover:text-orange50"
+                        key={item.value}
+                        value={item.value}
+                      >
+                        <div className="flex gap-3">
+                          {/* <Image
+                          width={25}
+                          height={25}
+                          src={bank.logo}
+                          className="rounded-lg object-cover "
+                        /> */}
+                          <span> {item.label}</span>
+                        </div>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              ) : (
+                // INPUT
+                <Input
+                  type={type}
+                  className={`min-h-12 border-b-2 border-orange40 bg-dark20 text-xl hover:bg-dark10 focus:ring focus:ring-orange-400 dark:border-orange-950 dark:bg-dark80 dark:hover:bg-dark70 ${className}`}
+                  placeholder={placeholder}
+                  value={field.value || ""}
+                  onChange={field.onChange}
+                />
+              )}
+            </FormControl>
+          )}
           <FormMessage className="text-red-500" />
         </FormItem>
       )}

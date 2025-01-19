@@ -10,7 +10,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-import AlertModal from "./AlertModal";
+import ExitAlert from "./ExitAlert";
 import { HoverCardComp } from "./HoverCard";
 import AddLoan from "./loans/AddLoan";
 import MakeContribution from "./loans/MakeContribution";
@@ -26,7 +26,7 @@ const Popup = ({ noticeExist }: { noticeExist?: boolean }) => {
         </PopoverTrigger>
       </HoverCardComp>
       <PopoverContent className="bg-dark80-light30 border-0  p-2  shadow-md ">
-        {pathName === "/dashboard" && <AlertModal noticeExist={noticeExist!} />}
+        {pathName === "/dashboard" && <ExitAlert noticeExist={noticeExist!} />}
 
         {pathName === "/loan" && (
           <div className="flex flex-col gap-4  ">

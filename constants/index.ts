@@ -96,6 +96,6 @@ export const banks = [
 ];
 
 export const contributiontypes = [
-  { type: "normal", label: "Normal Deposit" },
-  { type: "fixed", label: "Fixed Deposit" },
+  { Value: "normal", label: "Normal Deposit" },
+  { value: "fixed", label: "Fixed Deposit" },
 ];

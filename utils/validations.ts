@@ -39,6 +39,11 @@ export const AddLoanFormSchema = z.object({
 });
 
 export const ContributionSchema = z.object({
+  name: z.string().min(3).max(500),
+  phone: z
+    .string()
+    .min(10, { message: "Must be a valid mobile number" })
+    .max(14, { message: "Must be a valid mobile number" }),
   amount: z.number().min(500, { message: "Amount must be at least 500" }),
   date: z.date().min(new Date(), { message: "Date cannot be in the past" }),
   typeOfContribution: z.enum(["normal", "fixed"]),
