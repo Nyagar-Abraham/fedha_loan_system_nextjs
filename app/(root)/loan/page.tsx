@@ -17,8 +17,6 @@ const page = async ({ searchParams }: { name: string }) => {
   const members = await getAllMembers();
   const { name } = searchParams;
 
-  console.log("name", name);
-
   return (
     <div className="mx-auto  ">
       <div className="mb-7 flex items-center justify-between ">

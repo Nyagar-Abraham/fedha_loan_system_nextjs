@@ -2,7 +2,7 @@ import { Schema, models, model, Document } from "mongoose";
 
 export interface ILoanType extends Document {
   name: string;
-  inrestRate: number;
+  intrestRate: number;
   maxLoanAmount: number;
   repaymentPeriod: string;
   eligibilityCriteria?: string[];
@@ -18,7 +18,7 @@ export interface ILoanType extends Document {
 
 const LoanTypeSchema: Schema = new Schema({
   name: { type: String, required: true },
-  interestRate: { type: Number, required: true },
+  intrestRate: { type: Number, required: true },
   maxLoanAmount: { type: Number, required: true },
   repaymentPeriod: { type: String, required: true },
   eligibilityCriteria: { type: [String], default: [], required: false },

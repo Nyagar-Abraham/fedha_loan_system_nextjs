@@ -28,7 +28,7 @@ import {
 import { loanTypes } from "@/constants";
 import { useToast } from "@/hooks/use-toast";
 import { applyLoan } from "@/lib/actions/loan.actions";
-import { calculateLoanDetails, cn, parse } from "@/lib/utils";
+import { calculateLoanDetails, parse } from "@/lib/utils";
 import { loanTypeInterface, MemberInterface } from "@/utils/Interfaces";
 import { LoanSchema } from "@/utils/validations";
 

@@ -23,7 +23,6 @@ const Loan = ({ loan, index, isOpen, setIsOpen }: LoanProps) => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  console.log(searchParams);
   const handleClick = (value: string) => {
     if (searchParams.get("name") === value) {
       const newUrl = removeKeysFromQuery({

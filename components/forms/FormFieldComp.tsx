@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { format } from "path";
 
+import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import React from "react";
 import { UseFormReturn, ControllerRenderProps } from "react-hook-form";
@@ -51,6 +51,7 @@ interface FormFieldProps {
   isRadioButton?: boolean;
   selectItems?: SelectOrRadioItem[];
   radioItems?: SelectOrRadioItem[];
+  diabled?: boolean;
 }
 
 const FormFieldComp: React.FC<FormFieldProps> = ({
@@ -67,6 +68,7 @@ const FormFieldComp: React.FC<FormFieldProps> = ({
   selectItems,
   radioItems,
   isDatepicker,
+  diabled = false,
 }) => {
   return (
     <FormField
@@ -81,6 +83,7 @@ const FormFieldComp: React.FC<FormFieldProps> = ({
               <PopoverTrigger asChild>
                 <FormControl>
                   <Button
+                    disabled={diabled}
                     variant={"outline"}
                     className={cn(
                       "w-[240px] pl-3 text-left font-normal",
@@ -114,8 +117,13 @@ const FormFieldComp: React.FC<FormFieldProps> = ({
               {isCheckbox ? (
                 // CHECKBOX
                 <Checkbox
-                  {...field}
+                  disabled={diabled}
                   className="border-orange80 data-[state=checked]:text-orange70"
+                  checked={field.value}
+                  onCheckedChange={(checked) => {
+                    field.onChange(checked);
+                  }}
+                  {...field}
                 />
               ) : isRadioButton ? (
                 // RADIO bUTTON
@@ -123,6 +131,8 @@ const FormFieldComp: React.FC<FormFieldProps> = ({
                   onValueChange={field.onChange}
                   defaultValue={field.value}
                   className="flex flex-col"
+                  {...field}
+                  disabled={diabled}
                 >
                   {radioItems.map((item) => (
                     <FormItem
@@ -144,9 +154,10 @@ const FormFieldComp: React.FC<FormFieldProps> = ({
                 // SELECT
                 <Select
                   onValueChange={(value) => {
-                    console.log("bank Selected:", value); // Log the selected loan type
-                    field.onChange(`${value} Bank`);
+                    field.onChange(value);
                   }}
+                  {...field}
+                  disabled={diabled}
                 >
                   <SelectTrigger
                     className={cn(
@@ -158,7 +169,7 @@ const FormFieldComp: React.FC<FormFieldProps> = ({
                   <SelectContent className="bg-dark20 text-[1rem] dark:bg-dark90 dark:hover:bg-dark80 ">
                     {selectItems.map((item) => (
                       <SelectItem
-                        className=" items-center gap-3 text-base hover:text-orange50"
+                        className="group items-center gap-3 text-base "
                         key={item.value}
                         value={item.value}
                       >
@@ -169,7 +180,9 @@ const FormFieldComp: React.FC<FormFieldProps> = ({
                           src={bank.logo}
                           className="rounded-lg object-cover "
                         /> */}
-                          <span> {item.label}</span>
+                          <span className="group-hover:text-orange70">
+                            {item.label}
+                          </span>
                         </div>
                       </SelectItem>
                     ))}
@@ -181,8 +194,16 @@ const FormFieldComp: React.FC<FormFieldProps> = ({
                   type={type}
                   className={`min-h-12 border-b-2 border-orange40 bg-dark20 text-xl hover:bg-dark10 focus:ring focus:ring-orange-400 dark:border-orange-950 dark:bg-dark80 dark:hover:bg-dark70 ${className}`}
                   placeholder={placeholder}
+                  {...field}
                   value={field.value || ""}
-                  onChange={field.onChange}
+                  onChange={(e) => {
+                    if (type === "number") {
+                      field.onChange(Number(e.target.value));
+                    } else {
+                      field.onChange(e.target.value.trim());
+                    }
+                  }}
+                  disabled={diabled}
                 />
               )}
             </FormControl>

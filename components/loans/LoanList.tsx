@@ -51,8 +51,6 @@ const LoanList = () => {
     [dispatch]
   );
 
-  console.log(loans);
-
   return (
     <DragDropContext
       onBeforeCapture={onBeforeCapture}

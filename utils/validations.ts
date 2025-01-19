@@ -15,27 +15,56 @@ export const LoanSchema = z.object({
 export const AddLoanFormSchema = z.object({
   name: z
     .string()
-    .min(4, {
-      message: "name must be at least 2 characters.",
-    })
-    .max(500),
+    .min(4, { message: "Name must be at least 4 characters." })
+    .max(500, { message: "Name must be less than 500 characters." }),
   intrestRate: z
     .number()
-    .refine(
-      (n) => !z.number().int().safeParse(n).success,
-      "should not be integer"
-    ),
-  maximumLoanAmount: z.number().min(1000).max(100000),
-  repaymentPeriod: z.number().int().min(0),
-  eligibilityCriteria: z.optional(z.array(z.string().min(3).max(500)).max(10)),
-  loanProcessingFee: z.number().int().min(0),
-  downPayment: z.optional(z.number().int().min(0)),
-  vehicleType: z.optional(z.string().min(2).max(100)),
-  propertyType: z.optional(z.string().min(2).max(500)),
-  moratoriumPeriod: z.optional(z.string().min(2).max(500)),
-  collateralRequired: z.optional(z.boolean()),
-  businessType: z.optional(z.string().min(2).max(500)),
-  loanPurpose: z.optional(z.string().min(2).max(500)),
+    .min(1, { message: "Interest rate must be at least 1%." })
+    .max(25, { message: "Interest rate cannot exceed 25%." }),
+  maxLoanAmount: z
+    .number()
+    .min(1000, { message: "Loan amount must be at least 1000." })
+    .max(100000, { message: "Loan amount cannot exceed 100,000." }),
+  repaymentPeriod: z
+    .number()
+    .int()
+    .min(0, { message: "Repayment period must be 0 or more." }),
+  eligibilityCriteria: z
+    .array(z.string().min(3).max(500))
+    .max(10, { message: "You can add up to 10 criteria only." })
+    .optional(),
+  loanProcessingFee: z
+    .number()
+    .int()
+    .min(0, { message: "Loan processing fee must be 0 or more." }),
+  downPayment: z
+    .number()
+    .int()
+    .min(0, { message: "Down payment must be 0 or more." })
+    .optional(),
+  vehicleType: z
+    .string()
+    .min(2, { message: "Vehicle type must be at least 2 characters." })
+    .max(100, { message: "Vehicle type must be less than 100 characters." })
+    .optional(),
+  propertyType: z
+    .string()
+    .min(2, { message: "Property type must be at least 2 characters." })
+    .max(500, { message: "Property type must be less than 500 characters." })
+    .optional(),
+  moratoriumPeriod: z
+    .string()
+    .min(2, { message: "Moratorium period must be at least 2 characters." })
+    .max(500, {
+      message: "Moratorium period must be less than 500 characters.",
+    })
+    .optional(),
+  collateralRequired: z.boolean().optional(),
+  businessType: z
+    .string()
+    .min(2, { message: "Business type must be at least 2 characters." })
+    .max(500, { message: "Business type must be less than 500 characters." })
+    .optional(),
 });
 
 export const ContributionSchema = z.object({

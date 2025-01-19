@@ -99,3 +99,26 @@ export const contributiontypes = [
   { Value: "normal", label: "Normal Deposit" },
   { value: "fixed", label: "Fixed Deposit" },
 ];
+
+export const LoanName = [
+  {
+    value: "Personal Loan",
+    label: "Personal Loan",
+  },
+  {
+    value: "Mortgage Loan",
+    label: "Mortgage Loan",
+  },
+  {
+    value: "Car Loan",
+    label: "Car Loan",
+  },
+  {
+    value: "Education Loan",
+    label: "Education Loan",
+  },
+  {
+    value: "Business Loan",
+    label: "Business Loan",
+  },
+];
