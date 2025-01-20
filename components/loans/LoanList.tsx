@@ -1,5 +1,6 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import React, { useCallback, useState } from "react";
 import {
   DragDropContext,
@@ -8,18 +9,21 @@ import {
   DropResult,
 } from "react-beautiful-dnd";
 
-import { useLoan } from "@/context/LoanContext";
-import { cn } from "@/lib/utils";
-import { loanTypeInterface } from "@/utils/Interfaces";
+import { ILoanType } from "@/database/loanType.model";
+import { drag } from "@/lib/actions/loanTypes.actions";
+import { cn, parse } from "@/lib/utils";
 
 import Loan from "./Loan";
 
-const LoanList = () => {
+interface loanListProps {
+  loanTypesProp: string;
+}
+
+const LoanList = ({ loanTypesProp }: loanListProps) => {
   const [isOpen, setIsOpen] = useState<string>("");
-  const {
-    LoanState: { loans },
-    dispatch,
-  } = useLoan();
+  const pathname = usePathname();
+
+  const loanTypes = parse(loanTypesProp);
 
   const onBeforeCapture = useCallback(() => {
     /* ... */
@@ -34,22 +38,20 @@ const LoanList = () => {
     /* ... */
   }, []);
 
-  const onDragEnd = useCallback(
-    (result: DropResult) => {
-      console.log(result);
-      if (!result.destination) return;
+  const onDragEnd = useCallback(async (result: DropResult) => {
+    console.log(result);
+    if (!result.destination) return;
 
-      const source: DraggableLocation = result.source;
-      const destination: DraggableLocation = result.destination;
+    const source: DraggableLocation = result.source;
+    const destination: DraggableLocation = result.destination;
 
-      if (result.type === "LOAN") {
-        dispatch({ type: "MOVE_LOAN", payload: { destination, source } });
-      }
-
-      console.log("tttt");
-    },
-    [dispatch]
-  );
+    if (result.type === "LOANTYPE") {
+      await drag({
+        payload: { destination, source },
+        path: pathname,
+      });
+    }
+  }, []);
 
   return (
     <DragDropContext
@@ -59,7 +61,7 @@ const LoanList = () => {
       onDragUpdate={onDragUpdate}
       onDragEnd={onDragEnd}
     >
-      <Droppable droppableId="loanList" type="LOAN">
+      <Droppable droppableId="loanTypeList" type="LOANTYPE">
         {(Provided, snapshot) => (
           <ul
             ref={Provided.innerRef}
@@ -71,9 +73,9 @@ const LoanList = () => {
               }
             )}
           >
-            {loans.map((loan: loanTypeInterface, index) => (
+            {loanTypes.map((loan: ILoanType, index: number) => (
               <Loan
-                key={loan.value}
+                key={loan._id}
                 loan={loan}
                 index={index}
                 isOpen={isOpen}

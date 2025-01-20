@@ -5,8 +5,8 @@ import "./globals.css";
 import { Josefin_Sans } from "next/font/google";
 import React from "react";
 
-import Header from "@/components/Header";
-import { ThemeProvider } from "@/components/theme-provider";
+import Header from "@/components/shared/Header";
+import { ThemeProvider } from "@/components/shared/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
 import { cn } from "@/lib/utils";
 

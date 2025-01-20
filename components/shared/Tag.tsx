@@ -1,18 +1,10 @@
 import { DeleteIcon } from "lucide-react";
+import { MouseEventHandler } from "react";
 import { ControllerRenderProps } from "react-hook-form";
 
-import { Badge } from "./ui/badge";
+import { Badge } from "../ui/badge";
 
-const Tag = ({
-  item,
-  onClick,
-}: {
-  item: string;
-  onClick: (
-    criteria: string,
-    field: ControllerRenderProps<any, string>
-  ) => void;
-}) => {
+const Tag = ({ item, onClick }: { item: string; onClick: any }) => {
   return (
     <Badge
       variant="outline"

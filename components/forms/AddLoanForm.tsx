@@ -1,7 +1,10 @@
 /* eslint-disable no-unused-vars */
 "use client";
 
+import path from "path";
+
 import { zodResolver } from "@hookform/resolvers/zod";
+import { usePathname } from "next/navigation";
 import React, { useState } from "react";
 import { useForm, ControllerRenderProps } from "react-hook-form";
 import { z } from "zod";
@@ -13,18 +16,25 @@ import {
   FormMessage,
   FormControl,
 } from "@/components/ui/form";
-import { LoanName } from "@/constants";
+import {
+  businessType,
+  LoanName,
+  moratoriumPeriods,
+  propertyType,
+  vehicleType,
+} from "@/constants";
 import { toast, useToast } from "@/hooks/use-toast";
 import { createLoanType } from "@/lib/actions/loanTypes.actions";
 import { AddLoanFormSchema } from "@/utils/validations";
 
-import SubmitButtom from "../SubmitButtom";
 import FormFieldComp from "./FormFieldComp";
-import Tag from "../Tag";
-import { DialogFooter } from "../ui/dialog";
-import Wrapper from "../Wrapper";
 import FormlabelComp from "./FormlabelComp";
+import SubmitButtom from "../shared/SubmitButtom";
+import Tag from "../shared/Tag";
+import Wrapper from "../shared/Wrapper";
+import { DialogFooter } from "../ui/dialog";
 import { Input } from "../ui/input";
+import { ToastAction } from "../ui/toast";
 
 enum Fields {
   NAME = "name",
@@ -52,6 +62,7 @@ enum Names {
 export function AddLoanForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
+  const pathname = usePathname();
 
   const form = useForm<z.infer<typeof AddLoanFormSchema>>({
     resolver: zodResolver(AddLoanFormSchema),
@@ -59,14 +70,14 @@ export function AddLoanForm() {
       name: "",
       intrestRate: 0,
       maxLoanAmount: 0,
-      repaymentPeriod: 0,
+      repaymentPeriod: "",
       eligibilityCriteria: [],
       loanProcessingFee: undefined,
       downPayment: undefined,
       vehicleType: undefined,
       propertyType: undefined,
       moratoriumPeriod: undefined,
-      collateralRequired: undefined,
+      collateralRequired: false,
       businessType: undefined,
     },
   });
@@ -76,27 +87,43 @@ export function AddLoanForm() {
   const name = form.getValues().name;
 
   async function onSubmit(values: z.infer<typeof AddLoanFormSchema>) {
-    console.log({ values });
     setIsSubmitting((cur) => !cur);
 
     try {
-      const loan = await createLoanType(values);
+      await createLoanType({
+        params: {
+          name: values.name.trim(),
+          intrestRate: values.intrestRate,
+          maxLoanAmount: values.maxLoanAmount,
+          repaymentPeriod: values.repaymentPeriod.trim(),
+          eligibilityCriteria: values.eligibilityCriteria,
+          loanProcessingFee: values.loanProcessingFee,
+          downPayment: values.downPayment,
+          vehicleType: values.vehicleType,
+          propertyType: values.propertyType,
+          moratoriumPeriod: values.moratoriumPeriod,
+          collateralRequired: values.collateralRequired,
+          businessType: values.businessType,
+        },
+        path: pathname,
+      });
 
-      if (loan) {
-        toast({
-          title: "Loan created",
+      form.clearErrors();
+      form.reset();
 
-          duration: 5000,
-        });
-      } else {
-        toast({
-          title: "Error Creating Loan",
-          variant: "destructive",
-          duration: 5000,
-        });
-      }
+      toast({
+        title: "Loan Successfully created",
+        description: "",
+        duration: 3000,
+      });
     } catch (error) {
       console.log({ error });
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: "There was a problem with your request.",
+        action: <ToastAction altText="Try again">Try again</ToastAction>,
+      });
     } finally {
       setIsSubmitting((cur) => !cur);
     }
@@ -205,7 +232,7 @@ export function AddLoanForm() {
           <FormFieldComp
             name={Fields.REPAYMENTPERIOD}
             label="repayment period"
-            type="number"
+            placeholder="5 years"
             className=""
             form={form}
           />
@@ -234,7 +261,9 @@ export function AddLoanForm() {
             diabled={Names.CAR !== name}
             name={Fields.VEHICLETYPE}
             label="vehicle type "
-            className=""
+            isSelect
+            selectItems={vehicleType}
+            placeholder="select vehicle type"
             form={form}
           />
 
@@ -242,7 +271,9 @@ export function AddLoanForm() {
             diabled={Names.MORTGAGE !== name}
             name={Fields.PROPERTYTYPE}
             label="property type "
-            className=""
+            isSelect
+            selectItems={propertyType}
+            placeholder="select property type"
             form={form}
           />
         </Wrapper>
@@ -251,21 +282,25 @@ export function AddLoanForm() {
             diabled={Names.EDUCATION !== name}
             name={Fields.MORATORIUMPERIOD}
             label="moratorium period "
-            className=""
+            placeholder="6 years after graduation"
+            isSelect
+            selectItems={moratoriumPeriods}
             form={form}
           />
           <FormFieldComp
             diabled={Names.BUSINESS !== name}
             name={Fields.BUSINESSTYPE}
             label="bussiness type"
-            className=""
+            isSelect
+            selectItems={businessType}
+            placeholder="select bussiness type"
             form={form}
           />{" "}
         </Wrapper>
 
         <FormFieldComp
           name={Fields.COLLATERALREQUIRED}
-          label="collateral required  "
+          label="collateral required"
           className=""
           isCheckbox={true}
           form={form}

@@ -6,24 +6,6 @@ export interface navRoutesInterface {
   href: string;
 }
 
-export interface loanTypeInterface {
-  id: string;
-  category: string;
-  value: string;
-  maximumAmount: string;
-  interestRate: number;
-  repaymentPeriod: number;
-  monthlyInstallement: string;
-  bank: string;
-  logo: StaticImageData;
-  isRecommended: boolean;
-}
-
-export interface BankInterface {
-  name: string;
-  logo: string;
-}
-
 export interface MemberInterface {
   [x: string]: unknown;
   name: string;
@@ -58,11 +40,6 @@ export type LoanBoard = {
   order: string[];
 };
 
-type onDragPayload = {
-  source: DraggableLocation;
-  destination: DraggableLocation;
-};
-
-export type LoanAction =
-  | { type: "SET_LOANS"; payload: LoanBoard }
-  | { type: "MOVE_LOAN"; payload: onDragPayload };
+// export type LoanAction =
+//   | { type: "SET_LOANS"; payload: LoanBoard }
+//   | { type: "MOVE_LOAN"; payload: onDragPayload };

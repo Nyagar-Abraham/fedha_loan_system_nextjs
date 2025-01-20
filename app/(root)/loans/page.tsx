@@ -3,19 +3,23 @@ import { Metadata } from "next";
 
 import ApplyLoanForm from "@/components/forms/ApplyLoanForm";
 import LoanList from "@/components/loans/LoanList";
-import Popup from "@/components/Popup";
-import { LoanProvider } from "@/context/LoanContext";
+import Popup from "@/components/shared/Popup";
+import { loanTypes } from "@/constants";
+import { getLoanTypes } from "@/lib/actions/loanTypes.actions";
 import { getAllMembers } from "@/lib/actions/member.actions";
 import { stringify } from "@/lib/utils";
 
 export const metadata: Metadata = {
-  title: "Apply loan",
+  title: "Loan types",
 };
 
 const page = async ({ searchParams }: { name: string }) => {
   const { userId } = auth();
-  const members = await getAllMembers();
+  // const members = await getAllMembers();
+  const loanTypes = await getLoanTypes();
   const { name } = searchParams;
+
+  console.log("pppp", loanTypes);
 
   return (
     <div className="mx-auto  ">
@@ -24,9 +28,7 @@ const page = async ({ searchParams }: { name: string }) => {
         <Popup />
       </div>
 
-      <LoanProvider>
-        <LoanList />
-      </LoanProvider>
+      <LoanList loanTypesProp={stringify(loanTypes)} />
 
       {name && (
         <div className="bg-dark100-light10 mt-8 rounded-sm px-3 pb-8 pt-4">
@@ -34,7 +36,7 @@ const page = async ({ searchParams }: { name: string }) => {
             Apply {name} loan
           </h2>
 
-          <ApplyLoanForm userId={userId!} membersString={stringify(members)} />
+          {/* <ApplyLoanForm userId={userId!} membersString={stringify(members)} /> */}
         </div>
       )}
     </div>

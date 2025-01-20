@@ -32,7 +32,7 @@ import { calculateLoanDetails, parse } from "@/lib/utils";
 import { loanTypeInterface, MemberInterface } from "@/utils/Interfaces";
 import { LoanSchema } from "@/utils/validations";
 
-import SubmitButtom from "../SubmitButtom";
+import SubmitButtom from "../shared/SubmitButtom";
 import { Label } from "../ui/label";
 
 interface ApplyLoanInterface {

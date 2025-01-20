@@ -8,9 +8,9 @@ import { Form, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { contributiontypes } from "@/constants";
 import { ContributionSchema } from "@/utils/validations";
 
-import SubmitButtom from "../SubmitButtom";
 import FormFieldComp from "./FormFieldComp";
 import FormlabelComp from "./FormlabelComp";
+import SubmitButtom from "../shared/SubmitButtom";
 
 enum Fields {
   NAME = "name",

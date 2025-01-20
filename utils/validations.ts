@@ -24,11 +24,8 @@ export const AddLoanFormSchema = z.object({
   maxLoanAmount: z
     .number()
     .min(1000, { message: "Loan amount must be at least 1000." })
-    .max(100000, { message: "Loan amount cannot exceed 100,000." }),
-  repaymentPeriod: z
-    .number()
-    .int()
-    .min(0, { message: "Repayment period must be 0 or more." }),
+    .max(1000000000, { message: "Loan amount cannot exceed 100,000." }),
+  repaymentPeriod: z.string().max(10),
   eligibilityCriteria: z
     .array(z.string().min(3).max(500))
     .max(10, { message: "You can add up to 10 criteria only." })
@@ -59,7 +56,7 @@ export const AddLoanFormSchema = z.object({
       message: "Moratorium period must be less than 500 characters.",
     })
     .optional(),
-  collateralRequired: z.boolean().optional(),
+  collateralRequired: z.boolean(),
   businessType: z
     .string()
     .min(2, { message: "Business type must be at least 2 characters." })

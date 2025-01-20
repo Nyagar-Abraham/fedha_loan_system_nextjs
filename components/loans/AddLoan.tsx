@@ -3,7 +3,7 @@ import { PlusIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 import { AddLoanForm } from "../forms/AddLoanForm";
-import Modal from "../Modal";
+import Modal from "../shared/Modal";
 
 const AddLoan = () => {
   return (

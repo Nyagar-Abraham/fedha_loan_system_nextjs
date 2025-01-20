@@ -13,11 +13,10 @@ export interface ILoanType extends Document {
   moratoriumPeriod?: string; // For education loans.
   collateralRequired?: boolean; // For business loans.
   businesstype?: string; // Specific to business loans.
-  loanPurpose?: string; // Optional descriptive field.
 }
 
 const LoanTypeSchema: Schema = new Schema({
-  name: { type: String, required: true },
+  name: { type: String, required: true, unique: true },
   intrestRate: { type: Number, required: true },
   maxLoanAmount: { type: Number, required: true },
   repaymentPeriod: { type: String, required: true },
@@ -29,7 +28,6 @@ const LoanTypeSchema: Schema = new Schema({
   moratoriumPeriod: { type: String },
   collateralRequired: { type: Boolean },
   businessType: { type: String },
-  loanPurpose: { type: String },
 });
 
 const LoanType = models.LoanType || model("LoanType", LoanTypeSchema);

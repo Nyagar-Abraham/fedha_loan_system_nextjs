@@ -1,52 +1,59 @@
 "use client";
 
+import { ArrowRight, DotIcon, EyeIcon } from "lucide-react";
 import Image from "next/image";
-import { useRouter, useSearchParams } from "next/navigation";
-import { Dispatch } from "react";
+import Link from "next/link";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { Dispatch, useState } from "react";
 import {
   Draggable,
   DraggableProvided,
   DraggableStateSnapshot,
 } from "react-beautiful-dnd";
 
+import { ILoanType } from "@/database/loanType.model";
 import { cn, formUrlQuery, removeKeysFromQuery } from "@/lib/utils";
-import { loanTypeInterface } from "@/utils/Interfaces";
+
+import { Button } from "../ui/button";
 
 interface LoanProps {
-  loan: loanTypeInterface;
+  loan: ILoanType;
   index: number;
-  isOpen: string;
-  setIsOpen: Dispatch<React.SetStateAction<string>>;
 }
 
-const Loan = ({ loan, index, isOpen, setIsOpen }: LoanProps) => {
-  const router = useRouter();
-  const searchParams = useSearchParams();
+const Loan = ({ loan, index }: LoanProps) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [clicked, setClicked] = useState(false);
+  const pathname = usePathname();
 
-  const handleClick = (value: string) => {
-    if (searchParams.get("name") === value) {
-      const newUrl = removeKeysFromQuery({
-        params: searchParams.toString(),
-        keysToRemove: ["name"],
-      });
+  // const router = useRouter();
+  // const searchParams = useSearchParams();
 
-      router.push(newUrl, { scroll: false });
-    } else {
-      const newUrl = formUrlQuery({
-        params: searchParams.toString(),
-        key: "name",
-        value,
-      });
+  // const handleClick = (value: string) => {
+  //   if (searchParams.get("name") === value) {
+  //     const newUrl = removeKeysFromQuery({
+  //       params: searchParams.toString(),
+  //       keysToRemove: ["name"],
+  //     });
 
-      router.push(newUrl, { scroll: false });
-    }
-  };
+  //     router.push(newUrl, { scroll: false });
+  //   } else {
+  //     const newUrl = formUrlQuery({
+  //       params: searchParams.toString(),
+  //       key: "name",
+  //       value,
+  //     });
+
+  //     router.push(newUrl, { scroll: false });
+  //   }
+  // };
 
   return (
-    <Draggable draggableId={loan.id} index={index}>
+    <Draggable draggableId={loan?._id?.toString()} index={index}>
       {(Provided: DraggableProvided, snapshot: DraggableStateSnapshot) => (
-        <li
-          onClick={() => handleClick(loan.id)}
+        <Link
+          href={`${pathname}/${loan._id}`}
+          // onClick={() => handleClick(loan.id)}
           ref={Provided.innerRef}
           {...Provided.draggableProps}
           {...Provided.dragHandleProps}
@@ -55,87 +62,116 @@ const Loan = ({ loan, index, isOpen, setIsOpen }: LoanProps) => {
             { "border-orange30/30": snapshot.isDragging }
           )}
         >
-          {loan.isRecommended && (
-            <p className="absolute left-2 top-0 -translate-y-1/2 rounded-full bg-orange80 px-3 py-1 font-semibold uppercase tracking-wide text-dark10 ">
-              recommended
+          {loan?.collateralRequired && (
+            <p className="absolute left-2 top-0 -translate-y-1/2 rounded-full border border-orange80/80 px-3 py-1 font-semibold uppercase tracking-wide text-orange80/80 backdrop-blur-md ">
+              collateral required
             </p>
           )}
 
-          {/* FIXED: Used `fixed` instead of `absolute` to position the overlay relative to the viewport. */}
-          {/* {isOpen === loan.bank && (
-                <div
-                  onClick={() => setIsOpen("")}
-                  className="fixed inset-0 z-[100] flex items-center justify-center bg-black opacity-50 backdrop-blur-lg"
-                >
-                  <div className="relative z-[110] size-64 opacity-100">
-                    <Image
-                      src={loan.logo.src}
-                      alt={`${loan.category} logo`}
-                      className="z-[60] aspect-square object-cover duration-300"
-                      fill
-                    />
-                  </div>
-                </div>
-              )} */}
-
           <div className="flex-between ">
             <div>
-              <p className="text-[1.2rem] font-bold">
-                {loan.repaymentPeriod} year {loan.category}
-              </p>
-              <p className="text-[0.8rem] text-orange-950/70 dark:text-orange10/50 ">
-                {loan.bank}
-              </p>
+              <p className="text-[1.2rem] font-bold">{loan?.name}</p>
             </div>
-            {/* FIXED: Ensured `onClick` toggles the modal while maintaining proper image behavior */}
-            <Image
-              src={loan.logo.src}
-              alt={`${loan.category} logo`}
+
+            {/* <Image
+              src={loan?.logo.src}
+              alt={`${loan?.category} logo`}
               className="aspect-square rounded-sm object-cover duration-300 hover:scale-[1.01] hover:opacity-60"
               width={50}
               height={50}
               onClick={(e) => {
                 e.stopPropagation();
-                setIsOpen(loan.bank);
+                setIsOpen(loan?.bank);
               }}
-            />
+            /> */}
           </div>
+          <div className=" rounded-sm border border-orange10/10 p-2 ">
+            <div className="grid grid-cols-2 gap-4">
+              <Attribute label="intrest rate" value={loan?.intrestRate} />
+              <Attribute label="maximum amount" value={loan?.maxLoanAmount} />
+              <Attribute
+                label="processing fee"
+                value={loan?.loanProcessingFee}
+              />
+              <Attribute
+                label="repayment period"
+                value={loan?.repaymentPeriod}
+              />
+            </div>
+            <div
+              className={cn(
+                `flex flex-col gap-2 rounded-sm transition-all duration-500    mt-3 ${isOpen && "bg-dark80-light30 duration-500"}`
+              )}
+            >
+              <Button
+                onClick={() => {
+                  if (isOpen) {
+                    setClicked(true);
+                  }
 
-          <div className="grid grid-cols-2 gap-4 rounded-sm border border-orange10/10 p-2 ">
-            <div className="flex flex-col">
-              <p className="text-[0.8rem] capitalize  text-orange-950/70 dark:text-orange10/50 ">
-                max amount
-              </p>
-              <p className="font-bold ">{loan.maximumAmount}</p>
-            </div>
-            <div className="flex flex-col">
-              <p className="text-[0.8rem] capitalize  text-orange-950/70 dark:text-orange10/50 ">
-                monthly installement
-              </p>
-              <p className="font-bold">{loan.monthlyInstallement}</p>
-            </div>
-            <div className="flex flex-col">
-              <p className="text-[0.8rem] capitalize  text-orange-950/70 dark:text-orange10/50 ">
-                Rate
-              </p>
-              <p className="font-bold">
-                {(loan.interestRate * 100).toFixed(2)}%
-              </p>
-            </div>
-            <div className="flex flex-col">
-              <p className="text-[0.8rem] capitalize  text-orange-950/70 dark:text-orange10/50 ">
-                Duration
-              </p>
-              <p className="font-bold">
-                {loan.repaymentPeriod}{" "}
-                {loan.repaymentPeriod === 1 ? "year" : "years"}
-              </p>
+                  if (!isOpen && !clicked) {
+                    setIsOpen((cur) => !cur);
+                    setClicked(true);
+                  }
+
+                  if (isOpen && clicked) {
+                    setClicked(false);
+                    setIsOpen((cur) => !cur);
+                  }
+                }}
+                onMouseEnter={() => {
+                  if (!clicked) setIsOpen(true);
+                }}
+                onMouseLeave={() => {
+                  if (!clicked) setIsOpen(false);
+                }}
+                className={cn(
+                  `bg-dark80-light30 hover:bg-dark80-light30  space-x-3 capitalize duration-500 !text-base ${
+                    isOpen && "!text-orange70 duration-500"
+                  }`
+                )}
+              >
+                <EyeIcon className="size-5 " />
+                <span>view eligibility criteria</span>
+              </Button>
+
+              {isOpen && (
+                <>
+                  <div className="h-[2px] bg-orange70 duration-500" />
+                  {loan.eligibilityCriteria?.map((criteria) => (
+                    <p
+                      key={criteria}
+                      className=" flex items-center gap-1 px-1 "
+                    >
+                      <ArrowRight className="size-3" />
+                      <span className="line-clamp-1">{criteria}</span>
+                    </p>
+                  ))}{" "}
+                </>
+              )}
             </div>
           </div>
-        </li>
+        </Link>
       )}
     </Draggable>
   );
 };
+
+function Attribute({
+  label,
+  value,
+}: {
+  label: string;
+  value: string | number;
+}) {
+  return (
+    <div className="flex flex-col">
+      <p className="text-[0.8rem] capitalize  text-orange-950/70 dark:text-orange10/50 ">
+        {label}
+      </p>
+      <p className="font-bold ">{value}</p>
+    </div>
+  );
+}
 
 export default Loan;

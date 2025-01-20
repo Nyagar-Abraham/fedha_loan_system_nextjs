@@ -3,7 +3,7 @@
 import { formUrlQuery } from "@/lib/utils";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 
 interface Props {
   pageNumber: number;

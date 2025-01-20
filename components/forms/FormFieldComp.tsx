@@ -200,7 +200,7 @@ const FormFieldComp: React.FC<FormFieldProps> = ({
                     if (type === "number") {
                       field.onChange(Number(e.target.value));
                     } else {
-                      field.onChange(e.target.value.trim());
+                      field.onChange(e.target.value);
                     }
                   }}
                   disabled={diabled}

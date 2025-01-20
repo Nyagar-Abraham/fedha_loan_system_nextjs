@@ -1,9 +1,11 @@
 "use client";
-import Logo from "./Logo";
-import Navigation from "./Navigation";
-import { MobileNav } from "./MobileNav";
 import { usePathname } from "next/navigation";
+
 import { cn } from "@/lib/utils";
+
+import Logo from "./Logo";
+import { MobileNav } from "./MobileNav";
+import Navigation from "./Navigation";
 
 const Header = () => {
   const pathname = usePathname();

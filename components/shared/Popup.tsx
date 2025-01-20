@@ -12,8 +12,8 @@ import {
 
 import ExitAlert from "./ExitAlert";
 import { HoverCardComp } from "./HoverCard";
-import AddLoan from "./loans/AddLoan";
-import MakeContribution from "./loans/MakeContribution";
+import AddLoan from "../loans/AddLoan";
+import MakeContribution from "../loans/MakeContribution";
 
 const Popup = ({ noticeExist }: { noticeExist?: boolean }) => {
   const pathName = usePathname();
@@ -28,7 +28,7 @@ const Popup = ({ noticeExist }: { noticeExist?: boolean }) => {
       <PopoverContent className="bg-dark80-light30 border-0  p-2  shadow-md ">
         {pathName === "/dashboard" && <ExitAlert noticeExist={noticeExist!} />}
 
-        {pathName === "/loan" && (
+        {pathName === "/loans" && (
           <div className="flex flex-col gap-4  ">
             <AddLoan />
             <MakeContribution />
