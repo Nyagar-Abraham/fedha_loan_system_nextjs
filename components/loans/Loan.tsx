@@ -1,10 +1,10 @@
 "use client";
 
-import { ArrowRight, DotIcon, EyeIcon } from "lucide-react";
+import { ArrowRight, EyeIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { Dispatch, useState } from "react";
+import { usePathname } from "next/navigation";
+import { useState } from "react";
 import {
   Draggable,
   DraggableProvided,
@@ -12,7 +12,7 @@ import {
 } from "react-beautiful-dnd";
 
 import { ILoanType } from "@/database/loanType.model";
-import { cn, formUrlQuery, removeKeysFromQuery } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 
 import { Button } from "../ui/button";
 

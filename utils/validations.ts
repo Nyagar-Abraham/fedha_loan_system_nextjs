@@ -64,6 +64,23 @@ export const AddLoanFormSchema = z.object({
     .optional(),
 });
 
+export const AddBankFormSchema = z.object({
+  name: z.string().min(3).max(500),
+  branchCode: z.string().min(2).max(100),
+  headquarters: z.string().min(2).max(200),
+  establishedYear: z.string().max(4),
+  contactPhone: z
+    .string()
+    .min(10, { message: "Must be a valid mobile number" })
+    .max(14, { message: "Must be a valid mobile number" }),
+  contactEmail: z.string().email(),
+  services: z
+    .array(z.string().min(3).max(500))
+    .max(10, { message: "You can add up to 10 criteria only." }),
+  website: z.string().url(),
+  avatar: z.string().optional(),
+});
+
 export const ContributionSchema = z.object({
   name: z.string().min(3).max(500),
   phone: z

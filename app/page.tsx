@@ -49,7 +49,7 @@ export default async function Home() {
         </p>
         <div className="flex items-center gap-8 rounded-md p-4 ">
           <Link
-            href="/loan"
+            href="/loans"
             className="line-clamp-1 rounded-md border-2 border-green90 px-6 py-3 text-xl  font-semibold text-green90  hover:border-green80 hover:bg-green80 hover:text-green10"
           >
             Apply Loan

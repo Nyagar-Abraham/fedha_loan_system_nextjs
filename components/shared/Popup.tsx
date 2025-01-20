@@ -10,6 +10,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
+import AddBank from "./AddBank";
 import ExitAlert from "./ExitAlert";
 import { HoverCardComp } from "./HoverCard";
 import AddLoan from "../loans/AddLoan";
@@ -31,6 +32,7 @@ const Popup = ({ noticeExist }: { noticeExist?: boolean }) => {
         {pathName === "/loans" && (
           <div className="flex flex-col gap-4  ">
             <AddLoan />
+            <AddBank />
             <MakeContribution />
           </div>
         )}

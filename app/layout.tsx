@@ -63,11 +63,10 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <Header />
-            <div className="mt-[76px] flex flex-1 flex-col  ">
-              <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col pt-6">
-                {children}
-              </main>
-            </div>
+
+            <main className="mx-auto mt-[100px] flex w-full flex-1 flex-col  ">
+              {children}
+            </main>
           </ThemeProvider>
           <Toaster />
         </body>

@@ -1,9 +1,14 @@
+import { LucideProps } from "lucide-react";
 import { StaticImageData } from "next/image";
+import { ForwardRefExoticComponent, RefAttributes } from "react";
 import { DraggableLocation } from "react-beautiful-dnd";
 
 export interface navRoutesInterface {
   route: string;
   href: string;
+  icon?: ForwardRefExoticComponent<
+    Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>
+  >;
 }
 
 export interface MemberInterface {

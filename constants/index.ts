@@ -1,12 +1,21 @@
+import { LayoutDashboard, DollarSign } from "lucide-react";
+
 import barclaysLogo from "@/public/barclays-bank-logo.jpeg";
 import commercialLogo from "@/public/commercial-bank-logo.png";
 import equityLogo from "@/public/equity-bank-logo.png";
 import kcbLogo from "@/public/kcb-bank-logo.jpg";
 
 export const NavRoutes = [
-  { href: "/dashboard", route: "Dashboard" },
-  { href: "/loans", route: "Loans" },
-  // { href: "/payloan", route: "Pay Loan" },
+  {
+    route: "Dashboard",
+    href: "/dashboard",
+    icon: LayoutDashboard,
+  },
+  {
+    route: "Loans",
+    href: "/loans",
+    icon: DollarSign,
+  },
 ];
 
 export const themes = [
@@ -101,6 +110,29 @@ export const moratoriumPeriods = [
   {
     value: "24 months after graduation",
     label: "24 months after graduation",
+  },
+];
+
+export const BankName = [
+  {
+    value: "Kenya Commercial Bank",
+    label: "Kenya Commercial Bank",
+  },
+  {
+    value: "Equity Bank",
+    label: "Equity Bank",
+  },
+  {
+    value: "Co-operative Bank of Kenya",
+    label: "Co-operative Bank of Kenya",
+  },
+  {
+    value: "Absa Bank Kenya",
+    label: "Absa Bank Kenya",
+  },
+  {
+    value: "Standard Chartered Bank Kenya",
+    label: "Standard Chartered Bank Kenya",
   },
 ];
 
