@@ -64,7 +64,6 @@ export async function drag(dragparams: LoanDragParams) {
   await connectToDatabase();
 
   const { payload, path } = dragparams;
-  console.log(path);
 
   const order = await Order.findOne();
 
@@ -73,7 +72,6 @@ export async function drag(dragparams: LoanDragParams) {
   }
 
   const curOrder = order?.loanTypeOrder.map((id: any) => id.toString());
-  console.log(curOrder);
 
   const [moverId] = curOrder.splice(payload.source.index, 1);
   curOrder.splice(payload.destination.index, 0, moverId);

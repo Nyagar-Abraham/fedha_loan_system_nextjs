@@ -19,7 +19,7 @@ const page = async ({ searchParams }: { name: string }) => {
   const loanTypes = await getLoanTypes();
   const { name } = searchParams;
 
-  console.log("pppp", loanTypes);
+  // console.log("pppp", loanTypes);
 
   return (
     <div className="mx-auto  ">

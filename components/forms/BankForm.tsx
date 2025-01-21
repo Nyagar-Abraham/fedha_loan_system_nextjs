@@ -2,8 +2,11 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { ImageIcon } from "@radix-ui/react-icons";
+import { Image, Loader2, MousePointerSquareDashed } from "lucide-react";
 import { usePathname } from "next/navigation";
-import React, { useState } from "react";
+import React, { useState, useTransition } from "react";
+import DropZone, { FileRejection } from "react-dropzone";
 import { useForm, ControllerRenderProps } from "react-hook-form";
 import { z } from "zod";
 
@@ -15,10 +18,11 @@ import {
   FormControl,
 } from "@/components/ui/form";
 import { BankName } from "@/constants";
-import { toast, useToast } from "@/hooks/use-toast";
-import { createLoanType } from "@/lib/actions/loanTypes.actions";
+import { useToast } from "@/hooks/use-toast";
+import { cn } from "@/lib/utils";
 import { AddBankFormSchema } from "@/utils/validations";
 
+import AppwriteDropZone from "./AppwriteDropZone";
 import FormFieldComp from "./FormFieldComp";
 import FormlabelComp from "./FormlabelComp";
 import SubmitButtom from "../shared/SubmitButtom";
@@ -26,6 +30,7 @@ import Tag from "../shared/Tag";
 import Wrapper from "../shared/Wrapper";
 import { DialogFooter } from "../ui/dialog";
 import { Input } from "../ui/input";
+import { Progress } from "../ui/progress";
 import { ToastAction } from "../ui/toast";
 
 enum Fields {
@@ -37,11 +42,13 @@ enum Fields {
   CONTACTEMAIL = "contactEmail",
   CONTACTPHONE = "contactPhone",
   WEBSITE = "website",
-  AVATAR = "avatar",
+  LOGO = "logo",
 }
 
 export function BankForm() {
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [fileUrl, setFileUrl] = useState<ArrayBuffer>();
+
   const { toast } = useToast();
   const pathname = usePathname();
 
@@ -56,16 +63,18 @@ export function BankForm() {
       contactEmail: "",
       contactPhone: "",
       website: "",
-      avatar: "",
+      logo: "",
     },
   });
 
   async function onSubmit(values: z.infer<typeof AddBankFormSchema>) {
     setIsSubmitting((cur) => !cur);
+    values[Fields.LOGO] = fileUrl;
+
     console.log(values);
     try {
       toast({
-        title: "Loan Successfully created",
+        title: "Bank Successfully created",
         description: "",
         duration: 3000,
       });
@@ -124,8 +133,10 @@ export function BankForm() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="max-h-[80vh] space-y-4 overflow-y-scroll px-2 pb-6 hide-scrollbar "
+        className="max-h-[80vh]  space-y-4 overflow-y-scroll px-2 pb-6 hide-scrollbar "
       >
+        {/* Drop zone */}
+
         <Wrapper className="gap-3  py-2 mdl:grid-cols-2">
           <FormFieldComp
             name={Fields.NAME}
@@ -213,7 +224,9 @@ export function BankForm() {
           form={form}
         />
 
-        <DialogFooter className="pt-6">
+        <AppwriteDropZone setFileUrl={setFileUrl} />
+
+        <DialogFooter className="py-6">
           <SubmitButtom submitting={isSubmitting} />
         </DialogFooter>
       </form>

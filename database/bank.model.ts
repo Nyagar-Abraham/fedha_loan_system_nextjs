@@ -9,6 +9,7 @@ export interface IBank extends Document {
   contactEmail: string;
   contactPhone: string;
   website: string;
+  logo?: Buffer;
 }
 
 const BankSchema: Schema = new Schema({
@@ -20,6 +21,10 @@ const BankSchema: Schema = new Schema({
   contactEmail: { type: String, required: true, unique: true },
   contactPhone: { type: String, required: true },
   website: { type: String, required: true },
+  logo: {
+    type: Buffer,
+    required: false,
+  },
 });
 
 const Bank = models.Bank || model("Bank", BankSchema);
