@@ -4,6 +4,7 @@ import Image from "next/image";
 import { IBank } from "@/database/bank.model";
 
 import CopyToClipboardButton from "../shared/CopyToClipboardButton";
+import List from "../shared/List";
 
 interface BankProps {
   bank: IBank;
@@ -52,17 +53,7 @@ const Bank = ({ bank }: BankProps) => {
           <Attribute label={Banks.WEBSITE} value={bank?.website} />
         </div>
 
-        <h2 className="mb-1 mt-5 text-[0.9rem] uppercase tracking-wide text-orange-950 dark:text-orange30">
-          services
-        </h2>
-
-        <ul className=" flex flex-col ">
-          {bank?.services.map((service) => (
-            <li className="border-t  border-orange10/10 py-1 " key={service}>
-              {service}
-            </li>
-          ))}
-        </ul>
+        <List heading="services" listItems={bank?.services} />
       </div>
     </div>
   );

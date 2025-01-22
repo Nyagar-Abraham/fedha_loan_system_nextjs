@@ -42,6 +42,10 @@ export async function getLoanTypes() {
 
     // Retrieve the single Order document and populate the loanTypeOrder field
     const order = await Order.findOne().populate("loanTypeOrder");
+    const OrderObj = await Order.findOne();
+    const orderChange = OrderObj?.loanTypeOrder?.toString();
+
+    console.log(orderChange);
 
     let loanTypes;
 
@@ -53,7 +57,7 @@ export async function getLoanTypes() {
       loanTypes = await LoanType.find().lean();
     }
 
-    return loanTypes;
+    return { loanTypes, orderChange };
   } catch (error) {
     console.error("Error fetching loan types:", error);
     throw new Error("Failed to retrieve loan types");

@@ -18,7 +18,8 @@ export const metadata: Metadata = {
 const page = async ({ searchParams }: { name: string }) => {
   // const { userId } = auth();
   // const members = await getAllMembers();
-  const [loanTypes, banks] = await Promise.all([getLoanTypes(), getAllBanks()]);
+  const [data, banks] = await Promise.all([getLoanTypes(), getAllBanks()]);
+  const { loanTypes, orderChange } = data;
 
   return (
     <div className="mx-auto pb-24">
@@ -30,7 +31,7 @@ const page = async ({ searchParams }: { name: string }) => {
       <LoanList loanTypesProp={stringify(loanTypes)} />
 
       <h2 className=" mt-16  text-4xl font-semibold text-orange70">Banks</h2>
-      <Slider>
+      <Slider orderChange={orderChange}>
         {banks?.map((bank: IBank) => <Bank key={bank._id} bank={bank} />)}
       </Slider>
     </div>

@@ -14,6 +14,7 @@ import {
 import { ILoanType } from "@/database/loanType.model";
 import { addPercentageSign, addShillingSign, cn } from "@/lib/utils";
 
+import List from "../shared/List";
 import { Button } from "../ui/button";
 
 interface LoanProps {
@@ -76,7 +77,9 @@ const Loan = ({ loan, index }: LoanProps) => {
 
           <div className="flex-between ">
             <div>
-              <p className="text-[1.2rem] font-bold">{loan?.name}</p>
+              <p className="text-[1rem] uppercase tracking-wide text-orange-950 dark:text-orange30">
+                {loan?.name}
+              </p>
             </div>
           </div>
           <div className=" rounded-sm border border-orange10/10 p-2 ">
@@ -97,59 +100,11 @@ const Loan = ({ loan, index }: LoanProps) => {
                 label={Labels.REPAYMENTPERIOD}
                 value={loan?.repaymentPeriod}
               />
-            </div>
-            <div
-              className={cn(
-                `flex flex-col gap-2 rounded-sm transition-all duration-500    mt-3 ${isOpen && "bg-dark80-light30 duration-500"}`
-              )}
-            >
-              <Button
-                onClick={() => {
-                  if (isOpen) {
-                    setClicked(true);
-                  }
-
-                  if (!isOpen && !clicked) {
-                    setIsOpen((cur) => !cur);
-                    setClicked(true);
-                  }
-
-                  if (isOpen && clicked) {
-                    setClicked(false);
-                    setIsOpen((cur) => !cur);
-                  }
-                }}
-                onMouseEnter={() => {
-                  if (!clicked) setIsOpen(true);
-                }}
-                onMouseLeave={() => {
-                  if (!clicked) setIsOpen(false);
-                }}
-                className={cn(
-                  `bg-dark80-light30 hover:bg-dark80-light30  space-x-3 capitalize duration-500 !text-base ${
-                    isOpen && "!text-orange70 duration-500"
-                  }`
-                )}
-              >
-                <EyeIcon className="size-5 " />
-                <span>view eligibility criteria</span>
-              </Button>
-
-              {isOpen && (
-                <>
-                  <div className="h-[2px] bg-orange70 duration-500" />
-                  {loan.eligibilityCriteria?.map((criteria) => (
-                    <p
-                      key={criteria}
-                      className=" flex items-center gap-1 px-1 "
-                    >
-                      <ArrowRight className="size-3" />
-                      <span className="line-clamp-1">{criteria}</span>
-                    </p>
-                  ))}{" "}
-                </>
-              )}
-            </div>
+            </div>{" "}
+            <List
+              heading="eligibility criteria"
+              listItems={loan?.eligibilityCriteria}
+            />
           </div>
         </Link>
       )}

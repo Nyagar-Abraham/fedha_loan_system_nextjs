@@ -3,7 +3,13 @@
 import gsap from "gsap";
 import React, { useEffect, useRef, useState } from "react";
 
-const Slider = ({ children }: { children: React.ReactNode }) => {
+const Slider = ({
+  children,
+  orderChange,
+}: {
+  children: React.ReactNode;
+  orderChange?: string;
+}) => {
   const [paused, setPaused] = useState(false);
   const animation: any = useRef();
 
@@ -47,7 +53,7 @@ const Slider = ({ children }: { children: React.ReactNode }) => {
       }
       window.removeEventListener("resize", handleResize);
     };
-  }, []);
+  }, [orderChange]);
 
   return (
     <div
