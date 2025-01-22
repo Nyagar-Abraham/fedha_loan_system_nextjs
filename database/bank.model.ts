@@ -9,11 +9,11 @@ export interface IBank extends Document {
   contactEmail: string;
   contactPhone: string;
   website: string;
-  logo?: Buffer;
+  logo?: string;
 }
 
 const BankSchema: Schema = new Schema({
-  name: { type: String, required: true },
+  name: { type: String, required: true, unique: true },
   branchCode: { type: String, required: true, unique: true },
   headquarters: { type: String, required: true },
   establishedYear: { type: Number, required: true },
@@ -22,7 +22,7 @@ const BankSchema: Schema = new Schema({
   contactPhone: { type: String, required: true },
   website: { type: String, required: true },
   logo: {
-    type: Buffer,
+    type: String,
     required: false,
   },
 });

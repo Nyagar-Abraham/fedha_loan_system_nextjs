@@ -5,7 +5,7 @@ import DropZone, { FileRejection } from "react-dropzone";
 
 import { useToast } from "@/hooks/use-toast";
 import { storage } from "@/lib/appwrite.config";
-import { cn } from "@/lib/utils";
+import { arrayBufferToString, cn } from "@/lib/utils";
 
 import { Input } from "../ui/input";
 
@@ -16,7 +16,7 @@ enum IDS {
 const AppwriteDropZone = ({
   setFileUrl,
 }: {
-  setFileUrl: React.Dispatch<React.SetStateAction<ArrayBuffer | undefined>>;
+  setFileUrl: React.Dispatch<React.SetStateAction<string | undefined>>;
 }) => {
   const [isDragOver, setIsDragOver] = useState<boolean>(false);
   const [isUploading, setIsUploading] = useState<boolean>(false);
@@ -36,10 +36,26 @@ const AppwriteDropZone = ({
           file
         );
 
-        const fileUlr = await storage.getFileView(IDS.BUCKETID, response.$id);
+        const fileUrlBuffer = await storage.getFilePreview(
+          IDS.BUCKETID,
+          response.$id
+        );
 
-        console.log("url", fileUlr);
-        setFileUrl(fileUlr);
+        if (fileUrlBuffer) {
+          // Convert ArrayBuffer to Blob
+          const blob = new Blob([fileUrlBuffer], {
+            type: "application/octet-stream",
+          });
+
+          // Create a URL for the Blob
+          const fileUrl = URL.createObjectURL(blob);
+
+          console.log({ fileUrl });
+
+          setFileUrl(fileUrl);
+        } else {
+          console.error("Failed to get file preview buffer");
+        }
 
         toast({
           title: `File uploaded successfully`,
@@ -65,7 +81,7 @@ const AppwriteDropZone = ({
   return (
     <div
       className={cn(
-        ` ring-1 mt-4 ring-inset ring-orange40/40 min-h-24 rounded-sm  flex flex-col overflow-hidden p-1  `,
+        ` ring-1  ring-inset ring-orange40/40 min-h-24 rounded-sm  flex flex-col overflow-hidden p-1  `,
         {
           "ring-orange60 ": isDragOver,
         }

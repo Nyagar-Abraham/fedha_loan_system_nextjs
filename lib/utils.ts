@@ -8,6 +8,24 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+export const arrayBufferToString = (buffer: ArrayBuffer) => {
+  const decoder = new TextDecoder("utf-8");
+  return decoder.decode(buffer);
+};
+
+export const stringToArrayBuffer = (str: string) => {
+  const encoder = new TextEncoder();
+  return encoder.encode(str).buffer;
+};
+
+export function addPercentageSign(value: number): string {
+  return `${value}%`;
+}
+
+export function addShillingSign(value: number): string {
+  return `KSh ${value.toLocaleString()}`;
+}
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const stringify = (value: any) => JSON.stringify(value);
 

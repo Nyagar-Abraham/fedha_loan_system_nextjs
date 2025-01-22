@@ -90,7 +90,7 @@ export function AddLoanForm() {
     setIsSubmitting((cur) => !cur);
 
     try {
-      await createLoanType({
+      const loan = await createLoanType({
         params: {
           name: values.name.trim(),
           intrestRate: values.intrestRate,
@@ -111,11 +111,14 @@ export function AddLoanForm() {
       form.clearErrors();
       form.reset();
 
-      toast({
-        title: "Loan Successfully created",
-        description: "",
-        duration: 3000,
-      });
+      console.log("newloan", loan);
+      if (loan) {
+        toast({
+          title: "Loan Successfully created",
+          description: "",
+          duration: 3000,
+        });
+      }
     } catch (error) {
       console.log({ error });
       toast({

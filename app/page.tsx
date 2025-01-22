@@ -34,9 +34,9 @@ export default async function Home() {
         quality={90}
         alt="Fedha group background image "
       />
-      <div className="relative z-10  flex flex-col items-center rounded-lg p-7 text-center backdrop-blur-sm">
+      <div className="relative z-10 mx-auto flex  max-w-[65rem] flex-col items-center rounded-lg p-7 text-center backdrop-blur-sm">
         <h1 className="mb-2 bg-gradient-to-r from-orange100 to-orange70 bg-clip-text text-6xl font-normal tracking-tighter text-transparent">
-          Fedha Youth Group
+          Loan Kenya
         </h1>
         <p
           className="my-6 text-xl text-orange50 md:px-8
@@ -50,9 +50,9 @@ export default async function Home() {
         <div className="flex items-center gap-8 rounded-md p-4 ">
           <Link
             href="/loans"
-            className="line-clamp-1 rounded-md border-2 border-green90 px-6 py-3 text-xl  font-semibold text-green90  hover:border-green80 hover:bg-green80 hover:text-green10"
+            className="line-clamp-1 rounded-md border-2 border-green90 px-6 py-3 text-xl  font-semibold text-green90   hover:bg-green80 hover:text-green10"
           >
-            Apply Loan
+            Loans
           </Link>
           <Link
             href="/dashboard"

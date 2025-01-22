@@ -12,13 +12,20 @@ import {
 } from "react-beautiful-dnd";
 
 import { ILoanType } from "@/database/loanType.model";
-import { cn } from "@/lib/utils";
+import { addPercentageSign, addShillingSign, cn } from "@/lib/utils";
 
 import { Button } from "../ui/button";
 
 interface LoanProps {
   loan: ILoanType;
   index: number;
+}
+
+enum Labels {
+  INTERESTRATE = "intrest rate",
+  MAXIMUMAMOUNT = "maximum amount",
+  PROCESSINGFEE = "processing fee",
+  REPAYMENTPERIOD = "repayment period",
 }
 
 const Loan = ({ loan, index }: LoanProps) => {
@@ -53,7 +60,6 @@ const Loan = ({ loan, index }: LoanProps) => {
       {(Provided: DraggableProvided, snapshot: DraggableStateSnapshot) => (
         <Link
           href={`${pathname}/${loan._id}`}
-          // onClick={() => handleClick(loan.id)}
           ref={Provided.innerRef}
           {...Provided.draggableProps}
           {...Provided.dragHandleProps}
@@ -72,29 +78,23 @@ const Loan = ({ loan, index }: LoanProps) => {
             <div>
               <p className="text-[1.2rem] font-bold">{loan?.name}</p>
             </div>
-
-            {/* <Image
-              src={loan?.logo.src}
-              alt={`${loan?.category} logo`}
-              className="aspect-square rounded-sm object-cover duration-300 hover:scale-[1.01] hover:opacity-60"
-              width={50}
-              height={50}
-              onClick={(e) => {
-                e.stopPropagation();
-                setIsOpen(loan?.bank);
-              }}
-            /> */}
           </div>
           <div className=" rounded-sm border border-orange10/10 p-2 ">
             <div className="grid grid-cols-2 gap-4">
-              <Attribute label="intrest rate" value={loan?.intrestRate} />
-              <Attribute label="maximum amount" value={loan?.maxLoanAmount} />
               <Attribute
-                label="processing fee"
+                label={Labels.INTERESTRATE}
+                value={loan?.intrestRate}
+              />
+              <Attribute
+                label={Labels.MAXIMUMAMOUNT}
+                value={loan?.maxLoanAmount}
+              />
+              <Attribute
+                label={Labels.PROCESSINGFEE}
                 value={loan?.loanProcessingFee}
               />
               <Attribute
-                label="repayment period"
+                label={Labels.REPAYMENTPERIOD}
                 value={loan?.repaymentPeriod}
               />
             </div>
@@ -169,7 +169,13 @@ function Attribute({
       <p className="text-[0.8rem] capitalize  text-orange-950/70 dark:text-orange10/50 ">
         {label}
       </p>
-      <p className="font-bold ">{value}</p>
+      <p className="font-bold ">
+        {typeof value === "string"
+          ? value
+          : Labels.INTERESTRATE === label
+            ? addPercentageSign(value)
+            : addShillingSign(value)}
+      </p>
     </div>
   );
 }

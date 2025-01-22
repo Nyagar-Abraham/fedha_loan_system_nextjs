@@ -16,7 +16,8 @@ export async function createLoanType(loanTypeParams: CreateLoanTypeParams) {
 
     const { params, path } = loanTypeParams;
 
-    const loanType = await LoanType.create(params);
+    const loanTypeDocument = await LoanType.create(params);
+    const loanType = loanTypeDocument.toObject();
 
     // ADD ID TO ORDERARRAY IN LOCALSTORAGE
     let order = await Order.findOne();

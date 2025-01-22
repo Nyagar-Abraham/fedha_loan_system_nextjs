@@ -78,7 +78,7 @@ export const AddBankFormSchema = z.object({
     .array(z.string().min(3).max(500))
     .max(10, { message: "You can add up to 10 criteria only." }),
   website: z.string().url(),
-  logo: z.instanceof(ArrayBuffer).optional(),
+  logo: z.string().optional(),
 });
 
 export const ContributionSchema = z.object({

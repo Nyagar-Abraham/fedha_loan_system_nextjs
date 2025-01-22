@@ -134,9 +134,9 @@ const FormFieldComp: React.FC<FormFieldProps> = ({
                   {...field}
                   disabled={diabled}
                 >
-                  {radioItems.map((item) => (
+                  {radioItems.map((item, i) => (
                     <FormItem
-                      key={item.value}
+                      key={`${item.value}${i}`}
                       className={cn(
                         `flex items-center space-x-3 space-y-0 rounded-md  border border-orange20/30 p-2 duration-200 hover:border-orange70 hover:text-orange70 dark:hover:border-orange70 ${className}`
                       )}
@@ -167,10 +167,10 @@ const FormFieldComp: React.FC<FormFieldProps> = ({
                     <SelectValue placeholder={placeholder} />
                   </SelectTrigger>
                   <SelectContent className="bg-dark20 text-[1rem] dark:bg-dark90 dark:hover:bg-dark80 ">
-                    {selectItems.map((item) => (
+                    {selectItems.map((item, i) => (
                       <SelectItem
                         className="group items-center gap-3 text-base "
-                        key={item.value}
+                        key={`${item.value}${i}`}
                         value={item.value}
                       >
                         <div className="flex gap-3">

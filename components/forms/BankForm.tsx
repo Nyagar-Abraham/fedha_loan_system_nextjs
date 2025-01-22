@@ -2,11 +2,8 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ImageIcon } from "@radix-ui/react-icons";
-import { Image, Loader2, MousePointerSquareDashed } from "lucide-react";
 import { usePathname } from "next/navigation";
-import React, { useState, useTransition } from "react";
-import DropZone, { FileRejection } from "react-dropzone";
+import React, { useState } from "react";
 import { useForm, ControllerRenderProps } from "react-hook-form";
 import { z } from "zod";
 
@@ -19,18 +16,18 @@ import {
 } from "@/components/ui/form";
 import { BankName } from "@/constants";
 import { useToast } from "@/hooks/use-toast";
-import { cn } from "@/lib/utils";
+import { createBank } from "@/lib/actions/bank.actions";
 import { AddBankFormSchema } from "@/utils/validations";
 
 import AppwriteDropZone from "./AppwriteDropZone";
 import FormFieldComp from "./FormFieldComp";
 import FormlabelComp from "./FormlabelComp";
+import MultipleEntryField from "./MultipleEntryField";
 import SubmitButtom from "../shared/SubmitButtom";
 import Tag from "../shared/Tag";
 import Wrapper from "../shared/Wrapper";
 import { DialogFooter } from "../ui/dialog";
 import { Input } from "../ui/input";
-import { Progress } from "../ui/progress";
 import { ToastAction } from "../ui/toast";
 
 enum Fields {
@@ -47,7 +44,7 @@ enum Fields {
 
 export function BankForm() {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const [fileUrl, setFileUrl] = useState<ArrayBuffer>();
+  const [fileUrl, setFileUrl] = useState<string>();
 
   const { toast } = useToast();
   const pathname = usePathname();
@@ -63,7 +60,7 @@ export function BankForm() {
       contactEmail: "",
       contactPhone: "",
       website: "",
-      logo: "",
+      logo: undefined,
     },
   });
 
@@ -71,13 +68,22 @@ export function BankForm() {
     setIsSubmitting((cur) => !cur);
     values[Fields.LOGO] = fileUrl;
 
-    console.log(values);
+    console.log({ values });
     try {
-      toast({
-        title: "Bank Successfully created",
-        description: "",
-        duration: 3000,
-      });
+      const bank = await createBank({ params: values, path: pathname });
+
+      console.log("new bank", bank);
+
+      form.clearErrors();
+      form.reset();
+
+      if (bank) {
+        toast({
+          title: "Bank Successfully created",
+          description: "",
+          duration: 3000,
+        });
+      }
     } catch (error) {
       console.log({ error });
       toast({
@@ -91,7 +97,7 @@ export function BankForm() {
     }
   }
 
-  const handleChange = (
+  const handleKeyDown = (
     e: React.KeyboardEvent,
     field: ControllerRenderProps<any, string>
   ) => {
@@ -121,10 +127,10 @@ export function BankForm() {
   };
 
   const handleServiceRemove = (
-    service: string,
+    value: string,
     field: ControllerRenderProps<any, string>
   ) => {
-    const newServices = field.value.filter((t: string) => t !== service);
+    const newServices = field.value.filter((t: string) => t !== value);
 
     form.setValue(Fields.SERVICES, newServices);
   };
@@ -135,13 +141,10 @@ export function BankForm() {
         onSubmit={form.handleSubmit(onSubmit)}
         className="max-h-[80vh]  space-y-4 overflow-y-scroll px-2 pb-6 hide-scrollbar "
       >
-        {/* Drop zone */}
-
         <Wrapper className="gap-3  py-2 mdl:grid-cols-2">
           <FormFieldComp
             name={Fields.NAME}
             label="bank name"
-            className=""
             placeholder="select bank name"
             isSelect
             selectItems={BankName}
@@ -155,7 +158,7 @@ export function BankForm() {
             form={form}
           />
         </Wrapper>
-        <Wrapper className="gap-3  py-2 mdl:grid-cols-2">
+        <Wrapper className="gap-3 py-2 mdl:grid-cols-2">
           <FormFieldComp
             name={Fields.HEADQUARTERS}
             label="headquarters"
@@ -186,35 +189,14 @@ export function BankForm() {
           />
         </Wrapper>
 
-        <FormField
-          control={form.control}
+        <MultipleEntryField
+          form={form}
+          label="services"
+          placeholder="press enter to add service..."
           name={Fields.SERVICES}
-          render={({ field }) => (
-            <FormItem>
-              <FormlabelComp label="services provided" />
-              <FormControl>
-                <>
-                  <Input
-                    placeholder="add sercice..."
-                    className={`min-h-12 border-b-2 border-orange40 bg-dark20 text-xl hover:bg-dark10 focus:ring focus:ring-orange-400 dark:border-orange-950 dark:bg-dark80 dark:hover:bg-dark70 `}
-                    onKeyDown={(e) => handleChange(e, field)}
-                  />
-                  <div className="flex gap-5">
-                    {field?.value?.length > 0 &&
-                      field.value?.map((value: string) => (
-                        <Tag
-                          item={value}
-                          key={value}
-                          onClick={() => handleServiceRemove(value, field)}
-                        />
-                      ))}
-                  </div>
-                </>
-              </FormControl>
-
-              <FormMessage />
-            </FormItem>
-          )}
+          disabled={isSubmitting}
+          handleKeyDown={handleKeyDown}
+          handleRemove={handleServiceRemove}
         />
 
         <FormFieldComp
@@ -223,8 +205,9 @@ export function BankForm() {
           placeholder="https://www.kcbgroup.com"
           form={form}
         />
-
-        <AppwriteDropZone setFileUrl={setFileUrl} />
+        <div className="pt-5">
+          <AppwriteDropZone setFileUrl={setFileUrl} />
+        </div>
 
         <DialogFooter className="py-6">
           <SubmitButtom submitting={isSubmitting} />
