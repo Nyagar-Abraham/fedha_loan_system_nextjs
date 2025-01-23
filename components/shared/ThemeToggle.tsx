@@ -26,7 +26,7 @@ export default function ThemeToggle() {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
-          className="group bg-transparent p-5 hover:bg-orange80   "
+          className="group border-[1.5px] border-orange80   bg-transparent p-5 hover:bg-orange80   "
           size="icon"
         >
           <Sun className="absolute size-6 rotate-0 scale-100 fill-orange80 text-orange80  transition-all group-hover:fill-white group-hover:text-white dark:rotate-90 dark:scale-0" />

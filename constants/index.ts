@@ -1,9 +1,4 @@
-import { LayoutDashboard, DollarSign } from "lucide-react";
-
-import barclaysLogo from "@/public/barclays-bank-logo.jpeg";
-import commercialLogo from "@/public/commercial-bank-logo.png";
-import equityLogo from "@/public/equity-bank-logo.png";
-import kcbLogo from "@/public/kcb-bank-logo.jpg";
+import { LayoutDashboard, DollarSign, User } from "lucide-react";
 
 export const NavRoutes = [
   {
@@ -15,6 +10,11 @@ export const NavRoutes = [
     route: "Loans",
     href: "/loans",
     icon: DollarSign,
+  },
+  {
+    route: "Admin",
+    href: "/admin",
+    icon: User,
   },
 ];
 

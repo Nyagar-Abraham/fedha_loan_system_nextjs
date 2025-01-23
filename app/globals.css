@@ -84,7 +84,15 @@ body {
   }
 }
 
+/* flex items-center space-x-3 space-y-0 rounded-md  border border-orange20/30 p-2 duration-200 hover:border-orange70 hover:text-orange70 dark:hover:border-orange70 */
+
 @layer utilities {
+  .input {
+    @apply min-h-12 border-b-2 border-orange40 bg-dark20 text-xl hover:bg-dark10 focus:ring focus:ring-orange-400 dark:border-orange-950 dark:bg-dark80 dark:hover:bg-dark70;
+  }
+  .sign-in {
+    @apply text-orange80 border-[1.5px] border-orange80  duration-300 ease-in px-4 py-2 font-semibold rounded-md hover:border-orange80 hover:text-orange80 hover:bg-orange80 hover:text-white;
+  }
   .bg-dark100-light10 {
     @apply dark:bg-dark100 bg-dark20 text-dark90 dark:text-dark10;
   }

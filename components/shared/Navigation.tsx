@@ -5,6 +5,7 @@ import {
   SignedOut,
   SignInButton,
   SignOutButton,
+  SignUpButton,
   UserButton,
 } from "@clerk/nextjs";
 import Link from "next/link";
@@ -48,19 +49,26 @@ const Navigation = () => {
           </li>
         ))}
 
-        <li
-          className={cn(
-            " text-orange90 duration-300 ease-in px-4 py-2 font-semibold rounded-md hover:border-orange70 hover:text-white hover:bg-orange80"
-          )}
-        >
+        <li className={cn("flex gap-3 items-center")}>
           <SignedIn>
-            <SignOutButton />
+            <div className="sign-in">
+              <SignOutButton />
+            </div>
           </SignedIn>
+
           <SignedOut>
-            <SignInButton />
+            <div className="sign-in">
+              <SignUpButton />{" "}
+            </div>
+          </SignedOut>
+
+          <SignedOut>
+            <div className="sign-in">
+              <SignInButton />{" "}
+            </div>
           </SignedOut>
         </li>
-        <li className="md-8 flex items-center justify-center gap-6">
+        <li className=" flex items-center justify-center gap-6">
           <ThemeToggle />
           <SignedIn>
             <UserButton />

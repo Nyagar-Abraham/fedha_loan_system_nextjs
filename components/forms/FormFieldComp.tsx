@@ -137,9 +137,7 @@ const FormFieldComp: React.FC<FormFieldProps> = ({
                   {radioItems.map((item, i) => (
                     <FormItem
                       key={`${item.value}${i}`}
-                      className={cn(
-                        `flex items-center space-x-3 space-y-0 rounded-md  border border-orange20/30 p-2 duration-200 hover:border-orange70 hover:text-orange70 dark:hover:border-orange70 ${className}`
-                      )}
+                      className={cn(`input ${className}`)}
                     >
                       <FormControl>
                         <RadioGroupItem value={item.value} />
@@ -192,7 +190,7 @@ const FormFieldComp: React.FC<FormFieldProps> = ({
                 // INPUT
                 <Input
                   type={type}
-                  className={`min-h-12 border-b-2 border-orange40 bg-dark20 text-xl hover:bg-dark10 focus:ring focus:ring-orange-400 dark:border-orange-950 dark:bg-dark80 dark:hover:bg-dark70 ${className}`}
+                  className={`input ${className}`}
                   placeholder={placeholder}
                   {...field}
                   value={field.value || ""}
