@@ -1,7 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-unused-vars */
 "use client";
-
-import path from "path";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { usePathname } from "next/navigation";
@@ -23,7 +22,8 @@ import {
   propertyType,
   vehicleType,
 } from "@/constants";
-import { toast, useToast } from "@/hooks/use-toast";
+import { LoanTypeFields } from "@/constants/enums";
+import { useToast } from "@/hooks/use-toast";
 import { createLoanType } from "@/lib/actions/loanTypes.actions";
 import { AddLoanFormSchema } from "@/utils/validations";
 
@@ -35,21 +35,6 @@ import Wrapper from "../shared/Wrapper";
 import { DialogFooter } from "../ui/dialog";
 import { Input } from "../ui/input";
 import { ToastAction } from "../ui/toast";
-
-enum Fields {
-  NAME = "name",
-  INTRESTRATE = "intrestRate",
-  MAXIMUMLOANAMOUNT = "maxLoanAmount",
-  REPAYMENTPERIOD = "repaymentPeriod",
-  ELIGIBILITYCRITERIA = "eligibilityCriteria",
-  LOANPROCESSINGFEE = "loanProcessingFee",
-  DOWNPAYMENT = "downPayment",
-  VEHICLETYPE = "vehicleType",
-  PROPERTYTYPE = "propertyType",
-  MORATORIUMPERIOD = "moratoriumPeriod",
-  COLLATERALREQUIRED = "collateralRequired",
-  BUSINESSTYPE = "businessType",
-}
 
 enum Names {
   PERSONAL = "Personal Loan",
@@ -136,7 +121,10 @@ export function AddLoanForm() {
     e: React.KeyboardEvent,
     field: ControllerRenderProps<any, string>
   ) => {
-    if (e.key === "Enter" && field.name === Fields.ELIGIBILITYCRITERIA) {
+    if (
+      e.key === "Enter" &&
+      field.name === LoanTypeFields.ELIGIBILITYCRITERIA
+    ) {
       e.preventDefault();
 
       const inputField = e.target as HTMLInputElement;
@@ -144,16 +132,19 @@ export function AddLoanForm() {
 
       if (value !== "") {
         if (value.length > 100) {
-          return form.setError(Fields.ELIGIBILITYCRITERIA, {
+          return form.setError(LoanTypeFields.ELIGIBILITYCRITERIA, {
             type: "required",
             message: "creteria must be less than 100 characters.",
           });
         }
 
         if (!field?.value?.includes(value as never)) {
-          form.setValue(Fields.ELIGIBILITYCRITERIA, [...field.value, value]);
+          form.setValue(LoanTypeFields.ELIGIBILITYCRITERIA, [
+            ...field.value,
+            value,
+          ]);
           inputField.value = "";
-          form.clearErrors(Fields.ELIGIBILITYCRITERIA);
+          form.clearErrors(LoanTypeFields.ELIGIBILITYCRITERIA);
         }
       } else {
         form.trigger();
@@ -167,7 +158,7 @@ export function AddLoanForm() {
   ) => {
     const newCriterias = field.value.filter((t: string) => t !== criteria);
 
-    form.setValue(Fields.ELIGIBILITYCRITERIA, newCriterias);
+    form.setValue(LoanTypeFields.ELIGIBILITYCRITERIA, newCriterias);
   };
 
   return (
@@ -177,7 +168,7 @@ export function AddLoanForm() {
         className="max-h-[80vh] space-y-4 overflow-y-scroll px-2 pb-6 hide-scrollbar "
       >
         <FormFieldComp
-          name={Fields.NAME}
+          name={LoanTypeFields.NAME}
           label="Loan name"
           className=""
           placeholder="select loan name"
@@ -188,7 +179,7 @@ export function AddLoanForm() {
 
         <FormField
           control={form.control}
-          name={Fields.ELIGIBILITYCRITERIA}
+          name={LoanTypeFields.ELIGIBILITYCRITERIA}
           render={({ field }) => (
             <FormItem>
               <FormlabelComp label="eligibility criteria" />
@@ -219,21 +210,21 @@ export function AddLoanForm() {
 
         <Wrapper className="gap-3 py-3  md:grid-cols-3">
           <FormFieldComp
-            name={Fields.INTRESTRATE}
+            name={LoanTypeFields.INTRESTRATE}
             label="intrest rate"
             type="number"
             className=""
             form={form}
           />
           <FormFieldComp
-            name={Fields.MAXIMUMLOANAMOUNT}
+            name={LoanTypeFields.MAXIMUMLOANAMOUNT}
             label="maximum loan amount"
             type="number"
             className=""
             form={form}
           />
           <FormFieldComp
-            name={Fields.REPAYMENTPERIOD}
+            name={LoanTypeFields.REPAYMENTPERIOD}
             label="repayment period"
             placeholder="5 years"
             className=""
@@ -243,7 +234,7 @@ export function AddLoanForm() {
 
         <Wrapper className="gap-3  py-2 md:grid-cols-2">
           <FormFieldComp
-            name={Fields.LOANPROCESSINGFEE}
+            name={LoanTypeFields.LOANPROCESSINGFEE}
             label="Loan proccesing fee"
             type="number"
             className=""
@@ -251,7 +242,7 @@ export function AddLoanForm() {
           />
 
           <FormFieldComp
-            name={Fields.DOWNPAYMENT}
+            name={LoanTypeFields.DOWNPAYMENT}
             label="downpayment"
             type="number"
             className=""
@@ -262,7 +253,7 @@ export function AddLoanForm() {
         <Wrapper className="gap-3  py-2 mdl:grid-cols-2">
           <FormFieldComp
             diabled={Names.CAR !== name}
-            name={Fields.VEHICLETYPE}
+            name={LoanTypeFields.VEHICLETYPE}
             label="vehicle type "
             isSelect
             selectItems={vehicleType}
@@ -272,7 +263,7 @@ export function AddLoanForm() {
 
           <FormFieldComp
             diabled={Names.MORTGAGE !== name}
-            name={Fields.PROPERTYTYPE}
+            name={LoanTypeFields.PROPERTYTYPE}
             label="property type "
             isSelect
             selectItems={propertyType}
@@ -283,7 +274,7 @@ export function AddLoanForm() {
         <Wrapper className="gap-3  py-2 mdl:grid-cols-2">
           <FormFieldComp
             diabled={Names.EDUCATION !== name}
-            name={Fields.MORATORIUMPERIOD}
+            name={LoanTypeFields.MORATORIUMPERIOD}
             label="moratorium period "
             placeholder="6 years after graduation"
             isSelect
@@ -292,7 +283,7 @@ export function AddLoanForm() {
           />
           <FormFieldComp
             diabled={Names.BUSINESS !== name}
-            name={Fields.BUSINESSTYPE}
+            name={LoanTypeFields.BUSINESSTYPE}
             label="bussiness type"
             isSelect
             selectItems={businessType}
@@ -302,7 +293,7 @@ export function AddLoanForm() {
         </Wrapper>
 
         <FormFieldComp
-          name={Fields.COLLATERALREQUIRED}
+          name={LoanTypeFields.COLLATERALREQUIRED}
           label="collateral required"
           className=""
           isCheckbox={true}
@@ -310,7 +301,11 @@ export function AddLoanForm() {
         />
 
         <DialogFooter className="mt-2">
-          <SubmitButtom submitting={isSubmitting} />
+          <SubmitButtom
+            submitting={isSubmitting}
+            submitTxt="Create"
+            submittingTxt="creating..."
+          />
         </DialogFooter>
       </form>
     </Form>

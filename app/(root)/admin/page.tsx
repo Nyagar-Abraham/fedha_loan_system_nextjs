@@ -1,18 +1,37 @@
-import { clerkClient } from "@clerk/nextjs/server";
-import { redirect } from "next/navigation";
+import { auth, clerkClient } from "@clerk/nextjs/server";
 
 import ChangeUserRole from "@/components/admin/ChangeUserRole";
 import { SearchUsers } from "@/components/admin/SearchUsers";
 import CopyToClipboardButton from "@/components/shared/CopyToClipboardButton";
+import Popup from "@/components/shared/Popup";
+import { bankColumns } from "@/components/tables/bankColumns";
+import DataTable from "@/components/tables/DataTable";
 import { Badge } from "@/components/ui/badge";
-import { checkRole } from "@/utils/roles";
+import { BankTypeFields } from "@/constants/enums";
+import { getAllBanks } from "@/lib/actions/bank.actions";
+import { getLoanTypesAdmin } from "@/lib/actions/loanTypes.actions";
+import { getCurrentUser } from "@/lib/actions/member.actions";
 
 export default async function AdminDashboard(params: {
   searchParams: Promise<{ search?: string }>;
 }) {
-  if (!checkRole("admin")) {
-    redirect("/");
-  }
+  const { userId } = auth();
+
+  const [member, loanTypes, banks] = await Promise.all([
+    getCurrentUser({
+      userId: userId!,
+    }),
+    getLoanTypesAdmin(),
+    getAllBanks({
+      path: "admin",
+    }),
+
+    // getUserLoan({
+    //   userId,
+    //   page: searchParams?.page ? +searchParams.page : 1,
+    //   pageSize: 4,
+    // }),
+  ]);
 
   const query = (await params.searchParams).search;
 
@@ -20,8 +39,20 @@ export default async function AdminDashboard(params: {
 
   const users = query ? (await client.users.getUserList({ query })).data : [];
 
+  console.log(loanTypes);
+
   return (
-    <>
+    <div className="mx-auto pb-24">
+      <div className="mb-7 flex items-center justify-between ">
+        <h1 className=" text-4xl font-semibold text-orange90">
+          Admin{" "}
+          {member?.name
+            ? member?.name.split("-")[0].toString()
+            : member?.username}
+        </h1>
+        <Popup />
+      </div>
+
       <SearchUsers />
 
       <div className="mt-8 grid md:grid-cols-2">
@@ -55,6 +86,14 @@ export default async function AdminDashboard(params: {
           );
         })}
       </div>
-    </>
+
+      <div className="mt-8">
+        <DataTable
+          columns={bankColumns}
+          data={banks}
+          filter={BankTypeFields.NAME}
+        />
+      </div>
+    </div>
   );
 }

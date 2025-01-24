@@ -1,7 +1,5 @@
 import { LucideProps } from "lucide-react";
-import { StaticImageData } from "next/image";
 import { ForwardRefExoticComponent, RefAttributes } from "react";
-import { DraggableLocation } from "react-beautiful-dnd";
 
 export interface navRoutesInterface {
   route: string;
@@ -24,14 +22,6 @@ export interface ContributiontypesInterface {
   label: string;
 }
 
-export type LoanType = {
-  category: string;
-  value: string;
-  maximumAmount: string;
-  interestRate: number;
-  repaymentPeriod: number;
-};
-
 export type LoanDetails = {
   interestPerYearOnLoan: number;
   monthlyRepayment: number;
@@ -40,10 +30,39 @@ export type LoanDetails = {
   totalLoan: number;
 };
 
-export type LoanBoard = {
-  loans: loanTypeInterface[];
-  order: string[];
+export type Payment = {
+  id: string;
+  amount: number;
+  status: "pending" | "processing" | "success" | "failed";
+  email: string;
 };
+
+export interface LoanType {
+  name: string;
+  intrestRate: number;
+  maxLoanAmount: number;
+  repaymentPeriod: string;
+  eligibilityCriteria?: string[];
+  loanProcessingFee: number;
+  downPayment?: number;
+  vehicleType?: string;
+  propertyType?: string;
+  moratoriumPeriod?: string;
+  collateralRequired?: boolean;
+  businesstype?: string;
+}
+
+export interface BankType {
+  name: string;
+  branchCode: string;
+  headquarters: string;
+  contactEmail: string;
+}
+
+// export type LoanBoard = {
+//   loans: loanTypeInterface[];
+//   order: string[];
+// };
 
 // export type LoanAction =
 //   | { type: "SET_LOANS"; payload: LoanBoard }

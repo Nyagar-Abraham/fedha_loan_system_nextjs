@@ -13,16 +13,22 @@ export const SearchUsers = () => {
   const pathname = usePathname();
 
   return (
-    <div className="my-2">
+    <div className=" my-2">
       <form
         onSubmit={(e) => {
           e.preventDefault();
           setSubmitting(true);
-          const form = e.currentTarget;
-          const formData = new FormData(form);
-          const queryTerm = formData.get("search") as string;
-          router.push(pathname + "?search=" + queryTerm);
-          setSubmitting(false);
+          try {
+            const form = e.currentTarget;
+            const formData = new FormData(form);
+            const queryTerm = formData.get("search") as string;
+            router.push(pathname + "?search=" + queryTerm);
+          } catch (error) {
+            console.log(error);
+          } finally {
+            setSubmitting(false);
+            e.currentTarget.reset();
+          }
         }}
       >
         <Label
@@ -35,7 +41,7 @@ export const SearchUsers = () => {
           <Input className="input" id="search" name="search" type="text" />
           <SubmitButtom
             submitTxt="search user"
-            submittingTxt="searching"
+            submittingTxt="searching..."
             submitting={isSubmitting}
           />
         </div>

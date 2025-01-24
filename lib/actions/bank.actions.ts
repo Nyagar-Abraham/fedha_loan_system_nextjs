@@ -1,7 +1,5 @@
 "use server";
 
-import path from "path";
-
 import { revalidatePath } from "next/cache";
 
 import Bank from "@/database/bank.model";
@@ -27,13 +25,19 @@ export async function createBank(bankParams: CreateBankParams) {
 }
 
 // GET ALL BANKS
-export async function getAllBanks() {
+export async function getAllBanks({ path }: { path?: string }) {
   try {
     await connectToDatabase();
 
-    // const { params, path } = getAllBanksParams;
+    let banks;
 
-    const banks = await Bank.find().lean();
+    if (path && path === "admin") {
+      banks = await Bank.find()
+        .select("name branchCode headquarters email  contactEmail ")
+        .lean();
+    } else {
+      banks = await Bank.find().lean();
+    }
 
     return banks;
   } catch (error) {

@@ -21,11 +21,13 @@ import {
 } from "@/components/ui/sheet";
 import { NavRoutes } from "@/constants";
 import { cn } from "@/lib/utils";
-import { navRoutesInterface } from "@/utils/Interfaces";
+import { navRoutesInterface } from "@/types/Interfaces";
 
+import AddBank from "./AddBank";
 import ThemeToggle from "./ThemeToggle";
+import AddLoan from "../loans/AddLoan";
 
-export function MobileNav() {
+export function MobileNav({ isAdmin }: { isAdmin: boolean }) {
   const pathname = usePathname();
   return (
     <div className="block mdl:hidden">
@@ -72,6 +74,14 @@ export function MobileNav() {
               </SheetClose>
             ))}
           </div>
+
+          {isAdmin && (
+            <div className="mt-4 flex flex-col  gap-4 ">
+              {" "}
+              <AddLoan />
+              <AddBank />
+            </div>
+          )}
           <div className="mb-24 mt-auto flex flex-col gap-4">
             <SignedIn>
               <SheetClose

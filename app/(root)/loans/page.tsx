@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 const page = async ({ searchParams }: { name: string }) => {
   // const { userId } = auth();
   // const members = await getAllMembers();
-  const [data, banks] = await Promise.all([getLoanTypes(), getAllBanks()]);
+  const [data, banks] = await Promise.all([getLoanTypes(), getAllBanks({})]);
   const { loanTypes, orderChange } = data;
 
   return (

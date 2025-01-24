@@ -86,3 +86,20 @@ export async function drag(dragparams: LoanDragParams) {
 
   revalidatePath(path);
 }
+
+// GET ALL BANKS
+export async function getLoanTypesAdmin() {
+  try {
+    await connectToDatabase();
+
+    const loanTypes = await LoanType.find()
+      .select(
+        "name  intrestRate maxLoanAmount repaymentPeriod collateralRequired "
+      )
+      .lean();
+
+    return loanTypes;
+  } catch (error) {
+    console.log(error);
+  }
+}

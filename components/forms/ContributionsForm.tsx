@@ -1,15 +1,15 @@
+/* eslint-disable no-unused-vars */
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { Form, FormField, FormItem, FormMessage } from "@/components/ui/form";
+import { Form } from "@/components/ui/form";
 import { contributiontypes } from "@/constants";
 import { ContributionSchema } from "@/utils/validations";
 
 import FormFieldComp from "./FormFieldComp";
-import FormlabelComp from "./FormlabelComp";
 import SubmitButtom from "../shared/SubmitButtom";
 
 enum Fields {
@@ -65,7 +65,12 @@ export function ContributionsForm() {
           radioItems={contributiontypes}
         />
 
-        <SubmitButtom submitting={isSubmitting} className="w-full" />
+        <SubmitButtom
+          submitting={isSubmitting}
+          className="w-full"
+          submitTxt="Pay"
+          submittingTxt="Paying"
+        />
       </form>
     </Form>
   );

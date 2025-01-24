@@ -10,7 +10,7 @@ const AddBank = () => {
     <Modal
       title="Add Bank"
       trigger={
-        <Button className="flex items-center justify-start gap-2 rounded-md bg-orange80  text-xl font-semibold text-orange20 hover:bg-orange70">
+        <Button className="bg-dark80-light30 hover:bg-dark80-light30 flex items-center justify-start gap-2 rounded-md border-[1.5px] border-orange70/70 py-3  text-xl font-semibold !text-orange70 hover:border-orange90 hover:!text-orange90">
           <PlusIcon className="size-5" />
           <span className=""> Add bank</span>
         </Button>

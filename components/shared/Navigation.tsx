@@ -14,7 +14,7 @@ import React from "react";
 
 import { NavRoutes } from "@/constants";
 import { cn } from "@/lib/utils";
-import { navRoutesInterface } from "@/utils/Interfaces";
+import { navRoutesInterface } from "@/types/Interfaces";
 
 import ThemeToggle from "./ThemeToggle";
 
@@ -68,7 +68,7 @@ const Navigation = () => {
             </div>
           </SignedOut>
         </li>
-        <li className=" flex items-center justify-center gap-6">
+        <li className=" flex  items-center justify-center gap-6">
           <ThemeToggle />
           <SignedIn>
             <UserButton />

@@ -1,31 +1,21 @@
-"use client";
-import { usePathname } from "next/navigation";
+import { checkRole } from "@/utils/roles";
 
-import { cn } from "@/lib/utils";
-
+import Head from "./Head";
 import Logo from "./Logo";
 import { MobileNav } from "./MobileNav";
 import Navigation from "./Navigation";
 
-const Header = () => {
-  const pathname = usePathname();
+const Header = async () => {
+  const isAdmin = await checkRole("admin");
 
   return (
-    <header
-      className={cn(
-        "fixed backdrop-blur-sm inset-x-0 top-0 z-20 px-8 py-5 xl:px-0 ",
-        {
-          "border-b dark:border-dark70 border-dark40  backdrop-blur-lg":
-            pathname !== "/",
-        }
-      )}
-    >
+    <Head>
       <div className="mx-auto flex max-w-7xl items-center justify-between">
         <Logo />
         <Navigation />
-        <MobileNav />
+        <MobileNav isAdmin={isAdmin} />
       </div>
-    </header>
+    </Head>
   );
 };
 

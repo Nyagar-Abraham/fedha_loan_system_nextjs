@@ -31,9 +31,13 @@ const Popup = ({ noticeExist }: { noticeExist?: boolean }) => {
 
         {pathName === "/loans" && (
           <div className="flex flex-col gap-4  ">
+            <MakeContribution />
+          </div>
+        )}
+        {pathName === "/admin" && (
+          <div className="flex flex-col gap-4  ">
             <AddLoan />
             <AddBank />
-            <MakeContribution />
           </div>
         )}
       </PopoverContent>

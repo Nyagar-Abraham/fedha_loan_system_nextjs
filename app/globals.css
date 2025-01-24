@@ -84,9 +84,12 @@ body {
   }
 }
 
-/* flex items-center space-x-3 space-y-0 rounded-md  border border-orange20/30 p-2 duration-200 hover:border-orange70 hover:text-orange70 dark:hover:border-orange70 */
+/*  */
 
 @layer utilities {
+  .radio {
+    @apply flex items-center space-x-3 space-y-0 rounded-md  border border-orange20/30 p-2 duration-200 hover:border-orange70 hover:text-orange70 dark:hover:border-orange70;
+  }
   .input {
     @apply min-h-12 border-b-2 border-orange40 bg-dark20 text-xl hover:bg-dark10 focus:ring focus:ring-orange-400 dark:border-orange-950 dark:bg-dark80 dark:hover:bg-dark70;
   }

@@ -1,4 +1,7 @@
+/* eslint-disable no-unused-vars */
 import { LayoutDashboard, DollarSign, User } from "lucide-react";
+
+import { Payment } from "@/types/Interfaces";
 
 export const NavRoutes = [
   {
@@ -17,6 +20,27 @@ export const NavRoutes = [
     icon: User,
   },
 ];
+
+export const payments: Payment[] = [
+  {
+    id: "728ed52f",
+    amount: 100,
+    status: "pending",
+    email: "m@example.com",
+  },
+  {
+    id: "489e1d42",
+    amount: 125,
+    status: "processing",
+    email: "example@gmail.com",
+  },
+];
+
+export enum Routes {
+  LOANS = "/loans",
+  DASHBOARD = "/dashboard",
+  ADMIN = "/admin",
+}
 
 export const themes = [
   {
@@ -210,3 +234,18 @@ const types = [
     loanPurpose: "Farm inputs, machinery, and irrigation systems",
   },
 ];
+
+export interface LoanType {
+  name: string;
+  intrestRate: number;
+  maxLoanAmount: number;
+  repaymentPeriod: string;
+  eligibilityCriteria?: string[];
+  loanProcessingFee: number;
+  downPayment?: number;
+  vehicleType?: string;
+  propertyType?: string;
+  moratoriumPeriod?: string;
+  collateralRequired?: boolean;
+  businesstype?: string;
+}

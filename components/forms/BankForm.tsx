@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-unused-vars */
 "use client";
 
@@ -7,40 +8,20 @@ import React, { useState } from "react";
 import { useForm, ControllerRenderProps } from "react-hook-form";
 import { z } from "zod";
 
-import {
-  Form,
-  FormField,
-  FormItem,
-  FormMessage,
-  FormControl,
-} from "@/components/ui/form";
+import { Form } from "@/components/ui/form";
 import { BankName } from "@/constants";
+import { BankTypeFields } from "@/constants/enums";
 import { useToast } from "@/hooks/use-toast";
 import { createBank } from "@/lib/actions/bank.actions";
 import { AddBankFormSchema } from "@/utils/validations";
 
 import AppwriteDropZone from "./AppwriteDropZone";
 import FormFieldComp from "./FormFieldComp";
-import FormlabelComp from "./FormlabelComp";
 import MultipleEntryField from "./MultipleEntryField";
 import SubmitButtom from "../shared/SubmitButtom";
-import Tag from "../shared/Tag";
 import Wrapper from "../shared/Wrapper";
 import { DialogFooter } from "../ui/dialog";
-import { Input } from "../ui/input";
 import { ToastAction } from "../ui/toast";
-
-enum Fields {
-  NAME = "name",
-  BRANCHCODE = "branchCode",
-  HEADQUARTERS = "headquarters",
-  ESTABLISHMENTYEAR = "establishedYear",
-  SERVICES = "services",
-  CONTACTEMAIL = "contactEmail",
-  CONTACTPHONE = "contactPhone",
-  WEBSITE = "website",
-  LOGO = "logo",
-}
 
 export function BankForm() {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -66,7 +47,7 @@ export function BankForm() {
 
   async function onSubmit(values: z.infer<typeof AddBankFormSchema>) {
     setIsSubmitting((cur) => !cur);
-    values[Fields.LOGO] = fileUrl;
+    values[BankTypeFields.LOGO] = fileUrl;
 
     console.log({ values });
     try {
@@ -101,7 +82,7 @@ export function BankForm() {
     e: React.KeyboardEvent,
     field: ControllerRenderProps<any, string>
   ) => {
-    if (e.key === "Enter" && field.name === Fields.SERVICES) {
+    if (e.key === "Enter" && field.name === BankTypeFields.SERVICES) {
       e.preventDefault();
 
       const inputField = e.target as HTMLInputElement;
@@ -109,16 +90,16 @@ export function BankForm() {
 
       if (value !== "") {
         if (value.length > 100) {
-          return form.setError(Fields.SERVICES, {
+          return form.setError(BankTypeFields.SERVICES, {
             type: "required",
             message: "service must be less than 100 characters.",
           });
         }
 
         if (!field?.value?.includes(value as never)) {
-          form.setValue(Fields.SERVICES, [...field.value, value]);
+          form.setValue(BankTypeFields.SERVICES, [...field.value, value]);
           inputField.value = "";
-          form.clearErrors(Fields.SERVICES);
+          form.clearErrors(BankTypeFields.SERVICES);
         }
       } else {
         form.trigger();
@@ -132,7 +113,7 @@ export function BankForm() {
   ) => {
     const newServices = field.value.filter((t: string) => t !== value);
 
-    form.setValue(Fields.SERVICES, newServices);
+    form.setValue(BankTypeFields.SERVICES, newServices);
   };
 
   return (
@@ -143,7 +124,7 @@ export function BankForm() {
       >
         <Wrapper className="gap-3  py-2 mdl:grid-cols-2">
           <FormFieldComp
-            name={Fields.NAME}
+            name={BankTypeFields.NAME}
             label="bank name"
             placeholder="select bank name"
             isSelect
@@ -152,7 +133,7 @@ export function BankForm() {
           />
 
           <FormFieldComp
-            name={Fields.BRANCHCODE}
+            name={BankTypeFields.BRANCHCODE}
             label="branchcode"
             placeholder="KCB001"
             form={form}
@@ -160,47 +141,45 @@ export function BankForm() {
         </Wrapper>
         <Wrapper className="gap-3 py-2 mdl:grid-cols-2">
           <FormFieldComp
-            name={Fields.HEADQUARTERS}
+            name={BankTypeFields.HEADQUARTERS}
             label="headquarters"
             placeholder="Nairobi, Kenya"
             form={form}
           />
           <FormFieldComp
-            name={Fields.CONTACTEMAIL}
+            name={BankTypeFields.CONTACTEMAIL}
             label="contact email"
             placeholder="info@kcbgroup.com"
             form={form}
           />
         </Wrapper>
-
         <Wrapper className="gap-3  py-2 mdl:grid-cols-2">
           <FormFieldComp
-            name={Fields.CONTACTPHONE}
+            name={BankTypeFields.CONTACTPHONE}
             label="contact phone"
             placeholder="+254711087000"
             form={form}
           />
 
           <FormFieldComp
-            name={Fields.ESTABLISHMENTYEAR}
+            name={BankTypeFields.ESTABLISHMENTYEAR}
             label="establishment year"
             placeholder="1996"
             form={form}
           />
         </Wrapper>
-
+        O
         <MultipleEntryField
           form={form}
           label="services"
           placeholder="press enter to add service..."
-          name={Fields.SERVICES}
+          name={BankTypeFields.SERVICES}
           disabled={isSubmitting}
           handleKeyDown={handleKeyDown}
           handleRemove={handleServiceRemove}
         />
-
         <FormFieldComp
-          name={Fields.WEBSITE}
+          name={BankTypeFields.WEBSITE}
           label="website"
           placeholder="https://www.kcbgroup.com"
           form={form}
@@ -208,9 +187,12 @@ export function BankForm() {
         <div className="pt-5">
           <AppwriteDropZone setFileUrl={setFileUrl} />
         </div>
-
         <DialogFooter className="py-6">
-          <SubmitButtom submitting={isSubmitting} />
+          <SubmitButtom
+            submitting={isSubmitting}
+            submitTxt="Create"
+            submittingTxt="Creating..."
+          />
         </DialogFooter>
       </form>
     </Form>

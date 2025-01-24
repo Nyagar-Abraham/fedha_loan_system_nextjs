@@ -137,7 +137,7 @@ const FormFieldComp: React.FC<FormFieldProps> = ({
                   {radioItems.map((item, i) => (
                     <FormItem
                       key={`${item.value}${i}`}
-                      className={cn(`input ${className}`)}
+                      className={cn(`radio ${className}`)}
                     >
                       <FormControl>
                         <RadioGroupItem value={item.value} />

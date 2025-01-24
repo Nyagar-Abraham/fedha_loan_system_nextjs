@@ -2,7 +2,7 @@ import { clsx, type ClassValue } from "clsx";
 import queryString from "query-string";
 import { twMerge } from "tailwind-merge";
 
-import { LoanDetails, LoanType } from "../utils/Interfaces";
+import { LoanDetails, LoanType } from "../types/Interfaces";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));

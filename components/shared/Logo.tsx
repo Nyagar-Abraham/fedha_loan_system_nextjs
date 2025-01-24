@@ -27,7 +27,7 @@ const Logo = () => {
           "text-green100": pathname === "/",
         })}
       >
-        Fedha Youth Group
+        Loan Kenya
       </span>
     </Link>
   );
