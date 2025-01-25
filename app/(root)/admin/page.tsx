@@ -1,4 +1,5 @@
 import { auth, clerkClient } from "@clerk/nextjs/server";
+import { Metadata } from "next";
 
 import ChangeUserRole from "@/components/admin/ChangeUserRole";
 import { SearchUsers } from "@/components/admin/SearchUsers";
@@ -8,9 +9,14 @@ import { bankColumns } from "@/components/tables/bankColumns";
 import DataTable from "@/components/tables/DataTable";
 import { Badge } from "@/components/ui/badge";
 import { BankTypeFields } from "@/constants/enums";
+import { BankProvider } from "@/context/BankContext";
 import { getAllBanks } from "@/lib/actions/bank.actions";
 import { getLoanTypesAdmin } from "@/lib/actions/loanTypes.actions";
 import { getCurrentUser } from "@/lib/actions/member.actions";
+
+export const metadata: Metadata = {
+  title: "admin",
+};
 
 export default async function AdminDashboard(params: {
   searchParams: Promise<{ search?: string }>;
@@ -88,11 +94,14 @@ export default async function AdminDashboard(params: {
       </div>
 
       <div className="mt-8">
-        <DataTable
-          columns={bankColumns}
-          data={banks}
-          filter={BankTypeFields.NAME}
-        />
+        <BankProvider>
+          <DataTable
+            columns={bankColumns}
+            data={banks}
+            filter={BankTypeFields.NAME}
+            name="Banks"
+          />
+        </BankProvider>
       </div>
     </div>
   );

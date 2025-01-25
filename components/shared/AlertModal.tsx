@@ -27,7 +27,10 @@ const AlertModal = ({
 }: AlertProps) => {
   return (
     <AlertDialog>
-      <AlertDialogTrigger className="bg-dark90-light20 group flex w-full  items-center gap-3 rounded-md  px-2 py-1 text-start text-orange20 hover:text-orange60 hover:shadow-sm dark:hover:text-orange30">
+      <AlertDialogTrigger
+        className="bg-dark90-light20 group flex w-full  items-center gap-3 rounded-md  px-2 py-1 text-start text-orange20 hover:text-orange60 hover:shadow-sm dark:hover:text-orange30"
+        asChild
+      >
         {trigger}
       </AlertDialogTrigger>
       <AlertDialogContent

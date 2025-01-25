@@ -29,9 +29,11 @@ const Navigation = () => {
             <Link
               href={navRoute.href}
               className={cn(
-                "translate-all translate-y-1 px-4 py-2  flex-col flex group", // Added "group" class
+                "translate-all translate-y-1 px-4 py-2  flex-col flex group",
                 {
-                  "text-green100  ": pathname === navRoute.href,
+                  "text-green100  ":
+                    pathname === navRoute.href ||
+                    pathname.includes(navRoute.href),
                 }
               )}
             >
@@ -40,8 +42,10 @@ const Navigation = () => {
                 className={cn(
                   " mx-auto w-0 h-1 rounded-full transition-all duration-300 ease-out group-hover:w-full",
                   {
-                    "bg-green100 ": pathname === navRoute.href,
                     "bg-orange80 ": pathname !== navRoute.href,
+                    "bg-green100 ":
+                      pathname === navRoute.href ||
+                      pathname.includes(navRoute.href),
                   }
                 )}
               ></span>

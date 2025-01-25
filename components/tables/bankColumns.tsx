@@ -8,35 +8,21 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { BankTypeFields } from "@/constants/enums";
 import { IBank } from "@/database/bank.model";
 
+import HeaderSelectCheckbox from "./HeaderSelectCheckbox";
+import SelectCheckBox from "./SelectCheckBox";
+import Navigator from "../shared/Navigator";
 import { Button } from "../ui/button";
 
 export const bankColumns: ColumnDef<IBank>[] = [
   {
     id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
+    header: ({ table }) => <HeaderSelectCheckbox table={table} />,
+    cell: ({ row }) => <SelectCheckBox row={row} />,
     enableSorting: false,
     enableHiding: false,
   },
@@ -91,35 +77,14 @@ export const bankColumns: ColumnDef<IBank>[] = [
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="bg-dark90-light20" align="end">
-            <DropdownMenuItem
-              className="flex items-center gap-3 hover:text-orange70"
-              onClick={() => navigator.clipboard.writeText(bank._id)}
-            >
-              <Edit className="size-5" />
-              Edit
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              className="flex items-center gap-3 hover:text-red-500"
-              onClick={() => navigator.clipboard.writeText(bank._id)}
-            >
-              <Delete className="size-5" />
-              Delete
-            </DropdownMenuItem>
+            <Navigator
+              name={"Bank"}
+              value={bank._id as string}
+              extendedPath="/edit"
+            />
           </DropdownMenuContent>
         </DropdownMenu>
       );
     },
   },
 ];
-
-// export interface BankType {
-//   name: string;
-//   branchCode: string;
-//   headquarters: string;
-//   establishedYear: number;
-//   services: string[];
-//   contactEmail: string;
-//   contactPhone: string;
-//   website: string;
-//   logo?: string;
-// }

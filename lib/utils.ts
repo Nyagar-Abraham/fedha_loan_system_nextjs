@@ -72,16 +72,22 @@ interface UrlQueryParams {
   params: string;
   key: string;
   value: string | null;
+  extendedPath?: string;
 }
 
-export const formUrlQuery = ({ params, key, value }: UrlQueryParams) => {
+export const formUrlQuery = ({
+  params,
+  key,
+  value,
+  extendedPath,
+}: UrlQueryParams) => {
   const currentUrl = queryString.parse(params);
 
   currentUrl[key] = value;
 
   return queryString.stringifyUrl(
     {
-      url: window.location.pathname,
+      url: `${window.location.pathname}${extendedPath && extendedPath}`,
       query: currentUrl,
     },
     { skipNull: true }

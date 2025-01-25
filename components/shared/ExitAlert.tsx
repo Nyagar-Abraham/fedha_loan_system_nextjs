@@ -1,15 +1,10 @@
 import { useAuth } from "@clerk/nextjs";
 import { Trash } from "lucide-react";
 
-import {
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogFooter,
-} from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
 import addExitNotice from "@/lib/actions/member.actions";
-import { cn } from "@/lib/utils";
 
+import AlertFooterComp from "./AlertFooterComp";
 import AlertModal from "./AlertModal";
 
 const ExitAlert = ({ noticeExist }: { noticeExist: boolean }) => {
@@ -58,20 +53,7 @@ const ExitAlert = ({ noticeExist }: { noticeExist: boolean }) => {
         )
       }
     >
-      <AlertDialogFooter className="sm:gap-4">
-        <AlertDialogCancel className="rounded-md bg-orange70 text-base uppercase  text-white hover:bg-orange80">
-          Cancel
-        </AlertDialogCancel>
-        <AlertDialogAction
-          className={cn(" text-base uppercase text-white  hover:text-white", {
-            " hover:bg-green-600 bg-green-500": noticeExist,
-            " hover:bg-red-600 bg-red-500": !noticeExist,
-          })}
-          onClick={handleExitNotice}
-        >
-          Continue
-        </AlertDialogAction>
-      </AlertDialogFooter>
+      <AlertFooterComp onClick={handleExitNotice} notice={noticeExist} />
     </AlertModal>
 
     // <AlertDialog>

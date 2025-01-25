@@ -34,7 +34,7 @@ const Bank = ({ bank }: BankProps) => {
         </div>
         <div className="flex h-full items-center justify-center pr-2 ">
           <Image
-            src="https://images.pexels.com/photos/1069798/pexels-photo-1069798.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+            src={bank?.logo ? bank?.logo : ""}
             className="aspect-square rounded-full "
             width={50}
             height={50}

@@ -4,7 +4,7 @@ export interface IBank extends Document {
   name: string;
   branchCode: string;
   headquarters: string;
-  establishedYear: number;
+  establishedYear: string;
   services: string[];
   contactEmail: string;
   contactPhone: string;
@@ -16,7 +16,7 @@ const BankSchema: Schema = new Schema({
   name: { type: String, required: true, unique: true },
   branchCode: { type: String, required: true, unique: true },
   headquarters: { type: String, required: true },
-  establishedYear: { type: Number, required: true },
+  establishedYear: { type: String, required: true },
   services: { type: [String], required: true },
   contactEmail: { type: String, required: true, unique: true },
   contactPhone: { type: String, required: true },

@@ -12,8 +12,8 @@ import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: {
-    template: "%s / Fedha Youth Group",
-    default: "Welcome / Fedha Youth Group ",
+    template: "%s / Loan Kenya",
+    default: "Welcome / Loan Kenya",
   },
   description: "A student loan application",
 };
@@ -47,9 +47,8 @@ export default function RootLayout({
                 "text-dark10 bg-dark70 hover:bg-gray-600",
             },
             variables: {
-              colorPrimary: "orange80",
-              colorTextOnPrimaryBackground: "#ffffff",
-              colorBackground: "#212529",
+              colorPrimary: "",
+              colorTextOnPrimaryBackground: "",
               colorInputBackground: "#495057",
               colorText: "#f1f3f5",
               colorNeutral: "#ced4da",

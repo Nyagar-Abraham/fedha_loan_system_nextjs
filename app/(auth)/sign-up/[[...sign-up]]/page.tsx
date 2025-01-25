@@ -11,8 +11,8 @@ export default function Page() {
           socialButtonsBlockButton: "text-dark10 bg-dark70 hover:bg-gray-600",
         },
         variables: {
-          colorPrimary: "orange80",
-          colorTextOnPrimaryBackground: "#ffffff",
+          colorPrimary: "",
+          colorTextOnPrimaryBackground: "",
           colorBackground: "#212529",
           colorInputBackground: "#495057",
           colorText: "#f1f3f5",
