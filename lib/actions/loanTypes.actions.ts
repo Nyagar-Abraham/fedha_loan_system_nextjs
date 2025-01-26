@@ -4,10 +4,13 @@ import { revalidatePath } from "next/cache";
 
 import LoanType from "@/database/loanType.model";
 import Order from "@/database/orders.model";
-import { CreateLoanTypeParams, LoanDragParams } from "@/types/loanType.type";
+import {
+  CreateLoanTypeParams,
+  LoanDragParams,
+  UpdateLoanTypeParams,
+} from "@/types/loanType.type";
 
 import { connectToDatabase } from "../mongoose";
-import { stringify } from "../utils";
 
 // CREATE LOAN TYPE
 export async function createLoanType(loanTypeParams: CreateLoanTypeParams) {
@@ -29,7 +32,42 @@ export async function createLoanType(loanTypeParams: CreateLoanTypeParams) {
       await order.save();
     }
     revalidatePath(path);
-    return stringify(loanType);
+    return loanType;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// Edit LOAN TYPE
+export async function updateLoanType(loanTypeParams: UpdateLoanTypeParams) {
+  try {
+    await connectToDatabase();
+
+    const { params, path, loanTypeId } = loanTypeParams;
+
+    const loanTypeDocument = await LoanType.findByIdAndUpdate(
+      loanTypeId,
+      params,
+      { new: true }
+    );
+    const loanType = loanTypeDocument.toObject();
+
+    revalidatePath(path);
+    return loanType;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// GET  LOANTYPE
+export async function getLoanType({ loanTypeId }: { loanTypeId?: string }) {
+  try {
+    await connectToDatabase();
+
+    const loanTypeDocument = await LoanType.findById(loanTypeId);
+    const loanType = loanTypeDocument.toObject();
+
+    return loanType;
   } catch (error) {
     console.log(error);
   }
@@ -45,8 +83,6 @@ export async function getLoanTypes() {
     const OrderObj = await Order.findOne();
     const orderChange = OrderObj?.loanTypeOrder?.toString();
 
-    console.log(orderChange);
-
     let loanTypes;
 
     if (order && order.loanTypeOrder) {
@@ -54,7 +90,8 @@ export async function getLoanTypes() {
       loanTypes = order.loanTypeOrder;
     } else {
       // Otherwise, fetch all loan types as a fallback
-      loanTypes = await LoanType.find().lean();
+      const loanTypeDocs = await LoanType.find();
+      loanTypes = loanTypeDocs.map((doc) => doc.toObject());
     }
 
     return { loanTypes, orderChange };
@@ -103,5 +140,44 @@ export async function getLoanTypesAdmin() {
   } catch (error) {
     console.error("Error fetching loan types:", error);
     throw new Error("Failed to fetch loan types");
+  }
+}
+
+// DELETE LOANTYPES
+export async function deleteLoanTypes({
+  loanTypeIds = [],
+  path,
+}: {
+  loanTypeIds?: string[];
+  path: string;
+}) {
+  try {
+    await connectToDatabase();
+
+    const deletedLoanTypes = [];
+
+    for (const loanTypeId of loanTypeIds) {
+      const loanTypeDoc = await LoanType.findByIdAndDelete(loanTypeId);
+      if (loanTypeDoc) {
+        const loanType = loanTypeDoc.toObject();
+
+        const order = await Order.findOne();
+        if (order) {
+          await Order.findByIdAndUpdate(order._id, {
+            $pull: { loanTypeOrder: loanType._id },
+          });
+        }
+
+        deletedLoanTypes.push(loanType);
+      }
+    }
+
+    // Revalidate the path after all deletions
+    revalidatePath(path);
+
+    return deletedLoanTypes;
+  } catch (error) {
+    console.error("Error deleting loanTypes:", error);
+    throw new Error("Failed to delete loanTypes");
   }
 }

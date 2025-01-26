@@ -19,8 +19,8 @@ import { Button } from "../ui/button";
 export const bankColumns: ColumnDef<IBank>[] = [
   {
     id: "select",
-    header: ({ table }) => <HeaderSelectCheckbox table={table} />,
-    cell: ({ row }) => <SelectCheckBox row={row} />,
+    header: ({ table }) => <HeaderSelectCheckbox column="Bank" table={table} />,
+    cell: ({ row }) => <SelectCheckBox column="Bank" row={row} />,
     enableSorting: false,
     enableHiding: false,
   },

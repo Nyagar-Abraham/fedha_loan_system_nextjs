@@ -2,7 +2,7 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 
 import { useToast } from "@/hooks/use-toast";
-import { deleteBanks } from "@/lib/actions/bank.actions";
+import { deleteLoanTypes } from "@/lib/actions/loanTypes.actions";
 
 import AlertFooterComp from "../shared/AlertFooterComp";
 
@@ -14,7 +14,7 @@ const DeleteLoanType = ({ value, name }: { value: string[]; name: string }) => {
   async function handleDelete() {
     setDeleting(true);
     try {
-      await deleteBanks({ bankIds: value, path: pathname });
+      await deleteLoanTypes({ loanTypeIds: value, path: pathname });
 
       toast({
         title: `${name} Successfully deleted`,

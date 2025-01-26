@@ -20,8 +20,10 @@ import { Button } from "../ui/button";
 export const loanTypeColumns: ColumnDef<ILoanType>[] = [
   {
     id: "select",
-    header: ({ table }) => <HeaderSelectCheckbox table={table} />,
-    cell: ({ row }) => <SelectCheckBox row={row} />,
+    header: ({ table }) => (
+      <HeaderSelectCheckbox column="LoanType" table={table} />
+    ),
+    cell: ({ row }) => <SelectCheckBox column="LoanType" row={row} />,
     enableSorting: false,
     enableHiding: false,
   },
@@ -85,7 +87,7 @@ export const loanTypeColumns: ColumnDef<ILoanType>[] = [
     header: ({ column }) => {
       return (
         <Button
-          className="line-clamp-1"
+          className="ml-auto line-clamp-1 flex gap-2"
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >

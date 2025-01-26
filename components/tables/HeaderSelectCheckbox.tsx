@@ -8,10 +8,13 @@ import { Checkbox } from "../ui/checkbox";
 
 const HeaderSelectCheckbox = ({
   table,
+  column,
 }: {
   table: Table<IBank | ILoanType>;
+  column: "Bank" | "LoanType";
 }) => {
   const { setBankIds, setLoanTypeIds } = useSelectedFields();
+
   const ids = table
     .getRowModel()
     .rows.map((row: Row<IBank | ILoanType>) => row.original._id as string);
@@ -25,10 +28,23 @@ const HeaderSelectCheckbox = ({
       onCheckedChange={(value) => {
         table.toggleAllPageRowsSelected(!!value);
 
-        if (value) {
-          setBankIds([...ids]);
-        } else {
-          setBankIds([]);
+        switch (column) {
+          case "Bank":
+            if (value) {
+              setBankIds([...ids]);
+            } else {
+              setBankIds([]);
+            }
+            break;
+          case "LoanType":
+            if (value) {
+              setLoanTypeIds([...ids]);
+            } else {
+              setLoanTypeIds([]);
+            }
+            break;
+          default:
+            break;
         }
       }}
       aria-label="Select all"

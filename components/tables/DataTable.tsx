@@ -34,6 +34,7 @@ import {
 import { useSelectedFields } from "@/context/SelectedFieldsContext";
 
 import DeleteBank from "../loans/DeleteBank";
+import DeleteLoanType from "../loans/DeleteLoanType";
 import AlertModal from "../shared/AlertModal";
 import { Button } from "../ui/button";
 
@@ -54,7 +55,10 @@ export function DataTable<TData, TValue>({
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
-  const { bankIds } = useSelectedFields();
+  const { bankIds, loanTypeIds } = useSelectedFields();
+
+  console.log({ bankIds });
+  console.log({ loanTypeIds });
 
   const table = useReactTable({
     data,
@@ -79,7 +83,7 @@ export function DataTable<TData, TValue>({
     <div>
       <div className="flex flex-col items-start justify-between gap-3 py-4 md:flex-row md:items-center">
         <Input
-          placeholder="Filter emails..."
+          placeholder="Filter names..."
           value={(table.getColumn(filter)?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn(filter)?.setFilterValue(event.target.value)
@@ -87,7 +91,8 @@ export function DataTable<TData, TValue>({
           className="input h-6 max-w-sm"
         />
         <div className="flex items-center gap-3">
-          {bankIds.length > 0 && (
+          {/*  */}
+          {name === "Banks" && bankIds.length > 0 && (
             <AlertModal
               trigger={
                 <Button
@@ -101,10 +106,25 @@ export function DataTable<TData, TValue>({
               description={`Are you sure you sure you want to delete all ${name}, this action can\`t be undone  `}
               title={`Delete Selected ${name}`}
             >
-              {name === "Banks" && <DeleteBank value={bankIds} name={name} />}
-              {name === "LoanTypes" && (
-                <DeleteBank value={bankIds} name={name} />
-              )}
+              <DeleteBank value={bankIds} name={name} />
+            </AlertModal>
+          )}
+          {/*  */}
+          {name === "LoanTypes" && loanTypeIds.length > 0 && (
+            <AlertModal
+              trigger={
+                <Button
+                  variant="outline"
+                  className="hover: ml-auto space-x-2 border-[1.5px] border-red-500 bg-inherit text-[0.9rem]  uppercase tracking-wide text-red-500 hover:border-red-600 hover:bg-inherit hover:!text-red-600"
+                >
+                  <TrashIcon className="size-5" />
+                  Delete
+                </Button>
+              }
+              description={`Are you sure you sure you want to delete all ${name}, this action can\`t be undone  `}
+              title={`Delete Selected ${name}`}
+            >
+              <DeleteLoanType value={loanTypeIds} name={name} />
             </AlertModal>
           )}
           <DropdownMenu>

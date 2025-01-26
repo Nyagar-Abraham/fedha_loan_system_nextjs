@@ -23,9 +23,14 @@ import {
   vehicleType,
 } from "@/constants";
 import { LoanTypeFields } from "@/constants/enums";
+import { ILoanType } from "@/database/loanType.model";
 import { useToast } from "@/hooks/use-toast";
-import { createLoanType } from "@/lib/actions/loanTypes.actions";
-import { AddLoanFormSchema } from "@/utils/validations";
+import {
+  createLoanType,
+  updateLoanType,
+} from "@/lib/actions/loanTypes.actions";
+import { cn } from "@/lib/utils";
+import { LoanTypeFormSchema } from "@/utils/validations";
 
 import FormFieldComp from "./FormFieldComp";
 import FormlabelComp from "./FormlabelComp";
@@ -43,26 +48,32 @@ enum Names {
   BUSINESS = "Business Loan",
 }
 
-export function AddLoanForm() {
+export function LoanTypeForm({
+  edit,
+  loanType,
+}: {
+  edit?: boolean;
+  loanType?: ILoanType;
+}) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
   const pathname = usePathname();
 
-  const form = useForm<z.infer<typeof AddLoanFormSchema>>({
-    resolver: zodResolver(AddLoanFormSchema),
+  const form = useForm<z.infer<typeof LoanTypeFormSchema>>({
+    resolver: zodResolver(LoanTypeFormSchema),
     defaultValues: {
-      name: "",
-      intrestRate: 0,
-      maxLoanAmount: 0,
-      repaymentPeriod: "",
-      eligibilityCriteria: [],
-      loanProcessingFee: undefined,
-      downPayment: undefined,
-      vehicleType: undefined,
-      propertyType: undefined,
-      moratoriumPeriod: undefined,
-      collateralRequired: false,
-      businessType: undefined,
+      name: loanType?.name || "",
+      intrestRate: loanType?.intrestRate || 0,
+      maxLoanAmount: loanType?.maxLoanAmount || 0,
+      repaymentPeriod: loanType?.repaymentPeriod || "",
+      eligibilityCriteria: loanType?.eligibilityCriteria || [],
+      loanProcessingFee: loanType?.loanProcessingFee || undefined,
+      downPayment: loanType?.downPayment || undefined,
+      vehicleType: loanType?.vehicleType || undefined,
+      propertyType: loanType?.propertyType || undefined,
+      moratoriumPeriod: loanType?.moratoriumPeriod || undefined,
+      collateralRequired: loanType?.collateralRequired || false,
+      businessType: loanType?.businesstype || undefined,
     },
   });
 
@@ -70,38 +81,56 @@ export function AddLoanForm() {
 
   const name = form.getValues().name;
 
-  async function onSubmit(values: z.infer<typeof AddLoanFormSchema>) {
+  async function onSubmit(values: z.infer<typeof LoanTypeFormSchema>) {
     setIsSubmitting((cur) => !cur);
 
     try {
-      const loan = await createLoanType({
-        params: {
-          name: values.name.trim(),
-          intrestRate: values.intrestRate,
-          maxLoanAmount: values.maxLoanAmount,
-          repaymentPeriod: values.repaymentPeriod.trim(),
-          eligibilityCriteria: values.eligibilityCriteria,
-          loanProcessingFee: values.loanProcessingFee,
-          downPayment: values.downPayment,
-          vehicleType: values.vehicleType,
-          propertyType: values.propertyType,
-          moratoriumPeriod: values.moratoriumPeriod,
-          collateralRequired: values.collateralRequired,
-          businessType: values.businessType,
-        },
-        path: pathname,
-      });
-
-      form.clearErrors();
-      form.reset();
-
-      console.log("newloan", loan);
-      if (loan) {
-        toast({
-          title: "Loan Successfully created",
-          description: "",
-          duration: 3000,
+      if (!edit) {
+        const loan = await createLoanType({
+          params: {
+            name: values.name.trim(),
+            intrestRate: values.intrestRate,
+            maxLoanAmount: values.maxLoanAmount,
+            repaymentPeriod: values.repaymentPeriod.trim(),
+            eligibilityCriteria: values.eligibilityCriteria,
+            loanProcessingFee: values.loanProcessingFee,
+            downPayment: values.downPayment,
+            vehicleType: values.vehicleType,
+            propertyType: values.propertyType,
+            moratoriumPeriod: values.moratoriumPeriod,
+            collateralRequired: values.collateralRequired,
+            businessType: values.businessType,
+          },
+          path: pathname,
         });
+
+        form.clearErrors();
+        form.reset();
+
+        if (loan) {
+          toast({
+            title: "Loan Successfully created",
+            description: "",
+            duration: 3000,
+          });
+        }
+      } else {
+        const loan = await updateLoanType({
+          params: values,
+          path: pathname,
+          loanTypeId: loanType._id as string,
+        });
+
+        form.clearErrors();
+        form.reset();
+
+        if (loan) {
+          toast({
+            title: "Loan Successfully updated",
+            description: "",
+            duration: 3000,
+          });
+        }
       }
     } catch (error) {
       console.log({ error });
@@ -111,7 +140,7 @@ export function AddLoanForm() {
         description: "There was a problem with your request.",
       });
     } finally {
-      setIsSubmitting((cur) => !cur);
+      setIsSubmitting(false);
     }
   }
 
@@ -163,8 +192,18 @@ export function AddLoanForm() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="max-h-[80vh] space-y-4 overflow-y-scroll px-2 pb-6 hide-scrollbar "
+        className={cn(
+          `  space-y-4 px-2 pb-6  ${edit ? "" : "hide-scrollbar overflow-y-scroll max-h-[80vh]"} `
+        )}
       >
+        {edit && (
+          <div className="mb-4">
+            <h1 className=" mt-3  text-4xl font-semibold text-orange90">
+              Edit LoanType
+            </h1>
+          </div>
+        )}
+
         <FormFieldComp
           name={LoanTypeFields.NAME}
           label="Loan name"
@@ -298,13 +337,23 @@ export function AddLoanForm() {
           form={form}
         />
 
-        <DialogFooter className="mt-2">
-          <SubmitButtom
-            submitting={isSubmitting}
-            submitTxt="Create"
-            submittingTxt="creating..."
-          />
-        </DialogFooter>
+        {edit ? (
+          <div className="flex justify-end py-6">
+            <SubmitButtom
+              submitting={isSubmitting}
+              submitTxt="Update"
+              submittingTxt="Updating..."
+            />
+          </div>
+        ) : (
+          <DialogFooter className="py-6">
+            <SubmitButtom
+              submitting={isSubmitting}
+              submitTxt="Create"
+              submittingTxt="Creating..."
+            />
+          </DialogFooter>
+        )}
       </form>
     </Form>
   );
