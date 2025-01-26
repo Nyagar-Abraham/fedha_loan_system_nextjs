@@ -34,7 +34,6 @@ import Tag from "../shared/Tag";
 import Wrapper from "../shared/Wrapper";
 import { DialogFooter } from "../ui/dialog";
 import { Input } from "../ui/input";
-import { ToastAction } from "../ui/toast";
 
 enum Names {
   PERSONAL = "Personal Loan",

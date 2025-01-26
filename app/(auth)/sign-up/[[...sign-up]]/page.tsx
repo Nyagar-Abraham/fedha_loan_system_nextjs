@@ -12,7 +12,7 @@ export default function Page() {
         },
         variables: {
           colorPrimary: "",
-          colorTextOnPrimaryBackground: "",
+          colorTextOnPrimaryBackground: "#fff",
           colorBackground: "#212529",
           colorInputBackground: "#495057",
           colorText: "#f1f3f5",

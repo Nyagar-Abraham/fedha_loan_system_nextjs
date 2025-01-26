@@ -1,15 +1,20 @@
 import { Table, Row } from "@tanstack/react-table";
 
-import { useBank } from "@/context/BankContext";
+import { useBank, useSelectedFields } from "@/context/SelectedFieldsContext";
 import { IBank } from "@/database/bank.model";
+import { ILoanType } from "@/database/loanType.model";
 
 import { Checkbox } from "../ui/checkbox";
 
-const HeaderSelectCheckbox = ({ table }: { table: Table<IBank> }) => {
-  const { setBankIds } = useBank();
+const HeaderSelectCheckbox = ({
+  table,
+}: {
+  table: Table<IBank | ILoanType>;
+}) => {
+  const { setBankIds, setLoanTypeIds } = useSelectedFields();
   const ids = table
     .getRowModel()
-    .rows.map((row: Row<IBank>) => row.original._id as string);
+    .rows.map((row: Row<IBank | ILoanType>) => row.original._id as string);
 
   return (
     <Checkbox

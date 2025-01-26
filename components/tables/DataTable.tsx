@@ -31,10 +31,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useBank } from "@/context/BankContext";
+import { useSelectedFields } from "@/context/SelectedFieldsContext";
 
 import DeleteBank from "../loans/DeleteBank";
-import AlertFooterComp from "../shared/AlertFooterComp";
 import AlertModal from "../shared/AlertModal";
 import { Button } from "../ui/button";
 
@@ -55,7 +54,7 @@ export function DataTable<TData, TValue>({
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
-  const { bankIds } = useBank();
+  const { bankIds } = useSelectedFields();
 
   const table = useReactTable({
     data,
@@ -102,7 +101,10 @@ export function DataTable<TData, TValue>({
               description={`Are you sure you sure you want to delete all ${name}, this action can\`t be undone  `}
               title={`Delete Selected ${name}`}
             >
-              <DeleteBank value={bankIds} name={name} />
+              {name === "Banks" && <DeleteBank value={bankIds} name={name} />}
+              {name === "LoanTypes" && (
+                <DeleteBank value={bankIds} name={name} />
+              )}
             </AlertModal>
           )}
           <DropdownMenu>

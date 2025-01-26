@@ -25,3 +25,12 @@ export enum BankTypeFields {
   WEBSITE = "website",
   LOGO = "logo",
 }
+
+export enum LoanTypeColumnFields {
+  NAME = "name",
+  INTRESTRATE = "intrestRate",
+  MAXIMUMLOANAMOUNT = "maxLoanAmount",
+  REPAYMENTPERIOD = "repaymentPeriod",
+  LOANPROCESSINGFEE = "loanProcessingFee",
+  COLLATERALREQUIRED = "collateralRequired",
+}

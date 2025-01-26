@@ -42,14 +42,8 @@ export interface LoanType {
   intrestRate: number;
   maxLoanAmount: number;
   repaymentPeriod: string;
-  eligibilityCriteria?: string[];
   loanProcessingFee: number;
-  downPayment?: number;
-  vehicleType?: string;
-  propertyType?: string;
-  moratoriumPeriod?: string;
   collateralRequired?: boolean;
-  businesstype?: string;
 }
 
 export interface BankType {

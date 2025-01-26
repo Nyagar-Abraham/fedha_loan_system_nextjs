@@ -7,9 +7,10 @@ import CopyToClipboardButton from "@/components/shared/CopyToClipboardButton";
 import Popup from "@/components/shared/Popup";
 import { bankColumns } from "@/components/tables/bankColumns";
 import DataTable from "@/components/tables/DataTable";
+import { loanTypeColumns } from "@/components/tables/LoanTypeColumns";
 import { Badge } from "@/components/ui/badge";
-import { BankTypeFields } from "@/constants/enums";
-import { BankProvider } from "@/context/BankContext";
+import { BankTypeFields, LoanTypeColumnFields } from "@/constants/enums";
+import { SelectedFieldsProvider } from "@/context/SelectedFieldsContext";
 import { getAllBanks } from "@/lib/actions/bank.actions";
 import { getLoanTypesAdmin } from "@/lib/actions/loanTypes.actions";
 import { getCurrentUser } from "@/lib/actions/member.actions";
@@ -31,12 +32,6 @@ export default async function AdminDashboard(params: {
     getAllBanks({
       path: "admin",
     }),
-
-    // getUserLoan({
-    //   userId,
-    //   page: searchParams?.page ? +searchParams.page : 1,
-    //   pageSize: 4,
-    // }),
   ]);
 
   const query = (await params.searchParams).search;
@@ -45,7 +40,7 @@ export default async function AdminDashboard(params: {
 
   const users = query ? (await client.users.getUserList({ query })).data : [];
 
-  console.log(loanTypes);
+  console.log({ loanTypes });
 
   return (
     <div className="mx-auto pb-24">
@@ -93,16 +88,24 @@ export default async function AdminDashboard(params: {
         })}
       </div>
 
-      <div className="mt-8">
-        <BankProvider>
+      <SelectedFieldsProvider>
+        <div className="mt-8">
+          <DataTable
+            columns={loanTypeColumns}
+            data={loanTypes}
+            filter={LoanTypeColumnFields.NAME}
+            name="LoanTypes"
+          />{" "}
+        </div>{" "}
+        <div className="mt-8">
           <DataTable
             columns={bankColumns}
             data={banks}
             filter={BankTypeFields.NAME}
             name="Banks"
-          />
-        </BankProvider>
-      </div>
+          />{" "}
+        </div>
+      </SelectedFieldsProvider>
     </div>
   );
 }

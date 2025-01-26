@@ -87,19 +87,21 @@ export async function drag(dragparams: LoanDragParams) {
   revalidatePath(path);
 }
 
-// GET ALL BANKS
+// GET All LoanTypes
 export async function getLoanTypesAdmin() {
   try {
     await connectToDatabase();
 
-    const loanTypes = await LoanType.find()
-      .select(
-        "name  intrestRate maxLoanAmount repaymentPeriod collateralRequired "
-      )
-      .lean();
+    const loanTypesDocuments = await LoanType.find().select(
+      "name interestRate maxLoanAmount loanProcessingFee repaymentPeriod collateralRequired"
+    );
+
+    // Convert each document to a plain JavaScript object
+    const loanTypes = loanTypesDocuments.map((doc) => doc.toObject());
 
     return loanTypes;
   } catch (error) {
-    console.log(error);
+    console.error("Error fetching loan types:", error);
+    throw new Error("Failed to fetch loan types");
   }
 }
