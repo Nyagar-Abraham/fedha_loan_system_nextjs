@@ -3,27 +3,31 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { getCurrentUser } from "@/lib/actions/member.actions";
+import { handleError } from "@/lib/handlers/error";
+import { NotFoundError, ValidationError } from "@/lib/http-errors";
 import bg from "@/public/bg.jpg";
 import { sendMail } from "@/utils/sendMail";
 import { sendSMSNotification } from "@/utils/Sms";
 
 // import { Button } from "@/components/ui/button";
 
+const test = async () => {
+  try {
+    // throw new NotFoundError("Test Error");
+    throw new ValidationError({
+      title: ["Required"],
+      tags: ['"javaScript" is not a valid tag.'],
+    });
+  } catch (error) {
+    return handleError(error);
+  }
+};
+
 export default async function Home() {
+  const results = await test();
+  console.log(results);
   // const { userId } = auth();
 
-  // const user = await getCurrentUser({ userId });
-  // console.log(user._id.toString());
-
-  // sendSMSNotification(user._id.toString(), "you succefully logged in");
-
-  // sendMail({
-  //   email: "abrahamowino129@gmail.com",
-  //   sendTo: "nyagar76@gmail.com",
-  //   subject: "new sign in",
-  //   text: "You are now a registered member of fedha youth group congratulations",
-  //   html: "<p>You are now a registered member of fedha youth group <strong>congratulations</strong></p>",
-  // });
   return (
     <main className="mt-24 md:mt-32 xl:mt-40  ">
       <Image
