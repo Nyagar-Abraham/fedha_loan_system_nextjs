@@ -1,6 +1,6 @@
 import { Table, Row } from "@tanstack/react-table";
 
-import { useBank, useSelectedFields } from "@/context/SelectedFieldsContext";
+import { useSelectedFields } from "@/context/SelectedFieldsContext";
 import { IBank } from "@/database/bank.model";
 import { ILoanType } from "@/database/loanType.model";
 

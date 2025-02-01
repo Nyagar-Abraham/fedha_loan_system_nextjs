@@ -5,13 +5,6 @@ import { z } from "zod";
 //   amount: z.number(),
 // });
 
-export const LoanSchema = z.object({
-  amount: z.number().min(100),
-  age: z.number().min(18).max(35),
-  type: z.string().min(2),
-  guarantors: z.array(z.string().min(2)).min(1).max(3),
-});
-
 export const LoanTypeFormSchema = z.object({
   name: z
     .string()
@@ -91,3 +84,38 @@ export const ContributionSchema = z.object({
   date: z.date().min(new Date(), { message: "Date cannot be in the past" }),
   typeOfContribution: z.enum(["normal", "fixed"]),
 });
+
+export const LoanSchema = z.object({
+  amount: z.number().min(0),
+  intrestRate: z.number(),
+  durationMonths: z.number().min(0),
+  date: z.date().min(new Date(), { message: "Date cannot be in the past" }),
+  guarantors: z.array(z.string()).min(0),
+  bank: z.string(),
+  collateral: z.string(),
+  remarks: z.string(),
+});
+
+// export interface ILoan extends Document {
+//   userId: Schema.Types.ObjectId;
+//   loanTypeId: Schema.Types.ObjectId;
+//   bankId: Schema.Types.ObjectId;
+//   amount: number;
+//   status?: string;
+//   interestRate: number;
+//   durationMonths: number;
+//   monthlyInstallment: number;
+//   totalRepayment: number;
+//   applicationDate: Date;
+//   approvalDate?: Date;
+//   disbursementDate?: Date;
+//   repaymentSchedule?: {
+//     dueDate: Date;
+//     amount: number;
+//     status: string;
+//   }[];
+//   guarantors: Schema.Types.ObjectId[];
+//   collateral?: string;
+//   remarks?: string;
+//   isDefaulted: boolean;
+// }

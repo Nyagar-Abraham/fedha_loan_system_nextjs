@@ -1,6 +1,6 @@
 "use client";
 
-import { Delete, Edit } from "lucide-react";
+import { Delete, Edit, TrashIcon } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 import { formUrlQuery } from "@/lib/utils";
@@ -40,7 +40,7 @@ const Navigator = ({
         className="flex items-center gap-3 hover:!text-orange70"
         onClick={handleNavigation}
       >
-        <Edit className="size-5" />
+        <Edit className="size-4" />
         Edit
       </DropdownMenuItem>
       <AlertModal
@@ -49,7 +49,7 @@ const Navigator = ({
             onSelect={(event) => event.preventDefault()}
             className="flex items-center gap-3 hover:!text-red-500"
           >
-            <Delete className="size-5" />
+            <TrashIcon className="size-4" />
             Delete
           </DropdownMenuItem>
         }

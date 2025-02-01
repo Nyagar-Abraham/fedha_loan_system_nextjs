@@ -3,6 +3,7 @@ import { Schema, models, model, Document } from "mongoose";
 export interface ILoan extends Document {
   userId: Schema.Types.ObjectId;
   loanTypeId: Schema.Types.ObjectId;
+  bankId: Schema.Types.ObjectId;
   amount: number;
   status?: string;
   interestRate: number;
@@ -27,6 +28,11 @@ const LoanSchema = new Schema(
   {
     userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
     loanTypeId: {
+      type: Schema.Types.ObjectId,
+      ref: "LoanType",
+      required: true,
+    },
+    bankId: {
       type: Schema.Types.ObjectId,
       ref: "LoanType",
       required: true,
@@ -58,6 +64,10 @@ const LoanSchema = new Schema(
   },
   { timestamps: true } // Adds createdAt and updatedAt automatically
 );
+
+const Loan = models.Loan || model<ILoan>("Loan", LoanSchema);
+
+export default Loan;
 
 // export interface ILoan extends Document {
 //   member: Schema.Types.ObjectId;
@@ -116,7 +126,3 @@ const LoanSchema = new Schema(
 //     default: "Pending",
 //   },
 // });
-
-const Loan = models.Loan || model<ILoan>("Loan", LoanSchema);
-
-export default Loan;

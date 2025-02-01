@@ -64,6 +64,8 @@ export async function getAllBanks({ path }: { path?: string }) {
       banks = await Bank.find()
         .select("name branchCode headquarters email  contactEmail ")
         .lean();
+    } else if (path && path === "apply") {
+      banks = await Bank.find().select("name").lean();
     } else {
       banks = await Bank.find().lean();
     }

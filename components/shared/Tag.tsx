@@ -1,6 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { DeleteIcon } from "lucide-react";
-import { MouseEventHandler } from "react";
-import { ControllerRenderProps } from "react-hook-form";
 
 import { Badge } from "../ui/badge";
 

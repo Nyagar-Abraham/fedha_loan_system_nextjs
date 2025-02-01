@@ -2,7 +2,7 @@ import { PlusIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 
-import { AddLoanForm } from "../forms/LoanTypeForm";
+import { LoanTypeForm } from "../forms/LoanTypeForm";
 import Modal from "../shared/Modal";
 
 const AddLoan = () => {
@@ -16,7 +16,7 @@ const AddLoan = () => {
         </Button>
       }
     >
-      <AddLoanForm />
+      <LoanTypeForm />
     </Modal>
   );
 };

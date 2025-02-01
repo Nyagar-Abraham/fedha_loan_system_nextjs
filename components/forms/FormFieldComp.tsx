@@ -34,7 +34,7 @@ import {
 import { Input } from "../ui/input";
 interface SelectOrRadioItem {
   label: string;
-  value: string;
+  value: string | unknown;
 }
 
 interface FormFieldProps {

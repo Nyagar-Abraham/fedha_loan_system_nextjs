@@ -1,6 +1,5 @@
 "use client";
 
-import { TrashIcon } from "@radix-ui/react-icons";
 import {
   ColumnDef,
   flexRender,
@@ -35,7 +34,7 @@ import { useSelectedFields } from "@/context/SelectedFieldsContext";
 
 import DeleteBank from "../loans/DeleteBank";
 import DeleteLoanType from "../loans/DeleteLoanType";
-import AlertModal from "../shared/AlertModal";
+import DeleteModal from "../shared/DeleteModal";
 import { Button } from "../ui/button";
 
 interface DataTableProps<TData, TValue> {
@@ -93,39 +92,15 @@ export function DataTable<TData, TValue>({
         <div className="flex items-center gap-3">
           {/*  */}
           {name === "Banks" && bankIds.length > 0 && (
-            <AlertModal
-              trigger={
-                <Button
-                  variant="outline"
-                  className="hover: ml-auto space-x-2 border-[1.5px] border-red-500 bg-inherit text-[0.9rem]  uppercase tracking-wide text-red-500 hover:border-red-600 hover:bg-inherit hover:!text-red-600"
-                >
-                  <TrashIcon className="size-5" />
-                  Delete
-                </Button>
-              }
-              description={`Are you sure you sure you want to delete all ${name}, this action can\`t be undone  `}
-              title={`Delete Selected ${name}`}
-            >
+            <DeleteModal name={name}>
               <DeleteBank value={bankIds} name={name} />
-            </AlertModal>
+            </DeleteModal>
           )}
           {/*  */}
           {name === "LoanTypes" && loanTypeIds.length > 0 && (
-            <AlertModal
-              trigger={
-                <Button
-                  variant="outline"
-                  className="hover: ml-auto space-x-2 border-[1.5px] border-red-500 bg-inherit text-[0.9rem]  uppercase tracking-wide text-red-500 hover:border-red-600 hover:bg-inherit hover:!text-red-600"
-                >
-                  <TrashIcon className="size-5" />
-                  Delete
-                </Button>
-              }
-              description={`Are you sure you sure you want to delete all ${name}, this action can\`t be undone  `}
-              title={`Delete Selected ${name}`}
-            >
+            <DeleteModal name={name}>
               <DeleteLoanType value={loanTypeIds} name={name} />
-            </AlertModal>
+            </DeleteModal>
           )}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -159,7 +134,7 @@ export function DataTable<TData, TValue>({
         </div>
       </div>
       <div className="rounded-md border">
-        <Table>
+        <Table className="hide-scrollbar">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow className=" text-[1rem]" key={headerGroup.id}>

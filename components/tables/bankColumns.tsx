@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
@@ -19,6 +20,8 @@ import { Button } from "../ui/button";
 export const bankColumns: ColumnDef<IBank>[] = [
   {
     id: "select",
+
+    // @ts-expect-error
     header: ({ table }) => <HeaderSelectCheckbox column="Bank" table={table} />,
     cell: ({ row }) => <SelectCheckBox column="Bank" row={row} />,
     enableSorting: false,

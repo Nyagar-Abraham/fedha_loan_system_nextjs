@@ -1,9 +1,10 @@
+/* eslint-disable no-unused-vars */
 "use client";
 
 import { ArrowRight, EyeIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import {
   Draggable,
@@ -12,10 +13,14 @@ import {
 } from "react-beautiful-dnd";
 
 import { ILoanType } from "@/database/loanType.model";
-import { addPercentageSign, addShillingSign, cn } from "@/lib/utils";
+import {
+  addPercentageSign,
+  addShillingSign,
+  cn,
+  formUrlQuery,
+} from "@/lib/utils";
 
 import List from "../shared/List";
-import { Button } from "../ui/button";
 
 interface LoanProps {
   loan: ILoanType;
@@ -30,37 +35,26 @@ enum Labels {
 }
 
 const Loan = ({ loan, index }: LoanProps) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [clicked, setClicked] = useState(false);
-  const pathname = usePathname();
+  // const pathname = usePathname();
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
-  // const router = useRouter();
-  // const searchParams = useSearchParams();
+  const handleClick = () => {
+    const newUrl = formUrlQuery({
+      params: searchParams.toString(),
+      key: "loan",
+      value: loan._id as string,
+      extendedPath: "/apply",
+    });
 
-  // const handleClick = (value: string) => {
-  //   if (searchParams.get("name") === value) {
-  //     const newUrl = removeKeysFromQuery({
-  //       params: searchParams.toString(),
-  //       keysToRemove: ["name"],
-  //     });
-
-  //     router.push(newUrl, { scroll: false });
-  //   } else {
-  //     const newUrl = formUrlQuery({
-  //       params: searchParams.toString(),
-  //       key: "name",
-  //       value,
-  //     });
-
-  //     router.push(newUrl, { scroll: false });
-  //   }
-  // };
+    router.push(newUrl, { scroll: false });
+  };
 
   return (
     <Draggable draggableId={loan?._id?.toString()} index={index}>
       {(Provided: DraggableProvided, snapshot: DraggableStateSnapshot) => (
-        <Link
-          href={`${pathname}/${loan._id}`}
+        <li
+          onClick={handleClick}
           ref={Provided.innerRef}
           {...Provided.draggableProps}
           {...Provided.dragHandleProps}
@@ -69,11 +63,9 @@ const Loan = ({ loan, index }: LoanProps) => {
             { "border-orange30/30": snapshot.isDragging }
           )}
         >
-          {loan?.collateralRequired && (
-            <p className="absolute left-2 top-0 -translate-y-1/2 rounded-full border border-orange80/80 px-3 py-1 font-semibold uppercase tracking-wide text-orange80/80 backdrop-blur-md ">
-              collateral required
-            </p>
-          )}
+          <p className="absolute left-2 top-0 -translate-y-1/2 rounded-full border border-orange80/80 px-3 py-1 font-semibold uppercase tracking-wide text-orange80/80 backdrop-blur-md ">
+            {loan.collateralRequired ? "secured" : "unsecured"}
+          </p>
 
           <div className="flex-between ">
             <div>
@@ -106,7 +98,7 @@ const Loan = ({ loan, index }: LoanProps) => {
               listItems={loan?.eligibilityCriteria}
             />
           </div>
-        </Link>
+        </li>
       )}
     </Draggable>
   );

@@ -130,7 +130,7 @@ export async function getLoanTypesAdmin() {
     await connectToDatabase();
 
     const loanTypesDocuments = await LoanType.find().select(
-      "name interestRate maxLoanAmount loanProcessingFee repaymentPeriod collateralRequired"
+      "name intrestRate maxLoanAmount loanProcessingFee repaymentPeriod collateralRequired"
     );
 
     // Convert each document to a plain JavaScript object

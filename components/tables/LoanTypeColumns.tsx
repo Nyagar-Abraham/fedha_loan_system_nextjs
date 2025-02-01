@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
@@ -21,6 +22,8 @@ export const loanTypeColumns: ColumnDef<ILoanType>[] = [
   {
     id: "select",
     header: ({ table }) => (
+      // @ts-expect-error
+
       <HeaderSelectCheckbox column="LoanType" table={table} />
     ),
     cell: ({ row }) => <SelectCheckBox column="LoanType" row={row} />,
@@ -43,7 +46,7 @@ export const loanTypeColumns: ColumnDef<ILoanType>[] = [
   },
   {
     accessorKey: LoanTypeColumnFields.INTRESTRATE,
-    header: () => <div className="line-clamp-1">Interst Rate</div>,
+    header: () => <div className="line-clamp-1">Intrest Rate</div>,
     cell: ({ row }) => {
       const amount = parseFloat(
         row.getValue(LoanTypeColumnFields.INTRESTRATE) ?? 0
@@ -77,7 +80,7 @@ export const loanTypeColumns: ColumnDef<ILoanType>[] = [
 
       return (
         <div className="line-clamp-1">
-          {isRequired ? "required" : "not required"}
+          {isRequired ? "secured" : "unsequred"}
         </div>
       );
     },
@@ -131,18 +134,3 @@ export const loanTypeColumns: ColumnDef<ILoanType>[] = [
     },
   },
 ];
-
-// export interface ILoanType extends Document {
-//   name: string;
-//   intrestRate: number;
-//   maxLoanAmount: number;
-//   repaymentPeriod: string;
-//   eligibilityCriteria?: string[];
-//   loanProcessingFee: number;
-//   downPayment?: number; // For loans requiring a down payment.
-//   vehicleType?: string; // For car loans.
-//   propertyType?: string; // For mortgage loans.
-//   moratoriumPeriod?: string; // For education loans.
-//   collateralRequired?: boolean; // For business loans.
-//   businesstype?: string; // Specific to business loans.
-// }
