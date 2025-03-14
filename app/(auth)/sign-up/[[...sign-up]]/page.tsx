@@ -5,13 +5,12 @@ export default function Page() {
     <SignUp
       appearance={{
         elements: {
-          formButtonPrimary:
-            "bg-gradient-to-br from-orange80 to-orange70 text-white  border-none",
+          formButtonPrimary: "bg-orange80  text-white",
           footerActionLink: "text-orange70 ",
           socialButtonsBlockButton: "text-dark10 bg-dark70 hover:bg-gray-600",
         },
         variables: {
-          colorPrimary: "",
+          colorPrimary: "#f08c00",
           colorTextOnPrimaryBackground: "#fff",
           colorBackground: "#212529",
           colorInputBackground: "#495057",

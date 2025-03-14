@@ -47,8 +47,9 @@ export default function RootLayout({
                 "text-dark10 bg-dark70 hover:bg-gray-600",
             },
             variables: {
-              colorPrimary: "",
-              colorTextOnPrimaryBackground: "",
+              colorPrimary: "#f08c00",
+              colorTextOnPrimaryBackground: "#fff",
+              colorBackground: "#212529",
               colorInputBackground: "#495057",
               colorText: "#f1f3f5",
               colorNeutral: "#ced4da",
